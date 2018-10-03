@@ -1,2 +1,2 @@
 # committee-oversight
-Committee Oversight Map Coding Project for The Lugar Center
+⚖️ Committee oversight map coding project for the Lugar Center
