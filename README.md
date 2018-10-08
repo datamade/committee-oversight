@@ -1,5 +1,5 @@
 # committee-oversight
-⚖️ Committee oversight map coding project for the committeeoversight Center
+⚖️ Committee oversight map coding project for the Lugar Center
 
 ## Requirements
 
