@@ -1,0 +1,24 @@
+  <form method="POST" class="form">
+    {% csrf_token %}
+    <h1>Create New Hearing Record</h1>
+    <!-- <p>{{ jurisdiction_id }}</p> -->
+    <!-- <input type="hidden" name="jurisdiction_id" value="{{ jurisdiction_id }}" /> -->
+    {{ event_form.as_p }}
+
+    {{ committee_formset.management_form }}
+    {% for committee_form in committee_formset %}
+        {{ committee_form.as_p }}
+    {% endfor %}
+
+    {{ committeemember_formset.management_form }}
+    {% for committeemember_form in committeemember_formset %}
+        {{ committeemember_form.as_p }}
+    {% endfor %}
+
+    {{ witness_formset.management_form }}
+    {% for witness_form in witness_formset %}
+        {{ witness_form.as_p }}
+    {% endfor %}
+
+    <button type="submit" class="save btn btn-default">Save</button>
+  </form>
