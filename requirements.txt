@@ -5,3 +5,5 @@ psycopg2==2.7.5
 csvkit==1.0.3
 
 https://github.com/opencivicdata/python-opencivicdata/zipball/master
+
+django-crispy-forms==1.7.2

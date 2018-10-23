@@ -1,5 +1,5 @@
 from django.forms import ModelForm, TextInput, HiddenInput, SelectMultiple, \
-                         ModelChoiceField, formset_factory
+                         ModelMultipleChoiceField, formset_factory, Form
 from opencivicdata.legislative.models import Event, EventParticipant
 from opencivicdata.core.models import Jurisdiction, Organization
 
@@ -29,53 +29,29 @@ class EventForm(ModelForm):
 class CommitteeForm(ModelForm):
     class Meta:
         model = EventParticipant
-        fields = ['name', 'entity_type']
-        widgets = {
-            'entity_type': HiddenInput()
-            }
+        fields = ['name']
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
-        self.fields['entity_type'].initial = "organization"
+        # self.fields['name'].widget.attrs['class'] = 'basic-multiple'
+        # self.fields['name'].widget.attrs['multiple'] = 'multiple'
 
-    name = ModelChoiceField(label='Committee or subcommittee', queryset=Organization.objects.filter(classification='committee'))
-
-CommitteeFormset = formset_factory(CommitteeForm, extra=1)
+    name = ModelMultipleChoiceField(label='Committees/subcommittees', queryset=Organization.objects.filter(classification='committee'))
 
 # add committee members as event participants
 class CommitteeMemberForm(ModelForm):
     class Meta:
         model = EventParticipant
-        fields = ['name', 'entity_type']
-        widgets = {
-            'entity_type': HiddenInput()
-            }
-        labels = {
-            'name': ('Committee member present')
-        }
+        fields = ['name']
 
-    def __init__(self, *args, **kwargs):
-        super(self.__class__, self).__init__(*args, **kwargs)
-        self.fields['entity_type'].initial = "committee member"
-
-CommitteeMemberFormset = formset_factory(CommitteeMemberForm, extra=1)
+    name = ModelMultipleChoiceField(label='Committee members present', queryset=Organization.objects.filter(classification='committee member'))
 
 # add witnesses as event participants
 class WitnessForm(ModelForm):
     class Meta:
         model = EventParticipant
-        fields = ['name', 'entity_type']
-        widgets = {
-            'entity_type': HiddenInput()
-            }
-        labels = {
-            'name': ('Witness')
-        }
+        fields = ['name']
 
-    def __init__(self, *args, **kwargs):
-        super(self.__class__, self).__init__(*args, **kwargs)
-        self.fields['entity_type'].initial = "person"
-
-WitnessFormset = formset_factory(WitnessForm, extra=1)
+    name = ModelMultipleChoiceField(label='Witnesses', queryset=Organization.objects.filter(classification='person'))
 
 # next: figure out how to render multiple forms in Django view, maybe turn these into formsets, get documentlink squared away
