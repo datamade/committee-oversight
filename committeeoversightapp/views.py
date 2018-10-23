@@ -82,12 +82,13 @@ class EventCreate(TemplateView):
                     new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
                     new_witness.save()
 
-            #TK: set media type; create archive url link
+            #TK: create archive url link
             transcript_url = transcript_form.cleaned_data['url']
             note="transcript"
             new_document = EventDocument(note=note, event=event)
             new_document.save()
-            new_document_link = EventDocumentLink(url=transcript_url, document=new_document)
+            media_type = transcript_form.cleaned_data['media_type']
+            new_document_link = EventDocumentLink(url=transcript_url, document=new_document, media_type=media_type)
             new_document_link.save()
 
         return render(request, 'success.html')

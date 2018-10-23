@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+<div class="hearing-form card">
   <h3>Create New Hearing Record</h3>
   <br />
   <form method="POST" class="form">
@@ -17,14 +17,26 @@
     {{ witness_form | crispy }}
 
     {{ transcript_form | crispy }}
+    <br />
+    <select class="basic-multiple" multiple>
+  <optgroup label="Swedish Cars">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+  </optgroup>
+  <optgroup label="German Cars">
+    <option value="mercedes">Mercedes</option>
+    <option value="audi">Audi</option>
+  </optgroup>
+</select>
 
-    <button type="submit" class="btn btn-success">Save hearing</button>
+    <button type="submit" class="btn-lg btn-success float-right">Save hearing</button>
   </form>
+  <br />
 
   <script>
     $(document).ready(function() {
       $('.basic-multiple').select2();
     });
   </script>
-
+</div>
 {% endblock %}

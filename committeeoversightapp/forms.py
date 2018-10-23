@@ -1,7 +1,8 @@
-from django.forms import ModelForm, Form, TextInput, HiddenInput, \
-                         ModelMultipleChoiceField, CharField, Textarea
+from django.forms import ModelForm, Form, TextInput, HiddenInput, DateField, DateInput, \
+                         ModelMultipleChoiceField, ChoiceField, CharField, Textarea
 from opencivicdata.legislative.models import Event, EventParticipant
 from opencivicdata.core.models import Jurisdiction, Organization
+from .customfields import GroupedModelMultiChoiceField
 
 # add hearing events
 class EventForm(ModelForm):
@@ -10,12 +11,28 @@ class EventForm(ModelForm):
         fields = ['jurisdiction', 'name', 'start_date', 'classification', 'status']
         labels = {
             'name': ('Hearing Title'),
-            'start_date': ('Date'),
-            'classification': ('Type')
+            'start_date': ('Date')
         }
         widgets = {
             'jurisdiction': HiddenInput()
             }
+
+    start_date = DateField(
+        widget=DateInput(attrs={'placeholder': 'yyyy-mm-dd'})
+    )
+
+    CHOICES = (('', '-----------'),
+               ("Appropriations", "Appropriations"),
+               ("Authorization Hearing", "Authorization Hearing"),
+               ("Field Hearing", "Field Hearing"),
+               ("Hearing", "Hearing"),
+               ("Oversight Hearing", "Oversight Hearing"),
+               ("Nomination Hearing", "Nomination Hearing")
+              )
+    classification = ChoiceField(
+        label='Hearing type',
+        choices=CHOICES
+        )
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
@@ -35,10 +52,11 @@ class CommitteeForm(ModelForm):
         self.fields['name'].widget.attrs['class'] = 'basic-multiple'
         self.fields['name'].widget.attrs['multiple'] = 'multiple'
 
-    name = ModelMultipleChoiceField(
+    name = GroupedModelMultiChoiceField(
         label='Committees/subcommittees',
-        queryset=Organization.objects.filter(classification='committee')
-    )
+        queryset=Organization.objects.filter(classification='committee').order_by('parent__name'),
+        group_by_field='parent'
+        )
 
 # add committee members as event participants
 class CommitteeMemberForm(Form):
@@ -61,3 +79,10 @@ class TranscriptForm(Form):
         label='Transcript URL',
         required=False
     )
+
+    CHOICES = (('text/html', 'Text/HTML'),('application/pdf', 'PDF'),)
+    media_type = ChoiceField(
+        label='Transcript type',
+        choices=CHOICES,
+        required=False
+        )
