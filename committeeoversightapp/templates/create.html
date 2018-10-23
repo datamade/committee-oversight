@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <h3>Create New Hearing Record</h3>
+  <br />
+  <form method="POST" class="form">
+    {% csrf_token %}
+
+    {{ event_form | crispy }}
+
+    {{ committee_form | crispy }}
+
+    {{ committeemember_form | crispy }}
+
+    {{ witness_form | crispy }}
+
+    <button type="submit" class="btn btn-success">Save hearing</button>
+  </form>
+
+{% endblock %}

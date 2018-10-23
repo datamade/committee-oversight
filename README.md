@@ -26,3 +26,9 @@ Perform the following steps from your terminal.
     ```bash
     pip install -r requirements.txt
     ```
+
+4. Copy the example local settings file to the correct location:
+
+  ```bash
+  cp committeeoversight/local_settings.example.py committeeoversight/local_settings.py
+  ```
