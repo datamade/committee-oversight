@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, HiddenInput, SelectMultiple, \
+from django.forms import ModelForm, Form, TextInput, HiddenInput, SelectMultiple, \
                          ModelMultipleChoiceField, CharField, Textarea
 from opencivicdata.legislative.models import Event, EventParticipant
 from opencivicdata.core.models import Jurisdiction, Organization
@@ -45,7 +45,7 @@ class CommitteeMemberForm(ModelForm):
         fields = ['name']
 
     name = CharField(label='Committee members present (comma separated list)',
-        widget=Textarea,
+        widget=Textarea(attrs={'rows':4, 'cols':15}),
         required=False
     )
 
@@ -57,8 +57,12 @@ class WitnessForm(ModelForm):
 
     name = CharField(
         label='Witnesses (comma separated list)',
-        widget=Textarea,
+        widget=Textarea(attrs={'rows':4, 'cols':15}),
         required=False
     )
 
-# next: figure out how to render multiple forms in Django view, maybe turn these into formsets, get documentlink squared away
+class TranscriptForm(Form):
+    url = CharField(
+        label='Transcript URL',
+        required=False
+    )
