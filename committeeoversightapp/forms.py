@@ -79,10 +79,3 @@ class TranscriptForm(Form):
         label='Transcript URL',
         required=False
     )
-
-    CHOICES = (('text/html', 'Text/HTML'),('application/pdf', 'PDF'),)
-    media_type = ChoiceField(
-        label='Transcript type',
-        choices=CHOICES,
-        required=False
-        )

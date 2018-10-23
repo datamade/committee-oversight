@@ -1,4 +1,6 @@
 import re
+from os.path import splitext
+from urllib.parse import urlparse
 
 from django.urls import reverse_lazy
 from django.shortcuts import render
@@ -20,6 +22,11 @@ class EventView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+def get_ext(url):
+    path = urlparse(url).path
+    ext = splitext(path)[1]
+    return ext
 
 class EventCreate(TemplateView):
     template_name = "create.html"
@@ -83,12 +90,31 @@ class EventCreate(TemplateView):
                     new_witness.save()
 
             #TK: create archive url link
-            transcript_url = transcript_form.cleaned_data['url']
             note="transcript"
             new_document = EventDocument(note=note, event=event)
             new_document.save()
-            media_type = transcript_form.cleaned_data['media_type']
-            new_document_link = EventDocumentLink(url=transcript_url, document=new_document, media_type=media_type)
+
+            transcript_url = transcript_form.cleaned_data['url']
+            ext = get_ext(transcript_url)
+
+            if ext.lower() == '.pdf':
+                new_document_link = EventDocumentLink(
+                                        url=transcript_url,
+                                        document=new_document,
+                                        media_type="application/pdf"
+                                    )
+            elif ext.lower() == '.htm' or ext == '.html':
+                new_document_link = EventDocumentLink(
+                                        url=transcript_url,
+                                        document=new_document,
+                                        media_type="text/html"
+                                    )
+            else:
+                new_document_link = EventDocumentLink(
+                                        url=transcript_url,
+                                        document=new_document
+                                    )
+
             new_document_link.save()
 
         return render(request, 'success.html')
