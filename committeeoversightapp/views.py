@@ -62,19 +62,25 @@ class EventCreate(TemplateView):
                 new_committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
                 new_committee.save()
 
-            committeemembers = committeemember_form.cleaned_data['name'].split(", ")
+            committeemembers = committeemember_form.cleaned_data['name'].split(",")
             for committeemember in committeemembers:
-                name = committeemember.strip()
-                entity_type = "committee member"
-                new_committeemember = EventParticipant(name=name, event=event, entity_type=entity_type)
-                new_committeemember.save()
+                if committeemember == '' or committeemember.isspace():
+                    pass
+                else:
+                    name = committeemember.strip()
+                    entity_type = "committee member"
+                    new_committeemember = EventParticipant(name=name, event=event, entity_type=entity_type)
+                    new_committeemember.save()
 
-            witnesses = witness_form.cleaned_data['name'].split(", ")
+            witnesses = witness_form.cleaned_data['name'].split(",")
             for witness in witnesses:
-                name = witness.strip()
-                entity_type = "person"
-                new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
-                new_witness.save()
+                if witness == '' or witness.isspace():
+                    pass
+                else:
+                    name = witness.strip()
+                    entity_type = "person"
+                    new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
+                    new_witness.save()
 
             #TK: set media type; create archive url link
             transcript_url = transcript_form.cleaned_data['url']
