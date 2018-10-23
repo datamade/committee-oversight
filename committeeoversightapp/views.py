@@ -1,4 +1,6 @@
 import re
+import threading
+import requests
 from os.path import splitext
 from urllib.parse import urlparse
 
@@ -27,6 +29,12 @@ def get_ext(url):
     path = urlparse(url).path
     ext = splitext(path)[1]
     return ext
+
+def archive_url(url):
+    wayback_host = 'http://web.archive.org'
+    save_url = '{0}/save/{1}'.format(wayback_host, url)
+    archive_url = '{0}{1}'.format(wayback_host, save_url)
+    return archive_url
 
 class EventCreate(TemplateView):
     template_name = "create.html"
@@ -64,7 +72,7 @@ class EventCreate(TemplateView):
             for committee in committees:
                 name = committee.name
                 event = event_form.save(commit=False)
-                organization = Organization.objects.get(name=committee.name)
+                organization = Organization.objects.get(id=committee.id)
                 entity_type = "organization"
                 new_committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
                 new_committee.save()
@@ -95,11 +103,17 @@ class EventCreate(TemplateView):
             new_document.save()
 
             transcript_url = transcript_form.cleaned_data['url']
-            ext = get_ext(transcript_url)
+            archived_transcript_url = archive_url(transcript_url)
 
+            ext = get_ext(transcript_url)
             if ext.lower() == '.pdf':
                 new_document_link = EventDocumentLink(
                                         url=transcript_url,
+                                        document=new_document,
+                                        media_type="application/pdf"
+                                    )
+                new_archived_document_link = EventDocumentLink(
+                                        url=archived_transcript_url,
                                         document=new_document,
                                         media_type="application/pdf"
                                     )
@@ -109,12 +123,22 @@ class EventCreate(TemplateView):
                                         document=new_document,
                                         media_type="text/html"
                                     )
+                new_archived_document_link = EventDocumentLink(
+                                        url=archived_transcript_url,
+                                        document=new_document,
+                                        media_type="text/html"
+                                    )
             else:
                 new_document_link = EventDocumentLink(
                                         url=transcript_url,
                                         document=new_document
                                     )
+                new_archived_document_link = EventDocumentLink(
+                                        url=archived_transcript_url,
+                                        document=new_document,
+                                    )
 
             new_document_link.save()
+            new_archived_document_link.save()        
 
         return render(request, 'success.html')
