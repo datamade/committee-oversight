@@ -1,5 +1,5 @@
 from django.forms import ModelForm, TextInput, HiddenInput, SelectMultiple, \
-                         ModelMultipleChoiceField, formset_factory, Form
+                         ModelMultipleChoiceField, CharField, Textarea
 from opencivicdata.legislative.models import Event, EventParticipant
 from opencivicdata.core.models import Jurisdiction, Organization
 
@@ -33,8 +33,8 @@ class CommitteeForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
-        # self.fields['name'].widget.attrs['class'] = 'basic-multiple'
-        # self.fields['name'].widget.attrs['multiple'] = 'multiple'
+        self.fields['name'].widget.attrs['class'] = 'basic-multiple'
+        self.fields['name'].widget.attrs['multiple'] = 'multiple'
 
     name = ModelMultipleChoiceField(label='Committees/subcommittees', queryset=Organization.objects.filter(classification='committee'))
 
@@ -44,7 +44,10 @@ class CommitteeMemberForm(ModelForm):
         model = EventParticipant
         fields = ['name']
 
-    name = ModelMultipleChoiceField(label='Committee members present', queryset=Organization.objects.filter(classification='committee member'))
+    name = CharField(label='Committee members present (comma separated list)',
+        widget=Textarea,
+        required=False
+    )
 
 # add witnesses as event participants
 class WitnessForm(ModelForm):
@@ -52,6 +55,10 @@ class WitnessForm(ModelForm):
         model = EventParticipant
         fields = ['name']
 
-    name = ModelMultipleChoiceField(label='Witnesses', queryset=Organization.objects.filter(classification='person'))
+    name = CharField(
+        label='Witnesses (comma separated list)',
+        widget=Textarea,
+        required=False
+    )
 
 # next: figure out how to render multiple forms in Django view, maybe turn these into formsets, get documentlink squared away

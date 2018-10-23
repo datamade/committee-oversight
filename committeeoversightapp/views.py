@@ -43,7 +43,7 @@ class EventCreate(TemplateView):
         print("checking if form is valid...")
 
         forms_valid = [event_form.is_valid(), committee_form.is_valid(),
-                       committeemember_formset.is_valid(), witness_formset.is_valid()]
+                       committeemember_form.is_valid(), witness_form.is_valid()]
 
         if all(forms_valid):
             print("forms valid! saving...")
@@ -59,20 +59,20 @@ class EventCreate(TemplateView):
                 new_committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
                 new_committee.save()
 
-            committeemembers = committeemember_form.cleaned_data['name']
+            committeemembers = committeemember_form.cleaned_data['name'].split(", ")
             for committeemember in committeemembers:
-                name = committeemember.name
+                name = committeemember.strip()
                 event = event_form.save(commit=False)
                 entity_type = "committee member"
-                new_committeemember = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
+                new_committeemember = EventParticipant(name=name, event=event, entity_type=entity_type)
                 new_committeemember.save()
 
-            witnesses = witness_form.cleaned_data['name']
+            witnesses = witness_form.cleaned_data['name'].split(", ")
             for witness in witnesses:
-                name = witness.name
+                name = witness.strip()
                 event = event_form.save(commit=False)
                 entity_type = "person"
-                new_witness = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
+                new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
                 new_witness.save()
 
         return render(request, 'success.html')
