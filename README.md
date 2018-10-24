@@ -47,7 +47,7 @@ Perform the following steps from your terminal.
      python manage.py createsuperuser
     ```
 
-Django should prompt you to provide a username, email, and password.
+    Django should prompt you to provide a username, email, and password.
 
 8. Run the app locally!
 
@@ -55,4 +55,4 @@ Django should prompt you to provide a username, email, and password.
     python manage.py runserver
     ```
 
-Then, navigate to http://localhost:8000/.
+    Then, navigate to http://localhost:8000/.
