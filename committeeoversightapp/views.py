@@ -118,32 +118,23 @@ class EventCreate(TemplateView):
                 new_document.save()
 
                 archived_transcript_url = archive_url(transcript_url)
-                print(archived_transcript_url)
 
+                extensions = {'.pdf': 'application/pdf', '.htm': 'text/html', '.html': 'text/html'}
                 ext = get_ext(transcript_url)
-                if ext.lower() == '.pdf':
+
+                try:
+                    media_type=extensions[ext.lower()]
                     new_document_link = EventDocumentLink(
                                             url=transcript_url,
                                             document=new_document,
-                                            media_type="application/pdf"
+                                            media_type=media_type
                                         )
                     new_archived_document_link = EventDocumentLink(
                                             url=archived_transcript_url,
                                             document=new_document,
-                                            media_type="application/pdf"
+                                            media_type=media_type
                                         )
-                elif ext.lower() == '.htm' or ext == '.html':
-                    new_document_link = EventDocumentLink(
-                                            url=transcript_url,
-                                            document=new_document,
-                                            media_type="text/html"
-                                        )
-                    new_archived_document_link = EventDocumentLink(
-                                            url=archived_transcript_url,
-                                            document=new_document,
-                                            media_type="text/html"
-                                        )
-                else:
+                except KeyError:
                     new_document_link = EventDocumentLink(
                                             url=transcript_url,
                                             document=new_document
