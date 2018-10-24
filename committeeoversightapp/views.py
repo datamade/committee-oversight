@@ -25,11 +25,13 @@ class EventView(DetailView):
         context = super().get_context_data(**kwargs)
         return context
 
+# given a url string, find the file extension at the end
 def get_ext(url):
     path = urlparse(url).path
     ext = splitext(path)[1]
     return ext
 
+# archive a url string
 def archive_url(url):
     wayback_host = 'http://web.archive.org'
     save_url = '{0}/save/{1}'.format(wayback_host, url)
@@ -58,17 +60,19 @@ class EventCreate(TemplateView):
         witness_form = WitnessForm(request.POST, prefix="witness")
         transcript_form = TranscriptForm(request.POST, prefix="transcript")
 
-        print("checking if form is valid...")
+        print("Checking if forms are valid...")
 
         forms_valid = [event_form.is_valid(), committee_form.is_valid(),
                        committeemember_form.is_valid(), witness_form.is_valid(),
                        transcript_form.is_valid()]
 
         if all(forms_valid):
-            print("forms valid! saving...")
+            print("All forms valid! Saving...")
 
+            # save event
             event = event_form.save()
 
+            # find and create committees as EventParticipants
             committees = committee_form.cleaned_data['name']
 
             for committee in committees:
@@ -79,6 +83,7 @@ class EventCreate(TemplateView):
                 new_committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
                 new_committee.save()
 
+            # find and create committee members as EventParticipants
             committeemembers = committeemember_form.cleaned_data['name'].split(",")
 
             for committeemember in committeemembers:
@@ -90,6 +95,7 @@ class EventCreate(TemplateView):
                     new_committeemember = EventParticipant(name=name, event=event, entity_type=entity_type)
                     new_committeemember.save()
 
+            # find and create witnesses as EventParticipants
             witnesses = witness_form.cleaned_data['name'].split(",")
 
             for witness in witnesses:
@@ -101,7 +107,7 @@ class EventCreate(TemplateView):
                     new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
                     new_witness.save()
 
-            #TK: create archive url link
+            # if form includes a transcript URL create EventDocument with original and archived url
             transcript_url = transcript_form.cleaned_data['url']
 
             if transcript_url == '' or witness.isspace():
@@ -150,4 +156,5 @@ class EventCreate(TemplateView):
                 new_document_link.save()
                 new_archived_document_link.save()
 
+        # eventually this should lead to a list view
         return render(request, 'success.html')
