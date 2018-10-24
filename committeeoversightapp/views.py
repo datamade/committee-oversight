@@ -121,28 +121,18 @@ class EventCreate(TemplateView):
 
                 extensions = {'.pdf': 'application/pdf', '.htm': 'text/html', '.html': 'text/html'}
                 ext = get_ext(transcript_url)
+                media_type = extensions.get(ext.lower(), '')
 
-                try:
-                    media_type=extensions[ext.lower()]
-                    new_document_link = EventDocumentLink(
-                                            url=transcript_url,
-                                            document=new_document,
-                                            media_type=media_type
-                                        )
-                    new_archived_document_link = EventDocumentLink(
-                                            url=archived_transcript_url,
-                                            document=new_document,
-                                            media_type=media_type
-                                        )
-                except KeyError:
-                    new_document_link = EventDocumentLink(
-                                            url=transcript_url,
-                                            document=new_document
-                                        )
-                    new_archived_document_link = EventDocumentLink(
-                                            url=archived_transcript_url,
-                                            document=new_document,
-                                        )
+                new_document_link = EventDocumentLink(
+                                        url=transcript_url,
+                                        document=new_document,
+                                        media_type=media_type
+                                    )
+                new_archived_document_link = EventDocumentLink(
+                                        url=archived_transcript_url,
+                                        document=new_document,
+                                        media_type=media_type
+                                    )
 
                 new_document_link.save()
                 new_archived_document_link.save()
