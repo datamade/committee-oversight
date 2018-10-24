@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+<div class="hearing-form card">
   <h3>Create New Hearing Record</h3>
   <br />
   <form method="POST" class="form">
@@ -16,7 +16,18 @@
 
     {{ witness_form | crispy }}
 
-    <button type="submit" class="btn btn-success">Save hearing</button>
+    {{ transcript_form | crispy }}
+    <br />
+
+    <button type="submit" class="btn-lg btn-success float-right">Save hearing</button>
   </form>
+  <br />
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.basic-multiple').select2();
+  });
+</script>
 
 {% endblock %}

@@ -7,3 +7,5 @@ csvkit==1.0.3
 https://github.com/opencivicdata/python-opencivicdata/zipball/master
 
 django-crispy-forms==1.7.2
+requests==2.19.1
+urllib3==1.23

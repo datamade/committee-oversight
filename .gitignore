@@ -2,4 +2,5 @@
 /keyrings/live/pubring.gpg~
 /keyrings/live/pubring.kbx~
 /keyrings/live/secring.gpg
-/committeeoversight/local_settings.py
+local_settings.py
+*.pyc
