@@ -126,7 +126,6 @@ class EventCreate(TemplateView):
                 new_document_link.save()
                 new_archived_document_link.save()
 
-        # eventually this should lead to a list view
         return redirect('list-event')
 
 class EventList(ListView):
