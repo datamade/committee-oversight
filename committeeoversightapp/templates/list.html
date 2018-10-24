@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hearing-form card">
+
+<p><a href="/" class="btn btn-success float-right">Create new hearing</a></p>
+
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 60%">Hearing Title</th>
+      <th scope="col">Date</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for hearing in hearings %}
+    <tr>
+      <td>{{hearing.name | title}}</td>
+      <td>{{hearing.start_date}}</td>
+      <td>
+        <button type="submit" class="btn btn-warning">Edit</button>
+      </td>
+      <td>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock %}

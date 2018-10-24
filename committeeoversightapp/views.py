@@ -5,7 +5,7 @@ from os.path import splitext
 from urllib.parse import urlparse
 
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, DeleteView, TemplateView
@@ -13,17 +13,6 @@ from django.views.generic import ListView, DeleteView, TemplateView
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
 from .forms import EventForm, CommitteeForm, CommitteeMemberForm, WitnessForm, TranscriptForm
-
-class Success(TemplateView):
-    template_name = 'success.html'
-
-class EventView(DetailView):
-    model = Event
-    template_name = 'detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
 # given a url string, find the file extension at the end
 def get_ext(url):
@@ -138,4 +127,13 @@ class EventCreate(TemplateView):
                 new_archived_document_link.save()
 
         # eventually this should lead to a list view
-        return render(request, 'success.html')
+        return redirect('list-event')
+
+class EventList(ListView):
+    model = Event
+    template_name = 'list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['hearings'] = Event.objects.all().order_by('-created_at')
+        return context
