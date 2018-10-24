@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="hearing-form card">
+  <h3>Create New Hearing Record</h3>
+  <br />
+  <form method="POST" class="form">
+    {% csrf_token %}
+
+    {{ event_form | crispy }}
+
+    {{ committee_form | crispy }}
+
+    {{ committeemember_form | crispy }}
+
+    {{ witness_form | crispy }}
+
+    {{ transcript_form | crispy }}
+    <br />
+
+    <button type="submit" class="btn-lg btn-success float-right">Save hearing</button>
+  </form>
+  <br />
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.basic-multiple').select2();
+  });
+</script>
+
+{% endblock %}

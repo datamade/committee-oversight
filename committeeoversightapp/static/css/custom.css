@@ -1,0 +1,20 @@
+body {
+  background: #fafcff;
+}
+
+.container {
+  padding-top: 40px;
+}
+
+.hearing-form {
+  padding: 30px;
+}
+
+.footer {
+    padding-top: 40px;
+}
+
+.footer div {
+  background: #002f67;
+  padding: 10px;
+}
