@@ -33,7 +33,8 @@ def get_ext(url):
 def archive_url(url):
     wayback_host = 'http://web.archive.org'
     save_url = '{0}/save/{1}'.format(wayback_host, url)
-    archive_url = '{0}{1}'.format(wayback_host, save_url)
+    archived = requests.get(save_url)
+    archive_url = '{0}{1}'.format(wayback_host, archived.headers['Content-Location'])
     return archive_url
 
 class EventCreate(TemplateView):
@@ -69,6 +70,7 @@ class EventCreate(TemplateView):
             event = event_form.save()
 
             committees = committee_form.cleaned_data['name']
+
             for committee in committees:
                 name = committee.name
                 event = event_form.save(commit=False)
@@ -78,6 +80,7 @@ class EventCreate(TemplateView):
                 new_committee.save()
 
             committeemembers = committeemember_form.cleaned_data['name'].split(",")
+
             for committeemember in committeemembers:
                 if committeemember == '' or committeemember.isspace():
                     pass
@@ -88,6 +91,7 @@ class EventCreate(TemplateView):
                     new_committeemember.save()
 
             witnesses = witness_form.cleaned_data['name'].split(",")
+
             for witness in witnesses:
                 if witness == '' or witness.isspace():
                     pass
@@ -98,47 +102,52 @@ class EventCreate(TemplateView):
                     new_witness.save()
 
             #TK: create archive url link
-            note="transcript"
-            new_document = EventDocument(note=note, event=event)
-            new_document.save()
-
             transcript_url = transcript_form.cleaned_data['url']
-            archived_transcript_url = archive_url(transcript_url)
 
-            ext = get_ext(transcript_url)
-            if ext.lower() == '.pdf':
-                new_document_link = EventDocumentLink(
-                                        url=transcript_url,
-                                        document=new_document,
-                                        media_type="application/pdf"
-                                    )
-                new_archived_document_link = EventDocumentLink(
-                                        url=archived_transcript_url,
-                                        document=new_document,
-                                        media_type="application/pdf"
-                                    )
-            elif ext.lower() == '.htm' or ext == '.html':
-                new_document_link = EventDocumentLink(
-                                        url=transcript_url,
-                                        document=new_document,
-                                        media_type="text/html"
-                                    )
-                new_archived_document_link = EventDocumentLink(
-                                        url=archived_transcript_url,
-                                        document=new_document,
-                                        media_type="text/html"
-                                    )
+            if transcript_url == '' or witness.isspace():
+                pass
             else:
-                new_document_link = EventDocumentLink(
-                                        url=transcript_url,
-                                        document=new_document
-                                    )
-                new_archived_document_link = EventDocumentLink(
-                                        url=archived_transcript_url,
-                                        document=new_document,
-                                    )
+                note="transcript"
+                new_document = EventDocument(note=note, event=event)
+                new_document.save()
 
-            new_document_link.save()
-            new_archived_document_link.save()        
+                archived_transcript_url = archive_url(transcript_url)
+                print(archived_transcript_url)
+
+                ext = get_ext(transcript_url)
+                if ext.lower() == '.pdf':
+                    new_document_link = EventDocumentLink(
+                                            url=transcript_url,
+                                            document=new_document,
+                                            media_type="application/pdf"
+                                        )
+                    new_archived_document_link = EventDocumentLink(
+                                            url=archived_transcript_url,
+                                            document=new_document,
+                                            media_type="application/pdf"
+                                        )
+                elif ext.lower() == '.htm' or ext == '.html':
+                    new_document_link = EventDocumentLink(
+                                            url=transcript_url,
+                                            document=new_document,
+                                            media_type="text/html"
+                                        )
+                    new_archived_document_link = EventDocumentLink(
+                                            url=archived_transcript_url,
+                                            document=new_document,
+                                            media_type="text/html"
+                                        )
+                else:
+                    new_document_link = EventDocumentLink(
+                                            url=transcript_url,
+                                            document=new_document
+                                        )
+                    new_archived_document_link = EventDocumentLink(
+                                            url=archived_transcript_url,
+                                            document=new_document,
+                                        )
+
+                new_document_link.save()
+                new_archived_document_link.save()
 
         return render(request, 'success.html')
