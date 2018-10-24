@@ -33,11 +33,7 @@ Perform the following steps from your terminal.
   cp committeeoversight/local_settings.example.py committeeoversight/local_settings.py
   ```
 
-5. Make the database:
-
-  ```bash
-  createdb hearings
-  ```
+5. Start a `hearings` database with a partial scrape from the [hearings repo](https://github.com/datamade/hearings) or a data dump from a pal.
 
 6. Run migrations:
 
