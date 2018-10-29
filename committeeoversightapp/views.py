@@ -12,7 +12,9 @@ from django.views.generic import ListView, DeleteView, TemplateView
 
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
-from .forms import EventForm, CommitteeForm, CommitteeMemberForm, WitnessForm, TranscriptForm
+
+from .models import HearingCategory
+from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
 
 class Success(TemplateView):
     template_name = 'success.html'
@@ -47,23 +49,23 @@ class EventCreate(TemplateView):
 
         context['event_form'] = EventForm(prefix="event")
         context['committee_form'] = CommitteeForm(prefix="committee")
-        context['committeemember_form'] = CommitteeMemberForm(prefix="committeemember")
-        context['witness_form'] = WitnessForm(prefix="witness")
+        context['category_form'] = CategoryForm(prefix="category")
         context['transcript_form'] = TranscriptForm(prefix="transcript")
+        context['witness_formset'] = WitnessFormset(prefix="witness")
 
         return context
 
     def post(self, request, **kwargs):
         event_form = EventForm(request.POST, prefix="event")
         committee_form = CommitteeForm(request.POST, prefix="committee")
-        committeemember_form = CommitteeMemberForm(request.POST, prefix="committeemember")
-        witness_form = WitnessForm(request.POST, prefix="witness")
+        category_form = CategoryForm(request.POST, prefix="category")
         transcript_form = TranscriptForm(request.POST, prefix="transcript")
+        witness_formset = WitnessFormset(request.POST, prefix="witness")
 
         print("Checking if forms are valid...")
 
         forms_valid = [event_form.is_valid(), committee_form.is_valid(),
-                       committeemember_form.is_valid(), witness_form.is_valid(),
+                       category_form.is_valid(), witness_formset.is_valid(),
                        transcript_form.is_valid()]
 
         if all(forms_valid):
@@ -83,29 +85,10 @@ class EventCreate(TemplateView):
                 new_committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
                 new_committee.save()
 
-            # find and create committee members as EventParticipants
-            committeemembers = committeemember_form.cleaned_data['name'].split(",")
-
-            for committeemember in committeemembers:
-                if committeemember == '' or committeemember.isspace():
-                    pass
-                else:
-                    name = committeemember.strip()
-                    entity_type = "committee member"
-                    new_committeemember = EventParticipant(name=name, event=event, entity_type=entity_type)
-                    new_committeemember.save()
-
-            # find and create witnesses as EventParticipants
-            witnesses = witness_form.cleaned_data['name'].split(",")
-
-            for witness in witnesses:
-                if witness == '' or witness.isspace():
-                    pass
-                else:
-                    name = witness.strip()
-                    entity_type = "person"
-                    new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
-                    new_witness.save()
+            # save category
+            category = category_form.cleaned_data['category']
+            new_category = HearingCategory(event=event, category=category)
+            new_category.save()
 
             # if form includes a transcript URL create EventDocument with original and archived url
             transcript_url = transcript_form.cleaned_data['url']
@@ -136,6 +119,20 @@ class EventCreate(TemplateView):
 
                 new_document_link.save()
                 new_archived_document_link.save()
+
+            # find and create witnesses as EventParticipants
+            for witness in witness_formset:
+                print(witness)
+            # witnesses = witness_formset.cleaned_data['name'].split(",")
+            #
+            # for witness in witnesses:
+            #     if witness == '' or witness.isspace():
+            #         pass
+            #     else:
+            #         name = witness.strip()
+            #         entity_type = "person"
+            #         new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
+            #         new_witness.save()
 
         # eventually this should lead to a list view
         return render(request, 'success.html')

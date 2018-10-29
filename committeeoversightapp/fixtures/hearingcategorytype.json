@@ -1,0 +1,58 @@
+[
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 1,
+    "fields": {
+      "name": "Nominations Hearing"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 2,
+    "fields": {
+      "name": "Legislative Hearing"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 3,
+    "fields": {
+      "name": "Policy Hearing"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 4,
+    "fields": {
+      "name": "Agency Conduct Hearing"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 5,
+    "fields": {
+      "name": "Private Sector Oversight Hearing"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 6,
+    "fields": {
+      "name": "Fact Finding Hearing"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 7,
+    "fields": {
+      "name": "Field Hearing"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 8,
+    "fields": {
+      "name": "Closed Hearing"
+    }
+  }
+]

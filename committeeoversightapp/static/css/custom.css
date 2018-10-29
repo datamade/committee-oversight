@@ -10,6 +10,17 @@ body {
   padding: 30px;
 }
 
+.dynamic-form {
+  background: #d2d4d7;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.dynamic-form div {
+  padding-top: 10px;
+}
+
 .footer {
     padding-top: 40px;
 }
