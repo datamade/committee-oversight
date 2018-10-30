@@ -13,7 +13,7 @@ from django.views.generic import ListView, DeleteView, TemplateView
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
 
-from .models import HearingCategory
+from .models import HearingCategory, WitnessDetails
 from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
 
 class Success(TemplateView):
@@ -38,8 +38,41 @@ def archive_url(url):
     wayback_host = 'http://web.archive.org'
     save_url = '{0}/save/{1}'.format(wayback_host, url)
     archived = requests.get(save_url)
-    archive_url = '{0}{1}'.format(wayback_host, archived.headers['Content-Location'])
-    return archive_url
+    try:
+        archive_url = '{0}{1}'.format(wayback_host, archived.headers['Content-Location'])
+        return archive_url
+    except KeyError:
+        return None
+
+def save_document(url, note, event):
+    if url == '' or url.isspace():
+        return None
+    else:
+        new_document = EventDocument(note=note, event=event)
+        new_document.save()
+
+        archived_url = archive_url(url)
+
+        extensions = {'.pdf': 'application/pdf', '.htm': 'text/html', '.html': 'text/html'}
+        ext = get_ext(url)
+        media_type = extensions.get(ext.lower(), '')
+
+        new_document_link = EventDocumentLink(
+                                url=url,
+                                document=new_document,
+                                media_type=media_type
+                            )
+        new_document_link.save()
+
+        if archived_url:
+            new_archived_document_link = EventDocumentLink(
+                                    url=archived_url,
+                                    document=new_document,
+                                    media_type=media_type
+                                )
+            new_archived_document_link.save()
+
+        return new_document
 
 class EventCreate(TemplateView):
     template_name = "create.html"
@@ -65,8 +98,7 @@ class EventCreate(TemplateView):
         print("Checking if forms are valid...")
 
         forms_valid = [event_form.is_valid(), committee_form.is_valid(),
-                       category_form.is_valid(), witness_formset.is_valid(),
-                       transcript_form.is_valid()]
+                       category_form.is_valid(), transcript_form.is_valid()]
 
         if all(forms_valid):
             print("All forms valid! Saving...")
@@ -92,47 +124,35 @@ class EventCreate(TemplateView):
 
             # if form includes a transcript URL create EventDocument with original and archived url
             transcript_url = transcript_form.cleaned_data['url']
+            save_document(transcript_url, "transcript", event)
 
-            if transcript_url == '' or witness.isspace():
-                pass
-            else:
-                note="transcript"
-                new_document = EventDocument(note=note, event=event)
-                new_document.save()
+            # find and create witnesses
+            for witness in witness_formset.cleaned_data:
+                name = witness.get('name', None)
+                if name:
+                    # add witness as EventParticipant
+                    entity_type = "person"
+                    note = "witness"
+                    new_witness = EventParticipant(
+                                        name=name,
+                                        event=event,
+                                        entity_type=entity_type,
+                                        note=note)
+                    new_witness.save()
 
-                archived_transcript_url = archive_url(transcript_url)
+                    #save witness statement urls TK
+                    witness_url = witness.get('url', None)
+                    witness_document = save_document(witness_url, "witness statement", event)
+                    print(witness_document)
 
-                extensions = {'.pdf': 'application/pdf', '.htm': 'text/html', '.html': 'text/html'}
-                ext = get_ext(transcript_url)
-                media_type = extensions.get(ext.lower(), '')
-
-                new_document_link = EventDocumentLink(
-                                        url=transcript_url,
-                                        document=new_document,
-                                        media_type=media_type
-                                    )
-                new_archived_document_link = EventDocumentLink(
-                                        url=archived_transcript_url,
-                                        document=new_document,
-                                        media_type=media_type
-                                    )
-
-                new_document_link.save()
-                new_archived_document_link.save()
-
-            # find and create witnesses as EventParticipants
-            for witness in witness_formset:
-                print(witness)
-            # witnesses = witness_formset.cleaned_data['name'].split(",")
-            #
-            # for witness in witnesses:
-            #     if witness == '' or witness.isspace():
-            #         pass
-            #     else:
-            #         name = witness.strip()
-            #         entity_type = "person"
-            #         new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
-            #         new_witness.save()
+                    #save witness organizations and link to statement urls
+                    organization = witness.get('organization', None)
+                    new_witness_details = WitnessDetails(
+                                        witness=new_witness,
+                                        document=witness_document,
+                                        organization=organization
+                    )
+                    new_witness_details.save()
 
         # eventually this should lead to a list view
         return render(request, 'success.html')

@@ -12,9 +12,7 @@ class HearingCategory(models.Model):
     event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE)
     category = models.ForeignKey(HearingCategoryType, null=True, on_delete=models.CASCADE)
 
-class WitnessDocument(models.Model):
+class WitnessDetails(models.Model):
     witness = models.ForeignKey(EventParticipant, on_delete=models.CASCADE)
-    document = models.ForeignKey(EventDocument, on_delete=models.CASCADE)
-
-# witness org as extra in eventparticipant
-# model linking witnesses and documents
+    document = models.ForeignKey(EventDocument, null=True, blank=True, on_delete=models.CASCADE)
+    organization = models.CharField(max_length=100, null=True, blank=True, primary_key=False)

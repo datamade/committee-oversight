@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block content %}
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('.basic-multiple').select2();
+    });
+
+    $(function() {
+        $('#WitnessForm').formset();
+    })
+</script>
+
 <div class="hearing-form card">
   <h2>Create New Hearing Record</h2>
   <br />
@@ -17,32 +28,33 @@
     {{ transcript_form | crispy }}
 
     <h4>Witnesses</h4>
-    <!-- {{ witness_formset | crispy }} -->
+    {{ witness_formset.management_form }}
     <div id="WitnessForm">
       {% for form in witness_formset.forms %}
+      <div class='form-container'>
       <div class="row">
-         <div class="col-sm-6">{{ form.name.label }} {{ form.name }}</div>
-         <div class="col-sm-6">{{ form.organization.label }} {{ form.organization }}</div>
+         <div class="col-sm-6">
+           <div class="col-form-label">{{ form.name.label }}</div>
+           {{ form.name }}
+         </div>
+         <div class="col-sm-6">
+           <div class="col-form-label">{{ form.organization.label }}</div>
+           {{ form.organization }}
+         </div>
       </div>
-         <div>{{ form.url.label }} {{ form.url }}</div>
+         <div>
+           <div class="col-form-label">{{ form.url.label }}</div>
+           {{ form.url }}
+         </div>
+      </div>
       {% endfor %}
     </div>
-    {{ witness_formset.management_form }}
+
     <br />
 
     <button type="submit" class="btn-lg btn-success float-right">Save hearing</button>
   </form>
   <br />
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-      $('.basic-multiple').select2();
-    });
-
-    $(function() {
-        $('#WitnessForm').formset();
-    })
-</script>
 
 {% endblock %}
