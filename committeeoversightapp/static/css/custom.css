@@ -1,5 +1,15 @@
+:root {
+  --lightest-blue-color: #fafcff;
+  --light-blue-color: #e8eef9;
+  --dark-blue-color: #002f67;
+  --light-gray-color: #ced4da;
+  --dark-gray-color: #495057;
+  --red-color: #b80026;
+  --dark-red-color: #6f0017;
+}
+
 body {
-  background: #fafcff;
+  background: var(--lightest-blue-color);
 }
 
 .container {
@@ -11,7 +21,7 @@ body {
 }
 
 .dynamic-form {
-  background: #e8eef9;
+  background: var(--light-blue-color);
   padding: 0px 20px 50px 20px;
   margin-bottom: 10px;
   border-radius: 5px;
@@ -28,16 +38,16 @@ body {
   padding: .375rem .75rem;
   font-size: 1rem;
   line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
+  color: var(--dark-gray-color);;
+  background-color: white;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--light-gray-color);
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
 .delete-row {
-  color: #b80026;
+  color: var(--red-color);
   float: right;
   padding: 15px 0px;
   font-size: 14px;
@@ -45,7 +55,7 @@ body {
 }
 
 .delete-row:hover {
-  color: #6f0017;
+  color: var(--dark-red-color);
 }
 
 .footer {
@@ -53,6 +63,6 @@ body {
 }
 
 .footer div {
-  background: #002f67;
+  background: var(--dark-blue-color);
   padding: 10px;
 }
