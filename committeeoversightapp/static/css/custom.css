@@ -1,5 +1,15 @@
+:root {
+  --lightest-blue-color: #fafcff;
+  --light-blue-color: #e8eef9;
+  --dark-blue-color: #002f67;
+  --light-gray-color: #ced4da;
+  --dark-gray-color: #495057;
+  --red-color: #b80026;
+  --dark-red-color: #6f0017;
+}
+
 body {
-  background: #fafcff;
+  background: var(--lightest-blue-color);
 }
 
 .container {
@@ -10,11 +20,49 @@ body {
   padding: 30px;
 }
 
+.dynamic-form {
+  background: var(--light-blue-color);
+  padding: 0px 20px 50px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.dynamic-form div div {
+  padding-top: 10px;
+}
+
+.dynamic-form div div input {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--dark-gray-color);;
+  background-color: white;
+  background-clip: padding-box;
+  border: 1px solid var(--light-gray-color);
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.delete-row {
+  color: var(--red-color);
+  float: right;
+  padding: 15px 0px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.delete-row:hover {
+  color: var(--dark-red-color);
+}
+
 .footer {
     padding-top: 40px;
 }
 
 .footer div {
-  background: #002f67;
+  background: var(--dark-blue-color);
   padding: 10px;
 }

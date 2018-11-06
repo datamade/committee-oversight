@@ -1,9 +1,3 @@
-import re
-import threading
-import requests
-from os.path import splitext
-from urllib.parse import urlparse
-
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
@@ -12,21 +6,21 @@ from django.views.generic import ListView, DeleteView, TemplateView
 
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
-from .forms import EventForm, CommitteeForm, CommitteeMemberForm, WitnessForm, TranscriptForm
 
-# given a url string, find the file extension at the end
-def get_ext(url):
-    path = urlparse(url).path
-    ext = splitext(path)[1]
-    return ext
+from .utils import save_document
+from .models import HearingCategory, WitnessDetails
+from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
 
-# archive a url string
-def archive_url(url):
-    wayback_host = 'http://web.archive.org'
-    save_url = '{0}/save/{1}'.format(wayback_host, url)
-    archived = requests.get(save_url)
-    archive_url = '{0}{1}'.format(wayback_host, archived.headers['Content-Location'])
-    return archive_url
+class Success(TemplateView):
+    template_name = 'success.html'
+
+class EventView(DetailView):
+    model = Event
+    template_name = 'detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 class EventCreate(TemplateView):
     template_name = "create.html"
@@ -36,24 +30,23 @@ class EventCreate(TemplateView):
 
         context['event_form'] = EventForm(prefix="event")
         context['committee_form'] = CommitteeForm(prefix="committee")
-        context['committeemember_form'] = CommitteeMemberForm(prefix="committeemember")
-        context['witness_form'] = WitnessForm(prefix="witness")
+        context['category_form'] = CategoryForm(prefix="category")
         context['transcript_form'] = TranscriptForm(prefix="transcript")
+        context['witness_formset'] = WitnessFormset(prefix="witness")
 
         return context
 
     def post(self, request, **kwargs):
         event_form = EventForm(request.POST, prefix="event")
         committee_form = CommitteeForm(request.POST, prefix="committee")
-        committeemember_form = CommitteeMemberForm(request.POST, prefix="committeemember")
-        witness_form = WitnessForm(request.POST, prefix="witness")
+        category_form = CategoryForm(request.POST, prefix="category")
         transcript_form = TranscriptForm(request.POST, prefix="transcript")
+        witness_formset = WitnessFormset(request.POST, prefix="witness")
 
         print("Checking if forms are valid...")
 
         forms_valid = [event_form.is_valid(), committee_form.is_valid(),
-                       committeemember_form.is_valid(), witness_form.is_valid(),
-                       transcript_form.is_valid()]
+                       category_form.is_valid(), transcript_form.is_valid()]
 
         if all(forms_valid):
             print("All forms valid! Saving...")
@@ -72,59 +65,41 @@ class EventCreate(TemplateView):
                 new_committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
                 new_committee.save()
 
-            # find and create committee members as EventParticipants
-            committeemembers = committeemember_form.cleaned_data['name'].split(",")
-
-            for committeemember in committeemembers:
-                if committeemember == '' or committeemember.isspace():
-                    pass
-                else:
-                    name = committeemember.strip()
-                    entity_type = "committee member"
-                    new_committeemember = EventParticipant(name=name, event=event, entity_type=entity_type)
-                    new_committeemember.save()
-
-            # find and create witnesses as EventParticipants
-            witnesses = witness_form.cleaned_data['name'].split(",")
-
-            for witness in witnesses:
-                if witness == '' or witness.isspace():
-                    pass
-                else:
-                    name = witness.strip()
-                    entity_type = "person"
-                    new_witness = EventParticipant(name=name, event=event, entity_type=entity_type)
-                    new_witness.save()
+            # save category
+            category = category_form.cleaned_data['category']
+            new_category = HearingCategory(event=event, category=category)
+            new_category.save()
 
             # if form includes a transcript URL create EventDocument with original and archived url
             transcript_url = transcript_form.cleaned_data['url']
+            save_document(transcript_url, "transcript", event)
 
-            if transcript_url == '' or witness.isspace():
-                pass
-            else:
-                note="transcript"
-                new_document = EventDocument(note=note, event=event)
-                new_document.save()
+            # find and create witnesses
+            for witness in witness_formset.cleaned_data:
+                name = witness.get('name', None)
+                if name:
+                    # add witness as EventParticipant
+                    entity_type = "person"
+                    note = "witness"
+                    new_witness = EventParticipant(
+                                        name=name,
+                                        event=event,
+                                        entity_type=entity_type,
+                                        note=note)
+                    new_witness.save()
 
-                archived_transcript_url = archive_url(transcript_url)
+                    #save witness statement urls TK
+                    witness_url = witness.get('url', None)
+                    witness_document = save_document(witness_url, "witness statement", event)
 
-                extensions = {'.pdf': 'application/pdf', '.htm': 'text/html', '.html': 'text/html'}
-                ext = get_ext(transcript_url)
-                media_type = extensions.get(ext.lower(), '')
-
-                new_document_link = EventDocumentLink(
-                                        url=transcript_url,
-                                        document=new_document,
-                                        media_type=media_type
-                                    )
-                new_archived_document_link = EventDocumentLink(
-                                        url=archived_transcript_url,
-                                        document=new_document,
-                                        media_type=media_type
-                                    )
-
-                new_document_link.save()
-                new_archived_document_link.save()
+                    #save witness organizations and link to statement urls
+                    organization = witness.get('organization', None)
+                    new_witness_details = WitnessDetails(
+                                        witness=new_witness,
+                                        document=witness_document,
+                                        organization=organization
+                    )
+                    new_witness_details.save()
 
         return redirect('list-event')
 

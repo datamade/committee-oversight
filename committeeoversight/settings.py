@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'opencivicdata',
     'opencivicdata.core',
     'opencivicdata.legislative',
-    'crispy_forms',
+    'crispy_forms'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
