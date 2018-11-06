@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
@@ -90,8 +90,7 @@ class EventCreate(TemplateView):
                     )
                     new_witness_details.save()
 
-        # eventually this should lead to a list view
-        return render(request, 'success.html')
+        return redirect('list-event')
 
 class EventList(ListView):
     model = Event
