@@ -4,7 +4,7 @@ sqlalchemy==1.2.12
 psycopg2==2.7.5
 csvkit==1.0.3
 
-https://github.com/opencivicdata/python-opencivicdata/zipball/master
+https://github.com/opencivicdata/python-opencivicdata/zipball/longer_event_names
 
 django-crispy-forms==1.7.2
 requests>=2.20.0
