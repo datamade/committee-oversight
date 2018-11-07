@@ -95,11 +95,8 @@ class EventCreate(TemplateView):
 class EventList(ListView):
     model = Event
     template_name = 'list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['hearings'] = Event.objects.all().order_by('-created_at')
-        return context
+    ordering = ('-created_at')
+    context_object_name = 'hearings'
 
 # class Success(TemplateView):
 #     template_name = 'success.html'
