@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
@@ -11,7 +12,7 @@ from .utils import save_document
 from .models import HearingCategory, WitnessDetails
 from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
 
-class EventCreate(TemplateView):
+class EventCreate(LoginRequiredMixin, TemplateView):
     template_name = "create.html"
 
     def get_context_data(self, **kwargs):
@@ -92,7 +93,7 @@ class EventCreate(TemplateView):
 
         return redirect('list-event')
 
-class EventList(ListView):
+class EventList(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'list.html'
     ordering = ('-created_at')

@@ -37,8 +37,30 @@
         </div>
       </div>
     </div>
-    <div class="footer">
-      <div></div>
-    </div>
+
+    <nav class="navbar fixed-bottom footer navbar-expand-sm">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/">
+        <img src="{% static 'images/logo.png' %}" height="40" alt="The Lugar Center"/>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+          <li>
+            <a href="{% url 'create-event'%}"><b>Create New Hearing</b></a>
+          </li>
+          <li>
+            <a href="{% url 'list-event'%}"><b>View Hearings</b></a>
+          </li>
+          <li class="nav-item">
+            Logged in as <b>{{ user.get_username }}</b> (<a href="{% url 'logout'%}">Logout</a>)
+          </li>
+         {% endif %}
+        </ul>
+      </div>
+    </nav>
+
   </body>
 </html>
