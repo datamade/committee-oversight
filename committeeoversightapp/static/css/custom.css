@@ -2,8 +2,11 @@
   --lightest-blue-color: #fafcff;
   --light-blue-color: #e8eef9;
   --dark-blue-color: #002f67;
+  --darkest-blue-color: #001f43;
   --light-gray-color: #ced4da;
   --dark-gray-color: #495057;
+  --green-color: #5e9167;
+  --dark-green-color: #218838;
   --red-color: #b80026;
   --dark-red-color: #6f0017;
 }
@@ -11,6 +14,10 @@
 body {
   background: var(--lightest-blue-color);
   padding: 75px 0px 50px 0px;
+}
+
+.btn-success {
+  background-color: var(--green-color);
 }
 
 .container {
@@ -47,8 +54,44 @@ body {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.delete-row {
+  color: var(--red-color);
+  float: right;
+  padding: 15px 0px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.delete-row:hover {
+  color: var(--dark-red-color);
+}
+
+.add-row {
+  color: var(--green-color);
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.add-row:hover {
+  color: var(--dark-green-color);
+}
+
+#save-hearing-button {
+  margin-top: 40px;
+}
+
+#hearing-title-col {
+  width: 65%;
+}
+
 #hearing-table_paginate {
   padding: 30px 10px 10px 10px;
+}
+
+.page-item.active .page-link {
+    background-color: var(--dark-blue-color);
+    border-color: var(--dark-blue-color);
 }
 
 .navbar {
@@ -57,10 +100,19 @@ body {
 
 .navbar div li {
   color: white;
-  padding: 10px;
+  padding: 10px 20px;
   font-size: .95rem;
 }
 
 .navbar div a {
   color: white;
+}
+
+.navbar-brand {
+  padding-left: 10px;
+}
+
+.nav-item:hover {
+  background-color: var(--darkest-blue-color);
+  border-radius: .25rem;
 }
