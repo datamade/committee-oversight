@@ -61,8 +61,11 @@ class EventCreate(LoginRequiredMixin, TemplateView):
             new_category.save()
 
             # if form includes a transcript URL create EventDocument with original and archived url
-            transcript_url = transcript_form.cleaned_data['url']
-            save_document(transcript_url, "transcript", event)
+            documents = [('transcript_url', "transcript"), ('opening_statement_chair', "chair opening statement"), ('opening_statement_rm', "ranking member opening statement")]
+
+            for (field, note) in documents:
+                url = transcript_form.cleaned_data[field]
+                save_document(url, note, event)
 
             # find and create witnesses
             for witness in witness_formset.cleaned_data:

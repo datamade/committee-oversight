@@ -89,6 +89,10 @@ body {
   padding: 30px 10px 10px 10px;
 }
 
+.page-link {
+  color: var(--dark-blue-color);
+}
+
 .page-item.active .page-link {
     background-color: var(--dark-blue-color);
     border-color: var(--dark-blue-color);
@@ -99,13 +103,13 @@ body {
 }
 
 .navbar div li {
-  color: white;
+  color: var(--lightest-blue-color);
   padding: 10px 20px;
   font-size: .95rem;
 }
 
 .navbar div a {
-  color: white;
+  color: var(--lightest-blue-color);
 }
 
 .navbar-brand {

@@ -47,16 +47,24 @@ class CommitteeForm(ModelForm):
         label='Committees/subcommittees',
         queryset=Organization.objects.filter(classification='committee').order_by('parent__name'),
         group_by_field='parent',
-        # TK make this required once committees are set
-        required=False
         )
 
 # add a field for transcript url
 class TranscriptForm(Form):
-    url = CharField(
+    transcript_url = CharField(
         label='Transcript URL',
         required=False
     )
+    opening_statement_chair = CharField(
+        label='Chair Opening Statement URL',
+        required=False
+    )
+    opening_statement_rm = CharField(
+        label='Ranking Member Opening Statement URL',
+        required=False
+    )
+
+
 
 # add category as foreign key in table HearingCategory
 class CategoryForm(Form):
