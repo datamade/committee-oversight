@@ -59,10 +59,15 @@ body {
 }
 
 .footer {
-    padding-top: 40px;
+    background: var(--dark-blue-color);
 }
 
-.footer div {
-  background: var(--dark-blue-color);
+.footer div li {
+  color: var(--light-blue-color);
   padding: 10px;
+  font-size: .9rem;
+}
+
+.footer div a {
+  color: var(--light-blue-color);
 }
