@@ -49,7 +49,13 @@ Perform the following steps from your terminal.
 
     Django should prompt you to provide a username, email, and password.
 
-8. Run the app locally!
+8. Load hearing categories:
+
+```bash
+python manage.py loaddata hearingcategorytype
+```
+
+9. Run the app locally!
 
     ```bash
     python manage.py runserver
