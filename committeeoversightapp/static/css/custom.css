@@ -10,7 +10,7 @@
 
 body {
   background: var(--lightest-blue-color);
-  padding-bottom: 150px;
+  padding: 75px 0px 50px 0px;
 }
 
 .container {
@@ -47,28 +47,20 @@ body {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.delete-row {
-  color: var(--red-color);
-  float: right;
-  padding: 15px 0px;
-  font-size: 14px;
-  font-weight: 500;
+#hearing-table_paginate {
+  padding: 30px 10px 10px 10px;
 }
 
-.delete-row:hover {
-  color: var(--dark-red-color);
-}
-
-.footer {
+.navbar {
     background: var(--dark-blue-color);
 }
 
-.footer div li {
-  color: var(--light-blue-color);
+.navbar div li {
+  color: white;
   padding: 10px;
   font-size: .95rem;
 }
 
-.footer div a {
-  color: var(--light-blue-color);
+.navbar div a {
+  color: white;
 }
