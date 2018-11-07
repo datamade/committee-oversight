@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import redirect
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
-from django.views.generic import ListView, DeleteView, TemplateView
+from django.views.generic import ListView, TemplateView
 
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
@@ -10,17 +10,6 @@ from opencivicdata.core.models import Organization
 from .utils import save_document
 from .models import HearingCategory, WitnessDetails
 from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
-
-class Success(TemplateView):
-    template_name = 'success.html'
-
-class EventView(DetailView):
-    model = Event
-    template_name = 'detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
 class EventCreate(TemplateView):
     template_name = "create.html"
@@ -101,5 +90,21 @@ class EventCreate(TemplateView):
                     )
                     new_witness_details.save()
 
-        # eventually this should lead to a list view
-        return render(request, 'success.html')
+        return redirect('list-event')
+
+class EventList(ListView):
+    model = Event
+    template_name = 'list.html'
+    ordering = ('-created_at')
+    context_object_name = 'hearings'
+
+# class Success(TemplateView):
+#     template_name = 'success.html'
+#
+# class EventView(DetailView):
+#     model = Event
+#     template_name = 'detail.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         return context
