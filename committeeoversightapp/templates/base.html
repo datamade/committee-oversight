@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
     <title>Committee Oversight Data Tool</title>
   </head>
@@ -40,13 +41,15 @@
         <ul class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a href="{% url 'create-event'%}">Create New Hearing</a>
+            <i class="fas fa-save"></i>&nbsp; <a href="{% url 'create-event'%}">Add Hearing</a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'list-event'%}">View Hearings</a>
+            <i class="fas fa-list"></i>&nbsp; <a href="{% url 'list-event'%}">View Hearings</a>
           </li>
           <li class="nav-item">
-            Logged in as <b>{{ user.get_username }}</b> (<a href="{% url 'logout'%}">Logout</a>)
+            <i class="fas fa-user-circle"></i>&nbsp;
+            Logged in as <b>{{ user.get_username }}</b>
+            (<a href="{% url 'logout'%}">Logout</a>)
           </li>
          {% endif %}
         </ul>

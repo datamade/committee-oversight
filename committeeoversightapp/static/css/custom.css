@@ -94,13 +94,17 @@ body {
     border-color: var(--dark-blue-color);
 }
 
+.page-link {
+  color: var(--dark-blue-color);
+}
+
 .navbar {
     background: var(--dark-blue-color);
 }
 
 .navbar div li {
   color: white;
-  padding: 10px 20px;
+  padding: 10px 15px;
   font-size: .95rem;
 }
 
