@@ -124,3 +124,10 @@ body {
   background-color: var(--darkest-blue-color);
   border-radius: .25rem;
 }
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 767px) {
+  .pagination {
+    display: block;
+  }
+}
