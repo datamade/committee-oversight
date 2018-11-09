@@ -96,16 +96,4 @@ class EventCreate(LoginRequiredMixin, TemplateView):
 class EventList(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'list.html'
-    ordering = ('-created_at')
     context_object_name = 'hearings'
-
-# class Success(TemplateView):
-#     template_name = 'success.html'
-#
-# class EventView(DetailView):
-#     model = Event
-#     template_name = 'detail.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         return context

@@ -14,7 +14,7 @@
 </script>
 
 <div class="hearing-form card">
-  <h2>Create New Hearing Record</h2>
+  <h1>Create New Hearing Record</h1>
   <br />
   <form method="POST" class="form">
     {% csrf_token %}
@@ -50,12 +50,12 @@
       {% endfor %}
     </div>
 
-    <br />
-
-    <button type="submit" class="btn-lg btn-success float-right">Save hearing</button>
+    <button type="submit" class="btn-lg btn-success float-right" id="save-hearing-button">
+      <i class="far fa-save"></i>&nbsp; 
+      Save hearing
+    </button>
 
   </form>
-  <br />
 </div>
 
 {% endblock %}
