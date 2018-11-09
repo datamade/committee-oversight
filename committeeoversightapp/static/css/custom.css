@@ -98,6 +98,10 @@ body {
     border-color: var(--dark-blue-color);
 }
 
+.page-link {
+  color: var(--dark-blue-color);
+}
+
 .navbar {
     background: var(--dark-blue-color);
 }
