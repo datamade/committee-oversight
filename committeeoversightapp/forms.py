@@ -22,7 +22,7 @@ class EventForm(ModelForm):
             }
 
     start_date = DateField(
-        widget=DateInput(attrs={'placeholder': 'yyyy-mm-dd'}),
+        widget=DateInput(attrs={'type':'date'}),
         label='Date'
     )
 
