@@ -51,9 +51,9 @@ Perform the following steps from your terminal.
 
 8. Load hearing categories:
 
-```bash
-python manage.py loaddata hearingcategorytype
-```
+    ```bash
+    python manage.py loaddata hearingcategorytype
+    ```
 
 9. Run the app locally!
 
