@@ -4,3 +4,4 @@
 /keyrings/live/secring.gpg
 local_settings.py
 *.pyc
+/configs/local_settings.py.staging
