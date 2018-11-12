@@ -100,3 +100,11 @@ class EventList(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'list.html'
     context_object_name = 'hearings'
+
+def pong(request):
+    try:
+        from .deployment import DEPLOYMENT_ID
+    except ImportError:
+        return HttpResponse('Bad deployment', status=401)
+
+    return HttpResponse(DEPLOYMENT_ID)
