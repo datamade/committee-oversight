@@ -101,6 +101,8 @@ class EventList(LoginRequiredMixin, ListView):
     template_name = 'list.html'
     context_object_name = 'hearings'
 
+from django.http import HttpResponse
+
 def pong(request):
     try:
         from .deployment import DEPLOYMENT_ID
