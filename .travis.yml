@@ -15,7 +15,7 @@ addons:
     - postgresql-9.6-postgis-2.3
 before_script:
 - psql -U postgres -d travis -c "create extension postgis"
-- mv configs/local_settings.py.travis committee-oversight/local_settings.py
+- mv configs/local_settings.py.travis committeeoversight/local_settings.py
 script:
 - python manage.py migrate
 notifications:
