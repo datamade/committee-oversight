@@ -4,3 +4,6 @@
 /keyrings/live/secring.gpg
 local_settings.py
 *.pyc
+/configs/local_settings.py.staging
+/configs/committee-oversight-staging.conf.nginx
+/configs/committee-oversight-staging.conf.supervisor
