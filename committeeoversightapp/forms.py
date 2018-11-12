@@ -28,8 +28,13 @@ class EventForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
-        jurisdiction = Jurisdiction.objects.get(name='United States of America')
-        self.fields['jurisdiction'].initial = jurisdiction
+        
+        try:
+            jurisdiction = Jurisdiction.objects.get(name='United States of America')
+            self.fields['jurisdiction'].initial = jurisdiction
+        except:
+            pass
+
         self.fields['classification'].initial = "Hearing"
 
 # add committees as event participants
