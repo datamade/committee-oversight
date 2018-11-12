@@ -19,6 +19,7 @@ sudo -H -u datamade $venv_dir/bin/pip install -r $project_dir/requirements.txt -
 cd $project_dir && sudo -H -u datamade blackbox_postdeploy
 mv $project_dir/configs/local_settings.$DEPLOYMENT_GROUP_NAME.py $project_dir/committeeoversight/local_settings.py && chown datamade.www-data $project_dir/depaul_ihs_site/local_settings.py
 
+psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'hearings'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE hearings"
 psql -U postgres -d hearings -c "CREATE EXTENSION IF NOT EXISTS postgis"
 $venv_dir/bin/python $project_dir/manage.py migrate
 $venv_dir/bin/python $project_dir/manage.py collectstatic --no-input
