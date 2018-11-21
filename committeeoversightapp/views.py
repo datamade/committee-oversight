@@ -87,10 +87,12 @@ class EventCreate(LoginRequiredMixin, TemplateView):
 
                     #save witness organizations and link to statement urls
                     organization = witness.get('organization', None)
+                    retired = witness.get('retired', False)
                     new_witness_details = WitnessDetails(
                                         witness=new_witness,
                                         document=witness_document,
-                                        organization=organization
+                                        organization=organization,
+                                        retired=retired
                     )
                     new_witness_details.save()
 

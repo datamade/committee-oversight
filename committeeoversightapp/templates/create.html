@@ -32,26 +32,34 @@
     <div id="WitnessForm">
       {% for form in witness_formset.forms %}
       <div class='form-container'>
-      <div class="row">
-         <div class="col-sm-6">
-           <div class="col-form-label">{{ form.name.label }}</div>
-           {{ form.name }}
-         </div>
-         <div class="col-sm-6">
-           <div class="col-form-label">{{ form.organization.label }}</div>
-           {{ form.organization }}
-         </div>
-      </div>
-         <div>
-           <div class="col-form-label">{{ form.url.label }}</div>
-           {{ form.url }}
-         </div>
+
+        <div class="row">
+           <div class="col-sm-6">
+             <div class="col-form-label">{{ form.name.label }}</div>
+             {{ form.name }}
+           </div>
+           <div class="col-sm-6">
+             <div class="col-form-label">{{ form.organization.label }}</div>
+             {{ form.organization }}
+           </div>
+        </div>
+
+        <div>
+          <div class="col-form-label">{{ form.url.label }}</div>
+          {{ form.url }}
+        </div>
+
+        <div class="form-check">
+          <label class="form-check-label" for="retired">{{ form.retired.label }}</label>
+          {{ form.retired }}
+        </div>
+
       </div>
       {% endfor %}
     </div>
 
     <button type="submit" class="btn-lg btn-success float-right" id="save-hearing-button">
-      <i class="far fa-save"></i>&nbsp; 
+      <i class="far fa-save"></i>&nbsp;
       Save hearing
     </button>
 
