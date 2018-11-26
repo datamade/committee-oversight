@@ -17,7 +17,7 @@
     {% for hearing in hearings %}
     <tr>
       <td>{{hearing.name | title}}</td>
-      <td>{{hearing.created_at | date:"Y-m-d"}}</td>
+      <td>{{hearing.created_at | date:"Y-m-d H:i:s"}}</td>
       <td>
         <a href="/delete/{{hearing.pk}}" class="btn btn-danger">
           Delete

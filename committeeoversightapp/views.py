@@ -1,15 +1,15 @@
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView, DeleteView
-from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
 
 from .utils import save_document
-from .models import HearingCategory
+from .models import HearingCategory, HearingCategoryType, WitnessDetails
 from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
 
 class EventCreate(LoginRequiredMixin, TemplateView):
@@ -107,7 +107,22 @@ class EventList(LoginRequiredMixin, ListView):
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = "delete.html"
+    context_object_name = 'hearing'
     success_url = reverse_lazy('list-event')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        try:
+            context['category'] = HearingCategory.objects.get(event=context['hearing']).category_id
+            context['category_name'] = HearingCategoryType.objects.get(pk=context['category'])
+        except ObjectDoesNotExist:
+            context['category_name'] = None
+
+        committees_qs = EventParticipant.objects.filter(event_id=context['hearing']).values_list('name', flat=True)
+        context['committees'] = ', '.join(committees_qs)
+
+        return context
 
 from django.http import HttpResponse
 

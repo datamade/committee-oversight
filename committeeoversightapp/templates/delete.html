@@ -12,15 +12,24 @@
    <tbody>
      <tr>
        <td><b>Hearing Title</b></td>
-       <td>{{event.name | title}}</td>
+       <td>{{hearing.name | title}}</td>
      </tr>
      <tr>
        <td><b>Hearing Date</b></td>
-       <td>{{event.start_date}}</td>
+       <td>{{hearing.start_date}}</td>
      </tr>
-       <td><b>Date Entered</b></td>
-       <td>{{event.created_at | date:"Y-m-d"}}</td>
      <tr>
+       <td><b>Date Entered</b></td>
+       <td>{{hearing.created_at | date:"Y-m-d"}}</td>
+     </tr>
+     <tr>
+       <td><b>Committees</b></td>
+       <td>{{committees}}</td>
+     </tr>
+     <tr>
+       <td><b>Category</b></td>
+       <td>{{category_name}}</td>
+     </tr>
    </tbody>
    </table>
 
