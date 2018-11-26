@@ -1,10 +1,10 @@
 from django.forms import ModelForm, Form, TextInput, HiddenInput, DateField, DateInput, \
                          ModelChoiceField, ModelMultipleChoiceField, ChoiceField, \
-                         CharField, formset_factory
+                         CharField, BooleanField, formset_factory
 from opencivicdata.legislative.models import Event, EventParticipant
 from opencivicdata.core.models import Jurisdiction, Organization
 
-from .models import HearingCategoryType
+from .models import HearingCategoryType, WitnessDetails
 from .customfields import GroupedModelMultiChoiceField
 
 
@@ -28,7 +28,7 @@ class EventForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
-        
+
         try:
             jurisdiction = Jurisdiction.objects.get(name='United States of America')
             self.fields['jurisdiction'].initial = jurisdiction
@@ -88,6 +88,11 @@ class WitnessForm(Form):
 
     url = CharField(
         label='Witness statement URL',
+        required=False
+    )
+
+    retired =  BooleanField(
+        label='Retired',
         required=False
     )
 
