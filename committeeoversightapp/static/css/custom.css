@@ -43,7 +43,7 @@ body {
   padding-top: 10px;
 }
 
-.dynamic-form div div input {
+.dynamic-form div div input[type="text"] {
   display: block;
   width: 100%;
   height: calc(2.25rem + 2px);
@@ -56,6 +56,26 @@ body {
   border: 1px solid var(--light-gray-color);
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+input[type='checkbox'] {
+    width:18px;
+    height:18px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+    position: absolute;
+    margin-top: .4rem;
+    margin-left: .4rem;
+}
+
+.form-check {
+  padding-left: .3rem;
+}
+
+.form-check-label {
+    margin-bottom: 0;
+    margin-top: 2px;
 }
 
 .delete-row {

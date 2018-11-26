@@ -16,3 +16,4 @@ class WitnessDetails(models.Model):
     witness = models.ForeignKey(EventParticipant, on_delete=models.CASCADE)
     document = models.ForeignKey(EventDocument, null=True, blank=True, on_delete=models.CASCADE)
     organization = models.CharField(max_length=100, null=True, blank=True, primary_key=False)
+    retired = models.BooleanField(default=False)

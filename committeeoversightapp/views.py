@@ -9,7 +9,7 @@ from opencivicdata.legislative.models import Event, EventParticipant, EventDocum
 from opencivicdata.core.models import Organization
 
 from .utils import save_document
-from .models import HearingCategory, WitnessDetails
+from .models import HearingCategory
 from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
 
 class EventCreate(LoginRequiredMixin, TemplateView):
@@ -78,7 +78,8 @@ class EventCreate(LoginRequiredMixin, TemplateView):
                                         name=name,
                                         event=event,
                                         entity_type=entity_type,
-                                        note=note)
+                                        note=note
+                    )
                     new_witness.save()
 
                     #save witness statement urls TK
@@ -87,10 +88,12 @@ class EventCreate(LoginRequiredMixin, TemplateView):
 
                     #save witness organizations and link to statement urls
                     organization = witness.get('organization', None)
+                    retired = witness.get('retired', False)
                     new_witness_details = WitnessDetails(
                                         witness=new_witness,
                                         document=witness_document,
-                                        organization=organization
+                                        organization=organization,
+                                        retired=retired
                     )
                     new_witness_details.save()
 
