@@ -20,6 +20,10 @@ body {
   background-color: var(--green-color);
 }
 
+.btn-danger {
+  background-color: var(--red-color);
+}
+
 .container {
   padding-top: 40px;
 }

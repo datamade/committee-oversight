@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -100,6 +100,11 @@ class EventList(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'list.html'
     context_object_name = 'hearings'
+
+class EventDelete(LoginRequiredMixin, DeleteView):
+    model = Event
+    template_name = "delete.html"
+    success_url = reverse_lazy('list-event')
 
 from django.http import HttpResponse
 
