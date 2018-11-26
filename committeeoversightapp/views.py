@@ -122,9 +122,27 @@ class EventDelete(LoginRequiredMixin, DeleteView):
 
         #get committee context
         committees_qs = EventParticipant.objects.filter(event_id=context['hearing']).filter(entity_type="organization").values_list('name', flat=True)
-        context['committees'] = ', '.join(committees_qs)
+        context['committees'] = '; '.join(committees_qs)
+
+        #get context for documents
+        eventdocuments_qs = EventDocument.objects.filter(event_id=context['hearing'])
+
+        document_types = {'transcript':'transcript', 'opening_statement_chair':'chair opening statement', 'opening_statement_rm':'ranking member opening statement'}
+
+        for key, value in document_types.items():
+            try:
+                doc = eventdocuments_qs.get(note=value)
+                context[key] = EventDocumentLink.objects.exclude(text='archived').get(document_id=doc).url
+                context[key + '_archived'] = EventDocumentLink.objects.get(document_id=doc, text='archived').url
+            except ObjectDoesNotExist:
+                pass
+
+        #get context for witnesses
+        witnesses_qs = EventParticipant.objects.filter(event_id=context['hearing']).filter(note="witness").values_list('name', flat=True)
+        context['witnesses'] = '; '.join(witnesses_qs)
 
         return context
+
 
 from django.http import HttpResponse
 

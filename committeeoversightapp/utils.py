@@ -39,7 +39,7 @@ def save_document(url, note, event):
         new_document_link = EventDocumentLink(
                                 url=url,
                                 document=new_document,
-                                media_type=media_type
+                                media_type=media_type,
                             )
         new_document_link.save()
 
@@ -47,7 +47,8 @@ def save_document(url, note, event):
             new_archived_document_link = EventDocumentLink(
                                     url=archived_url,
                                     document=new_document,
-                                    media_type=media_type
+                                    media_type=media_type,
+                                    text="archived"
                                 )
             new_archived_document_link.save()
 
