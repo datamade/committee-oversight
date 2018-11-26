@@ -1,3 +1,4 @@
+<div>Created at <b>{{hearing.created_at | date:"Y-m-d H:i:s"}}</b></div><br />
 <table class="table table-striped table-bordered" id="hearing-table">
  <thead>
  </thead>
@@ -11,10 +12,6 @@
      <td>{{hearing.start_date}}</td>
    </tr>
    <tr>
-     <td><b>Date Entered</b></td>
-     <td>{{hearing.created_at | date:"Y-m-d"}}</td>
-   </tr>
-   <tr>
      <td><b>Committees</b></td>
      <td>{{committees}}</td>
    </tr>
@@ -24,15 +21,27 @@
    </tr>
    <tr>
      <td><b>Transcript URL</b></td>
-     <td><a href={{transcript_archived}}>{{transcript}}</a></td>
+     {% if transcript_archived %}
+        <td><a href={{transcript_archived}}>{{transcript}}</a></td>
+     {% else %}
+        <td><a href={{transcript}}>{{transcript}}</a></td>
+     {% endif %}
    </tr>
    <tr>
      <td><b>Chair Opening Statement URL</b></td>
-     <td><a href={{opening_statement_chair_archived}}>{{opening_statement_chair}}</a></td>
+     {% if opening_statement_chair_archived %}
+       <td><a href={{opening_statement_chair_archived}}>{{opening_statement_chair}}</a></td>
+     {% else %}
+       <td><a href={{opening_statement_chair}}>{{opening_statement_chair}}</a></td>
+     {% endif %}
    </tr>
    <tr>
      <td><b>Ranking Member Opening Statement URL</b></td>
-     <td><a href={{opening_statement_rm_archived}}>{{opening_statement_rm}}</a></td>
+     {% if opening_statement_rm_archived %}
+       <td><a href={{opening_statement_rm_archived}}>{{opening_statement_rm}}</a></td>
+     {% else %}
+       <td><a href={{opening_statement_rm}}>{{opening_statement_rm}}</a></td>
+     {% endif %}
    </tr>
    <tr>
      <td><b>Witnesses</b></td>

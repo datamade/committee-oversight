@@ -104,6 +104,14 @@ class EventList(LoginRequiredMixin, ListView):
     template_name = 'list.html'
     context_object_name = 'hearings'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for hearing in context['hearings']:
+            committees_qs = EventParticipant.objects.filter(event_id=hearing).filter(entity_type="organization").values_list('name', flat=True)
+            hearing.committees = '; '.join(committees_qs)
+
+        return context
+
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = "delete.html"
@@ -132,7 +140,7 @@ class EventDelete(LoginRequiredMixin, DeleteView):
         for key, value in document_types.items():
             try:
                 doc = eventdocuments_qs.get(note=value)
-                context[key] = EventDocumentLink.objects.exclude(text='archived').get(document_id=doc).url
+                context[key] = EventDocumentLink.objects.exclude(text='archived').filter(document_id=doc)[0].url
                 context[key + '_archived'] = EventDocumentLink.objects.get(document_id=doc, text='archived').url
             except ObjectDoesNotExist:
                 pass

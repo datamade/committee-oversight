@@ -105,8 +105,8 @@ input[type='checkbox'] {
   margin-top: 40px;
 }
 
-#hearing-title-col {
-  width: 55%;
+.hearing-title-col {
+  width: 35%;
 }
 
 #hearing-table_paginate {
