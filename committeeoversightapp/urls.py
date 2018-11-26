@@ -5,5 +5,5 @@ urlpatterns = [
     url(r'accounts/', include('django.contrib.auth.urls')),
     url(r'^$', EventCreate.as_view(), name='create-event'),
     url(r'^list$', EventList.as_view(), name='list-event'),
-    url(r'^delete/(?P<pk>.*?/.*?)/', EventDelete.as_view(), name="delete-event")
+    url(r'^delete/(?P<pk>.*?/.*?)/', EventDelete.as_view(), name="delete-event"),
 ]

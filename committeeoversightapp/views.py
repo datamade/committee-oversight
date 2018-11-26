@@ -113,13 +113,15 @@ class EventDelete(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        #get category context
         try:
             context['category'] = HearingCategory.objects.get(event=context['hearing']).category_id
             context['category_name'] = HearingCategoryType.objects.get(pk=context['category'])
         except ObjectDoesNotExist:
             context['category_name'] = None
 
-        committees_qs = EventParticipant.objects.filter(event_id=context['hearing']).values_list('name', flat=True)
+        #get committee context
+        committees_qs = EventParticipant.objects.filter(event_id=context['hearing']).filter(entity_type="organization").values_list('name', flat=True)
         context['committees'] = ', '.join(committees_qs)
 
         return context
