@@ -1,15 +1,15 @@
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.views.generic.edit import CreateView
-from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
 from opencivicdata.core.models import Organization
 
 from .utils import save_document
-from .models import HearingCategory
+from .models import HearingCategory, HearingCategoryType, WitnessDetails
 from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
 
 class EventCreate(LoginRequiredMixin, TemplateView):
@@ -103,6 +103,54 @@ class EventList(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'list.html'
     context_object_name = 'hearings'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for hearing in context['hearings']:
+            committees_qs = EventParticipant.objects.filter(event_id=hearing).filter(entity_type="organization").values_list('name', flat=True)
+            hearing.committees = '; '.join(committees_qs)
+
+        return context
+
+class EventDelete(LoginRequiredMixin, DeleteView):
+    model = Event
+    template_name = "delete.html"
+    context_object_name = 'hearing'
+    success_url = reverse_lazy('list-event')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        #get category context
+        try:
+            context['category'] = HearingCategory.objects.get(event=context['hearing']).category_id
+            context['category_name'] = HearingCategoryType.objects.get(pk=context['category'])
+        except ObjectDoesNotExist:
+            context['category_name'] = None
+
+        #get committee context
+        committees_qs = EventParticipant.objects.filter(event_id=context['hearing']).filter(entity_type="organization").values_list('name', flat=True)
+        context['committees'] = '; '.join(committees_qs)
+
+        #get context for documents
+        eventdocuments_qs = EventDocument.objects.filter(event_id=context['hearing'])
+
+        document_types = {'transcript':'transcript', 'opening_statement_chair':'chair opening statement', 'opening_statement_rm':'ranking member opening statement'}
+
+        for key, value in document_types.items():
+            try:
+                doc = eventdocuments_qs.get(note=value)
+                context[key] = EventDocumentLink.objects.exclude(text='archived').filter(document_id=doc)[0].url
+                context[key + '_archived'] = EventDocumentLink.objects.get(document_id=doc, text='archived').url
+            except ObjectDoesNotExist:
+                pass
+
+        #get context for witnesses
+        witnesses_qs = EventParticipant.objects.filter(event_id=context['hearing']).filter(note="witness").values_list('name', flat=True)
+        context['witnesses'] = '; '.join(witnesses_qs)
+
+        return context
+
 
 from django.http import HttpResponse
 

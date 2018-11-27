@@ -20,6 +20,10 @@ body {
   background-color: var(--green-color);
 }
 
+.btn-danger {
+  background-color: var(--red-color);
+}
+
 .container {
   padding-top: 40px;
 }
@@ -101,8 +105,8 @@ input[type='checkbox'] {
   margin-top: 40px;
 }
 
-#hearing-title-col {
-  width: 65%;
+.hearing-title-col {
+  width: 35%;
 }
 
 #hearing-table_paginate {
