@@ -146,7 +146,7 @@ class EventDelete(LoginRequiredMixin, DeleteView):
                 pass
 
         #get context for witnesses
-        witnesses_qs = EventParticipant.objects.filter(event_id=context['hearing']).filter(note="witness").values_list('name', flat=True)
+        witnesses_qs = context['hearing'].participants.filter(note="witness").values_list('name', flat=True)
         context['witnesses'] = '; '.join(witnesses_qs)
 
         return context
