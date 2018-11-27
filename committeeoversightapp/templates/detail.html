@@ -22,25 +22,25 @@
    <tr>
      <td><b>Transcript URL</b></td>
      {% if transcript_archived %}
-        <td><a href={{transcript_archived}}>{{transcript}}</a></td>
+        <td><a href={{transcript_archived}} target="_blank">{{transcript}}</a></td>
      {% else %}
-        <td><a href={{transcript}}>{{transcript}}</a></td>
+        <td><a href={{transcript}} target="_blank">{{transcript}}</a></td>
      {% endif %}
    </tr>
    <tr>
      <td><b>Chair Opening Statement URL</b></td>
      {% if opening_statement_chair_archived %}
-       <td><a href={{opening_statement_chair_archived}}>{{opening_statement_chair}}</a></td>
+       <td><a href={{opening_statement_chair_archived}} target="_blank">{{opening_statement_chair}}</a></td>
      {% else %}
-       <td><a href={{opening_statement_chair}}>{{opening_statement_chair}}</a></td>
+       <td><a href={{opening_statement_chair}} target="_blank">{{opening_statement_chair}}</a></td>
      {% endif %}
    </tr>
    <tr>
      <td><b>Ranking Member Opening Statement URL</b></td>
      {% if opening_statement_rm_archived %}
-       <td><a href={{opening_statement_rm_archived}}>{{opening_statement_rm}}</a></td>
+       <td><a href={{opening_statement_rm_archived}} target="_blank">{{opening_statement_rm}}</a></td>
      {% else %}
-       <td><a href={{opening_statement_rm}}>{{opening_statement_rm}}</a></td>
+       <td><a href={{opening_statement_rm}} target="_blank">{{opening_statement_rm}}</a></td>
      {% endif %}
    </tr>
    <tr>
@@ -51,7 +51,7 @@
      <td><b>Sources</b></td>
      <td>
        {% for source in hearing.sources.all %}
-        <a href={{source}}>{{source}}<br /></a>
+        <a href={{source}} target="_blank">{{source}}<br /></a>
        {% endfor %}
      </td>
    </tr>

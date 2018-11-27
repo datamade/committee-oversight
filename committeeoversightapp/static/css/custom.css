@@ -107,7 +107,11 @@ input[type='checkbox'] {
 }
 
 .hearing-title-col {
-  width: 35%;
+  width: 30%;
+}
+
+#delete-icon {
+  color: var(--red-color);
 }
 
 #hearing-table_paginate {
