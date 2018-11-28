@@ -22,7 +22,11 @@
       <td>{{hearing.created_at | date:"Y-m-d H:i:s"}}</td>
       <td>{{hearing.name | title}}</td>
       <td>{{hearing.start_date}}</td>
-      <td>{{hearing.committees}}</td>
+      <td>
+        {% for committee in hearing.committees %}
+        {{committee.name}}<br />
+        {% endfor %}
+      </td>
       <td>
         <a href="/delete/{{hearing.pk}}">
           <i class="fas fa-lg fa-times-circle" id="delete-icon"></i>

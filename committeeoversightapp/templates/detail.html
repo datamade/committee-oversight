@@ -13,7 +13,11 @@
    </tr>
    <tr>
      <td><b>Committees</b></td>
-     <td>{{committees}}</td>
+     <td>
+       {% for committee in committees %}
+       {{committee.name}}<br />
+       {% endfor %}
+     </td>
    </tr>
    <tr>
      <td><b>Category</b></td>
@@ -45,7 +49,11 @@
    </tr>
    <tr>
      <td><b>Witnesses</b></td>
-     <td>{{witnesses}}</td>
+     <td>
+       {% for witness in witnesses %}
+       {{witness.name}}<br />
+       {% endfor %}
+     </td>
    </tr>
    <tr>
      <td><b>Sources</b></td>
