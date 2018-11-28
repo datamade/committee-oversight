@@ -107,8 +107,7 @@ class EventList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for hearing in context['hearings']:
-            committees_qs = EventParticipant.objects.filter(event_id=hearing).filter(entity_type="organization").values_list('name', flat=True)
-            hearing.committees = '; '.join(committees_qs)
+            hearing.committees = hearing.participants.filter(entity_type="organization")
 
         return context
 
@@ -129,8 +128,7 @@ class EventDelete(LoginRequiredMixin, DeleteView):
             context['category_name'] = None
 
         #get committee context
-        committees_qs = EventParticipant.objects.filter(event_id=context['hearing']).filter(entity_type="organization").values_list('name', flat=True)
-        context['committees'] = '; '.join(committees_qs)
+        context['committees'] = context['hearing'].participants.filter(entity_type="organization")
 
         #get context for documents
         eventdocuments_qs = EventDocument.objects.filter(event_id=context['hearing'])
@@ -146,8 +144,7 @@ class EventDelete(LoginRequiredMixin, DeleteView):
                 pass
 
         #get context for witnesses
-        witnesses_qs = context['hearing'].participants.filter(note="witness").values_list('name', flat=True)
-        context['witnesses'] = '; '.join(witnesses_qs)
+        context['witnesses'] = context['hearing'].participants.filter(note="witness")
 
         return context
 
