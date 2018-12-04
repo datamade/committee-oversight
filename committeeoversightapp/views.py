@@ -103,7 +103,6 @@ class EventList(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'list.html'
     context_object_name = 'hearings'
-    queryset = Event.objects.all().order_by('-created_at')[:500]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -17,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for hearing in hearings %}
+    {% for hearing in hearings|slice:":500" %}
     <tr>
       <td>{{hearing.created_at | date:"Y-m-d H:i:s"}}</td>
       <td>{{hearing.name | title}}</td>
