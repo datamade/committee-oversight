@@ -1,0 +1,3 @@
+[submodule "hearings"]
+	path = hearings
+	url = git@github.com:datamade/hearings.git
