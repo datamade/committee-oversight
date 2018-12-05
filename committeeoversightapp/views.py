@@ -104,13 +104,6 @@ class EventList(LoginRequiredMixin, ListView):
     template_name = 'list.html'
     context_object_name = 'hearings'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        for hearing in context['hearings']:
-            hearing.committees = hearing.participants.filter(entity_type="organization")
-
-        return context
-
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = "delete.html"
