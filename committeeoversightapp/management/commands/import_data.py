@@ -14,16 +14,7 @@ jurisdiction_id = 'ocd-jurisdiction/country:us/legislature'
 bad_rows = []
 
 class Command(BaseCommand):
-    help = "Import CPS data"
-
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--recreate',
-            action='store_true',
-            dest='recreate',
-            default=False,
-            help='Drop and recreate existing tables'
-        )
+    help = "Import Lugar spreadsheets data"
 
     def handle(self, *args, **options):
 
