@@ -7,3 +7,4 @@ local_settings.py
 /configs/local_settings.py.staging
 /configs/committee-oversight-staging.conf.nginx
 /configs/committee-oversight-staging.conf.supervisor
+hearings.dump

@@ -16,11 +16,11 @@
     </tr>
   </thead>
   <tbody>
-    {% for hearing in hearings|slice:":500" %}
+    {% for hearing in hearings %}
     <tr>
       <td>{{hearing.created_at | date:"Y-m-d H:i:s"}}</td>
       <td>{{hearing.name | title}}</td>
-      <td>{{hearing.start_date}}</td>
+      <td>{{hearing.start_date }}</td>
       <td>
         <a href="/delete/{{hearing.pk}}">
           <i class="fas fa-lg fa-times-circle" id="delete-icon"></i>
