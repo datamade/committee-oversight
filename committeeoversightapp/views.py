@@ -5,7 +5,7 @@ from django.views.generic import ListView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 
-from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink
+from opencivicdata.legislative.models import Event, EventParticipant, EventDocument, EventDocumentLink, EventSource
 from opencivicdata.core.models import Organization
 
 from .utils import save_document
@@ -96,6 +96,10 @@ class EventCreate(LoginRequiredMixin, TemplateView):
                                         retired=retired
                     )
                     new_witness_details.save()
+
+            # save event source
+            source = EventSource(event=event, note="web form")
+            source.save()
 
         return redirect('list-event')
 

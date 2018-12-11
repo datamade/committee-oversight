@@ -59,7 +59,7 @@
      <td><b>Sources</b></td>
      <td>
        {% for source in hearing.sources.all %}
-        <a href={{source}} target="_blank">{{source}}<br /></a>
+        <a href={{source}} target="_blank">{{source}}</a> ({{source.note}})<br />
        {% endfor %}
      </td>
    </tr>
