@@ -34,18 +34,17 @@ class Command(BaseCommand):
 
     def add_house_hearings(self):
         with open('data/final/house.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            header = next(reader)
+            reader = csv.DictReader(csvfile)
             row_count = 2
 
             for row in reader:
 
-                source = row[0]
-                start_date = row[3]
-                name = row[4]
-                classification = row[7]
-                committees = [row[8], row[9], row[10], row[11]]
-                category = row[12]
+                source = row['source']
+                start_date = row['Date']
+                name = row['Hearing/Report']
+                classification = row['Type']
+                committees = [row['Committee1'], row['Committee1'], row['Subcommittee'], row['Subcommittee2']]
+                category = row['Category1']
 
                 if name:
                     # get or create hearing
@@ -75,18 +74,17 @@ class Command(BaseCommand):
 
     def add_senate_hearings(self):
         with open('data/final/senate.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            header = next(reader)
+            reader = csv.DictReader(csvfile)
             row_count = 2
 
             for row in reader:
 
-                source = row[0]
-                start_date = row[2]
-                name = row[3]
-                classification = row[6]
-                committees = [row[7], row[8]]
-                category = row[9]
+                source = row['source']
+                start_date = row['Date']
+                name = row['Hearing/Report']
+                classification = row['Type']
+                committees = [row['Committee1'], row['Committee2']]
+                category = row['Category1']
 
                 if name:
                     # get or create hearing
