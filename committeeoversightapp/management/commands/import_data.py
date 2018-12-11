@@ -120,7 +120,6 @@ class Command(BaseCommand):
                                     classification = classification)
 
                     if created:
-                        event.save()
 
                         # save committee data
                         # for committee_key in committees:
@@ -165,7 +164,6 @@ class Command(BaseCommand):
                                     start_date = start_date,
                                     classification = classification)
                     if created:
-                        event.save()
 
                         # save committee data (TK)
                         # for committee in committees:
