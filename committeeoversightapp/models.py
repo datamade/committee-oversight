@@ -1,4 +1,5 @@
 from django.db import models
+from opencivicdata.core.models import Organization
 from opencivicdata.legislative.models import Event, EventParticipant, EventDocument
 
 class HearingCategoryType(models.Model):
@@ -17,3 +18,7 @@ class WitnessDetails(models.Model):
     document = models.ForeignKey(EventDocument, null=True, blank=True, on_delete=models.CASCADE)
     organization = models.CharField(max_length=100, null=True, blank=True, primary_key=False)
     retired = models.BooleanField(default=False)
+
+class Committee(models.Model):
+    lugar_id = models.IntegerField(null=True, blank=True, primary_key=False)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)

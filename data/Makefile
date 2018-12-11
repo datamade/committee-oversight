@@ -14,16 +14,16 @@ processed/house.xlsx : raw/House_AllHearings.xlsx
 	python get_urls.py 4 $^ $@
 
 final/house.csv : processed/house.xlsx
-	in2csv $^ > $@
+	in2csv -S $^ > $@
 
 final/house_committees.csv : raw/House_AllHearings.xlsx
-	in2csv --sheet "Key" $^ > $@
+	in2csv --sheet "Key" -S $^ > $@
 
 processed/senate.xlsx : raw/Senate_AllHearings.xlsx
 	python get_urls.py 3 $^ $@
 
 final/senate.csv : processed/senate.xlsx
-	in2csv $^ > $@
+	in2csv -S $^ > $@
 
 final/senate_committees.csv : raw/Senate_AllHearings.xlsx
-	in2csv --sheet "Key" $^ > $@
+	in2csv --sheet "Key" -S $^ > $@
