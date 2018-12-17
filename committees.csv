@@ -1,0 +1,551 @@
+Lugar ID,Lugar Name,Scraper Name
+101,Agriculture,House Committee on Agriculture
+102,Appropriations,House Committee on Appropriations
+103,Armed Services,House Committee on Armed Services
+104,Budget,House Committee on Budget
+105,Education and the Workforce,House Committee on Education and Labor
+106,Energy and Commerce,House Committee on Interstate and Foreign Commerce
+107,Ethics,House Committee on Standards of Official Conduct
+108,Financial Services,House Committee on Banking and Currency
+109,Foreign Affairs,House Committee on Foreign Affairs
+110,Homeland Security,House Committee on Homeland Security (Select)
+111,House Administration,House Committee on House Administration
+112,Intelligence,House Committee on Intelligence (Permanent Select)
+113,Judiciary,House Committee on Judiciary
+114,Natural Resources,House Committee on Interior and Insular Affairs
+115,Oversight and Government Reform,House Committee on Government Operations
+116,Rules,House Committee on Rules
+117,"Science, Space, and Technology",House Committee on Science and Astronautics
+118,Small Business,House Committee on Small Business
+119,Transportation and Infrastructure,House Committee on Public Works
+120,Veterans' Affairs,House Committee on Veterans' Affairs
+121,Ways and Means,House Committee on Ways and Means
+122,Congressional Executive Commission on China,
+201,Aging,Senate Committee on Aging (Special)
+202,"Agriculture, Nutrition, and Forestry",Senate Committee on Agriculture and Forestry
+203,Appropriations,Senate Committee on Appropriations
+204,Armed Services,Senate Committee on Armed Services
+205,"Banking, Housing, and Urban Affairs","Senate Committee on Banking, Housing, and Urban Affairs"
+206,Budget,Senate Committee on Budget
+207,"Commerce, Science, and Transportation",Senate Committee on Commerce
+208,Energy and Natural Resources,Senate Committee on Interior and Insular Affairs
+209,Environment and Public Works,Senate Committee on Public Works
+210,Ethics,Senate Committee on Standards and Conduct (Select)
+211,Finance,Senate Committee on Finance
+212,Foreign Relations,Senate Committee on Foreign Relations
+213,"Health, Education, Labor, and Pensions",Senate Committee on Labor and Public Welfare
+214,Homeland Security and Governmental Affairs,Senate Committee on Government Operations
+215,Indian Affairs,Senate Committee on Indian Affairs (Select)
+216,Intelligence,Senate Committee on Intelligence (Select)
+217,Judiciary,Senate Committee on Judiciary
+218,Rules and Administration,Senate Committee on Rules and Administration
+219,Small Business and Entrepreneurship,Senate Committee on Small Business (Select)
+220,International Narcotics Control,Senate Committee on Caucus on International Narcotics Control
+221,Veterans' Affairs,Senate Committee on Veterans' Affairs
+1011,"Commodity Exchanges, Energy, and Credit","Subcommittee on Department Operations, Oversight, Nutrition, and Forestry"
+1012,Conservation and Forestry,"Subcommittee on Conservation, Credit, Rural Development, and Research"
+1013,Nutrition,"Subcommittee on Livestock, Dairy and Poultry"
+1014,General Farm Commodities and Risk Management,Subcommittee on General Farm Commodities and Risk Management
+1015,"Biotechnology, Horticulture, and Research",Subcommittee on Specialty Crops and Foreign Agriculture Programs
+1016,Livestock and Foreign Agriculture,"Subcommittee on Livestock, Dairy, and Poultry"
+1021,"Agriculture, Rural Development, Food and Drug Administration, and Related Agencies","Subcommittee on Agriculture, Rural Development and Related Agencies"
+1022,"Commerce, Justice, State, and the Judiciary","Subcommittee on Commerce, Justice, State, and the Judiciary"
+1023,Defense,Subcommittee on Defense
+1024,Energy and Water Development,Subcommittee on Energy and Water
+1025,Treasury-Postal Service-General Government,Subcommittee on Treasury-Postal Service-General Government
+1026,National Security,Subcommittee on Defense
+1027,Interior,Subcommittee on Interior
+1028,Labor-Health and Human Services,Subcommittee on Labor-Health and Human Services
+1029,Legislative,Subcommittee on Legislative
+1031,Emerging Threats and Capabilities,"Subcommittee on Terrorism, Unconventional Threats and Capabilities"
+1032,Military Personnel,Subcommittee on Military Personnel and Compensation
+1033,Oversight and Investigations,Subcommittee on Investigations
+1034,Readiness,Subcommittee on Readiness
+1035,Seapower and Projection Forces,Subcommittee on Seapower and Expeditionary Forces
+1036,Strategic Forces,Subcommittee on Strategic Forces
+1037,Tactical Air and Land Forces,Subcommittee on Tactical Air and Land Forces
+1038,Panel on Business Challenges within the Defense Industry,
+1039,Panel on Defense Financial Management and Auditability Reform,
+1051,"Subcommittee on Early Childhood, Elementary, and Secondary Education",Subcommittee on Education Reform
+1052,Higher Education and Workforce Training,Subcommittee on 21st Century Competitiveness
+1053,Workforce Protections,"Subcommittee on Labor Standards, Occupational Health and Safety"
+1054,"Subcommittee on Health, Employment, Labor, and Pensions",Subcommittee on Labor-Management Relations
+1055,Subcommittee on Healthy Families and Communities,Subcommittee on Select Education
+1061,Communications and Technology,Subcommittee on Telecommunications and the Internet
+1062,Digital Commerce and Consumer Protections,
+1063,Energy,Subcommittee on Energy Conservation and Power
+1064,Environment,Subcommittee on Energy Conservation and Power
+1065,Health,Subcommittee on Health
+1066,Oversight and Investigations,Subcommittee on Oversight and Investigations
+1067,Energy and Commerce,
+1081,"Capital Markets, Securities","Subcommittee on Capital Markets, Insurance and Government-Sponsored Enterprises"
+1082,Financial Institutions and Consumer Credit,Subcommittee on Financial Institutions and Consumer Credit
+1083,Housing and Insurance,Subcommittee on Housing and Community Development
+1084,Monetary Policy and Trade,Subcommittee on International Monetary Policy and Trade
+1085,Oversight and Investigation,Subcommittee on General Oversight and Renegotiation
+1086,Terrorism and Illicit Finance,Subcommittee on Terrorism and Illicit Finance
+1087,Domestic Monetary Policy and Technology,"Subcommittee on Domestic and International Monetary Policy, Trade, and Technology"
+1091,"Africa, Global Human Rights and International Operations","Subcommittee on Africa, Global Human Rights and International Operations"
+1092,Asia and the Pacific,Subcommittee on Asian and Pacific Affairs
+1093,"Europe, Eurasia, and Emerging Threats",Subcommittee on Europe
+1094,Middle East and North Africa,Subcommittee on Middle East and South Asia
+1095,"Terrorism, Nonproliferation, and Trade",Subcommittee on International Terrorism and Nonproliferation
+1096,Western Hemisphere,Subcommittee on Inter-American Affairs
+1101,Border and Maritime Security,"Subcommittee on Border, Maritime, and Global Counterterrorism"
+1102,Counterterrorism and Intelligence,Subcommittee on Intelligence and Counterterrorism
+1103,"Cybersecurity, Infrastructure Protection","Subcommittee on Emergency Preparedness, Science, and Technology"
+1104,"Emergency Preparedness, Response, and Communications","Subcommittee on Emergency Communications, Preparedness, and Response"
+1105,Oversight and Management Efficiency,"Subcommittee on Management, Integration, and Oversight"
+1106,Transportation Security,"Subcommittee on Economic Security, Infrastructure Protection, and Cybersecurity"
+1107,DHS Management and Acquisitions,
+1108,Fusion Centers,
+1109,Weapons of Mass Destruction,
+1111,Libraries,Subcommittee on Libraries and Memorials
+1112,Printing,Subcommittee on Contracts and Printing
+1113,Subcommittee on Elections,Subcommittee on Elections
+1114,Subcommittee on Oversight,
+1121,CIA ,
+1122,Department of Defense Intelligence and Overhead Architecture,
+1123,Emerging Threats,
+1124,NSA and Cybersecurity ,
+1131,Constitution and Civil Justice,Subcommittee on Constitution
+1132,"Courts, Intellectual Property, and the Internet","Subcommittee on Courts, Civil Liberties, and the Administration of Justice"
+1133,"Crime, Terrorism, Homeland Security, and Investigations",Subcommittee on Crime and Criminal Justice
+1134,Immigration and Border Security,"Subcommittee on Immigration, Refugees, and International Law"
+1135,"Regulatory Reform, Commercial and Antitrust Law",Subcommittee on Monopolies and Commercial Law
+1136,Antitrust Task Force,
+1137," Citizenship, Refugees, Border Security, and International Law","Subcommittee on Immigration, Refugees, and International Law"
+1138,Commercial and Administrative Law,"Subcommittee on Courts, Civil Liberties, and the Administration of Justice"
+1139,"titution, Civil Rights, and Civil Liberties",Subcommittee on Constitution
+1141,Energy and Mineral Resources,Subcommittee on Energy and the Environment
+1142,Federal Lands,Subcommittee on National Parks and Public Lands
+1143,"Indian, Insular and Alaska Native Affairs",Subcommittee on Indian and Alaska Native Affairs
+1144,Oversight and Investigations,Subcommittee on General Oversight and California Desert Lands
+1145,"Water, Power and Oceans",Subcommittee on Water and Power Resources
+1146,National Parks and Public Lands,Subcommittee on National Parks and Public Lands
+1147,Subcommittee on Public Lands and Environmental Regulation,Subcommittee on National Parks and Public Lands
+1148,"Subcommittee on Fisheries, Wildlife, Oceans, and Insular Affairs",Subcommittee on Insular Affairs
+1151,"Government Management, Finance, and Accountability","Subcommittee on Government Management, Finance, and Accountability"
+1152,"Healthcare, Benefits, and Administrative Rules",
+1153,Information Technology,
+1154,Intergovernmental Relations,Subcommittee on Intergovernmental Relations and Human Resources
+1155,"Environment, Energy, and Natural Resources","Subcommittee on Environment, Energy, and Natural Resources"
+1156,National Security,Subcommittee on Legislation and National Security
+1161,Legislative and Budget Process,Subcommittee on Legislative Process
+1162,Rules and Organization of the House,Subcommittee on Rules of the House
+1171,Subcommittee on Energy,Subcommittee on Energy Development and Applications
+1172,Subcommittee on Environment,"Subcommittee on Environment, Technology, and Standards"
+1173,Investigations and Oversight,Subcommittee on Investigations and Oversight
+1174,Subcommittee on Research and Technology,"Subcommittee on Technology, Environment and Aviation"
+1175,Subcommittee on Space,Subcommittee on Space Science Applications
+1176,Subcommittee on Energy and Environment,Subcommittee on Energy and Environment
+1177,Subcommittee on Research and Science,Subcommittee on Science
+1178,Subcommittee on Technology and Innovation,"Subcommittee on Environment, Technology, and Standards"
+1179,Select Committee on Energy Independence and Global Warming ,
+1181,Energy and Agriculture,"Subcommittee on Energy, Environment, and Safety Issues Affecting Small Business"
+1182,The Subcommittee on Health and Technology ,
+1183,"Tax, Access to Equity Capital and Business Opportunities","Subcommittee on Tax, Access to Equity Capital and Business Opportunities"
+1184,Investigations and Oversight,Subcommittee on Investigations and Oversight
+1185,The Subcommittee on Contracting and Workforce ,
+1191,Aviation,Subcommittee on Aviation
+1192,Coast Guard and Maritime Transportation,Subcommittee on Coast Guard and Maritime Transportation
+1193,Public Buildings and Economic Development,Subcommittee on Public Buildings and Economic Development
+1194,Highways and Transit,Subcommittee on Highways and Transit
+1195,"Railroads, Pipelines, and Hazardous Materials",Subcommittee on Railroads
+1196,Water Resources and Environment,Subcommittee on Water Resources
+1197,Panel on Public-Private Partnerships ,
+1198,Panel on 21st Century Freight Transportation,
+1201,Disability Assistance and Memorial Affairs,Subcommittee on Disability Assistance and Memorial Affairs
+1202,Economic Opportunity,Subcommittee on Economic Opportunity
+1203,Health,Subcommittee on Hospitals and Health Care
+1204,Oversight and Investigations,Subcommittee on Oversight and Investigations
+1211,Health,Subcommittee on Health
+1212,Human Resources,Subcommittee on Public Assistance and Unemployment Compensation
+1213,Oversight,Subcommittee on Oversight
+1214,Social Security,Subcommittee on Social Security
+1215,Trade,Subcommittee on Trade
+1216,Tax Policy,
+10201,"VA, HUD, and Independent Agencies",Subcommittee on HUD-Independent Agencies
+10202,Foreign Operations,Subcommittee on Foreign Operations
+10203,Transportation and Related Agencies,Subcommittee on Transportation
+10301,Panel on Defense Acquisition Reform,
+11001,First Responder Communications,
+11002,Prevention of Nuclear and Biological Attack,Subcommittee on Prevention of Nuclear and Biological Attack
+11003,"Science, and Research and Development","Subcommittee on Cybersecurity, Science, and Research and Development"
+,,"Subcommittee on Technology, Information Policy, Intergovernmental Relations and Procurement Reform"
+,,Subcommittee on Crime
+,,"Subcommittee on Telecommunications, Consumer Protection and Finance"
+,,Subcommittee on Aviation
+,,Subcommittee on Financial Service and General Government
+,,Subcommittee on Accounts
+,,Subcommittee on Program and Budget Authorization
+,,Subcommittee on Social Security and Income Maintenance Programs
+,,Subcommittee on Coalition Defense and Reinforcing Forces
+,,"Subcommittee on Compensation, Pension and Insurance"
+,,Subcommittee on Fossil and Synthetic Fuels
+,,Subcommittee on Preparedness
+,,Subcommittee on Juvenile Justice
+,,Republican
+,,Subcommittee on East Asian and Pacific Affairs
+,,Subcommittee on Energy Regulation
+,,"Subcommittee on Oversight, Investigations and Emergency Management"
+,,Subcommittee on Legislation
+,,"Subcommittee on Regulation, Business Opportunity, and Energy"
+,,Subcommittee on Native American Affairs
+,,Subcommittee on Medicare and Long-Term Care
+,,Subcommittee on Energy Regulation and Conservation
+,,"Subcommittee on Wheat, Soybeans, and Feed Grains"
+,,Subcommittee on Regional Defense and Contingency Forces
+,,"Subcommittee on Technology, Terrorism, and Government Information"
+,,Subcommittee on Finance and Tax
+,,"Subcommittee on Resource Conservation, Research and Forestry"
+,,Subcommittee on Labor
+,,Subcommittee on Strategic and Theater Nuclear Forces
+,,Subcommittee on Infrastructure and Border Security
+,,"Subcommittee on Transportation, Housing and Urban Development, and Related Agencies"
+,,Subcommittee on Africa
+,,"Subcommittee on Education, Training and Employment"
+,,Subcommittee on Employment and Productivity
+,,Subcommittee on Immigration and Refugee Affairs
+,,Subcommittee on Immigration and Refugee Policy
+,,"Subcommittee on Patents, Copyrights and Trademarks"
+,,"Subcommittee on Commerce, Justice, and Science and Related Agencies"
+,,Subcommittee on Economic Stabilization
+,,"Subcommittee on Clean Air, Wetlands, Private Property, and Nuclear Safety"
+,,Subcommittee on Civil Service
+,,Subcommittee on Long-Term Growth and Debt Reduction
+,,Subcommittee on Federal Expenditures
+,,Subcommittee on Constitution
+,,"Subcommittee on Science, Technology, and Space"
+,,Subcommittee on Native American and Insular Affairs
+,,"Subcommittee on Forests, Family Farms, and Energy"
+,,Subcommittee on Fisheries Management
+,,"Subcommittee on Trade, Tourism, and Economic Development"
+,,Subcommittee on Private Sector and Consumer Solutions to Global Warming and Wildlife Protection
+,,Subcommittee on Emergency Preparedness and Response
+,,Subcommittee on National Ocean Policy Study
+,,Subcommittee on General Farm Commodities
+,,Subcommittee on Agency Administration
+,,Subcommittee on Interior and Related Agencies
+,,Subcommittee on Projection Forces and Regional Defense
+,,Subcommittee on Consumer Affairs
+,,Subcommittee on Personnel and Police
+,,Subcommittee on International Finance and Monetary Policy
+,,Subcommittee on Contracting Oversight (Ad Hoc)
+,,Subcommittee on Taxation and Debt Management
+,,Subcommittee on Environment and Natural Resources
+,,Subcommittee on Military Readiness and Defense Infrastructure
+,,Subcommittee on Human Rights and International Organizations
+,,Subcommittee on Employment Opportunities
+,,Subcommittee on Transportation
+,,Subcommittee on Tactical Warfare
+,,Subcommittee on Compensation and Employee Benefits
+,,"Subcommittee on Energy and Water, and Related Agencies"
+,,"Subcommittee on Compensation, Pension, Insurance, and Memorial Affairs"
+,,Subcommittee on Separation of Powers
+,,Subcommittee on Economic Growth and Credit Formation
+,,"Subcommittee on Military Construction and Veterans Affairs, and Related Agencies"
+,,Subcommittee on Alcoholism and Drug Abuse
+,,Subcommittee on Transportation
+,,"Subcommittee on Surface Transportation and Merchant Marine Infrastructure, Safety and Security"
+,,Subcommittee on District of Columbia
+,,"Subcommittee on International Trade, Investment and Monetary Policy"
+,,"Subcommittee on Government Management, Information and Technology"
+,,"Subcommittee on Oceanography, Great Lakes and the Outer Continental Shelf"
+,,Subcommittee on Merchant Marine
+,,Subcommittee on Near Eastern and South Asian Affairs
+,,Subcommittee on Water and Power Resources
+,,"Subcommittee on Rural Development, Entrepreneurship and Trade"
+,,Subcommittee on Census
+,,Subcommittee on Nuclear Regulation
+,,"Subcommittee on Transportation, Treasury, the Judiciary, and Housing and Urban Development, and Related Agencies"
+,,Subcommittee on Procurement and Military Nuclear Systems
+,,"Subcommittee on International Security, International Organizations, and Human Rights"
+,,Subcommittee on Legislative Branch
+,,"Subcommittee on Labor, Health and Human Services, Education"
+,,Subcommittee on Consumer
+,,"Subcommittee on Transportation, Aviation and Materials"
+,,Subcommittee on Merchant Marine
+,,Subcommittee on Military Construction
+,,"Subcommittee on Health Care, District of Columbia, Census and the National Archives"
+,,Subcommittee on Defense Industry and Technology
+,,Subcommittee on Export Opportunities & Special Small Business Problems
+,,Subcommittee on Government Operations and Metropolitan Affairs
+,,Subcommittee on Environment and Hazardous Materials
+,,Subcommittee on Courts
+,,Subcommittee on Sea Power and Force Projection
+,,Subcommittee on Readiness
+,,Subcommittee on Agricultural Research and General Legislation
+,,Subcommittee on Military Construction
+,,"Subcommittee on Interstate Commerce, Trade, and Tourism"
+,,Subcommittee on Public Lands and National Parks
+,,Subcommittee on Human Resources
+,,Subcommittee on Taxation and Debt Management
+,,Subcommittee on Juvenile Justice
+,,Subcommittee on Census and Population
+,,Subcommittee on Tobacco and Peanuts
+,,Subcommittee on Antitrust and Restraint of Trade Activities Affecting Small Business
+,,Subcommittee on District of Columbia
+,,"Subcommittee on Science, Technology, and Innovation"
+,,Subcommittee on National Ocean Policy Study
+,,Subcommittee on Efficiency and Effectiveness of Federal Programs and the Federal Workforce
+,,Subcommittee on Fisheries and Wildlife Conservation and the Environment
+,,Subcommittee on Forests and Forest Health
+,,"Subcommittee on Conservation, Credit, and Rural Development"
+,,Subcommittee on HUD Oversight and Structure
+,,Subcommittee on Western Hemisphere Affairs
+,,Subcommittee on Nuclear Regulation
+,,"Subcommittee on International Terrorism, Nonproliferation and Human Rights"
+,,Subcommittee on Toxic Substances and Environmental Oversight
+,,Subcommittee on Contracting and Technology
+,,Subcommittee on Transportation and Hazardous Materials
+,,"Subcommittee on Business, Trade, and Tourism"
+,,Subcommittee on Regulatory Reform
+,,"Subcommittee on Savings, Pensions and Investment Policy"
+,,Subcommittee on Ad Hoc Task Force on Presidential Pay Recommendation
+,,Subcommittee on Domestic Monetary Policy
+,,"Subcommittee on Economic Development, Public Buildings and Emergency Management"
+,,"Subcommittee on Financial Institutions Supervision, Regulation and Insurance"
+,,Subcommittee on International Economic Policy and Trade
+,,"Subcommittee on Fisheries, Wildlife and Oceans"
+,,"Subcommittee on Commerce, Trade and Consumer Protection"
+,,Subcommittee on Fiscal Affairs and Health
+,,"Subcommittee on State, Foreign Operations, and Related Programs"
+,,Subcommittee on Interior
+,,Subcommittee on Consumer Credit and Insurance
+,,Subcommittee on International Trade
+,,"Subcommittee on Civil Service, Post Office, and General Services"
+,,Subcommittee on Energy and Mineral Resources
+,,Subcommittee on Oversight of the Internal Revenue Service
+,,Subcommittee on Crime and Drugs
+,,"Subcommittee on Commerce, Trade, and Hazardous Materials"
+,,Subcommittee on Science and Space
+,,"Subcommittee on Patents, Copyrights and Trademarks"
+,,Subcommittee on Department Operations and Nutrition
+,,Subcommittee on Civil and Constitutional Rights
+,,Subcommittee on Space and Aeronautics
+,,"Subcommittee on Department Operations, Nutrition and Foreign Agriculture"
+,,Subcommittee on Communications and Technology
+,,Subcommittee on Health and Safety
+,,"Subcommittee on Elementary, Secondary, and Vocational Education"
+,,"Subcommittee on Government Efficiency, Federalism, and the District of Columbia"
+,,Subcommittee on Constitution
+,,Subcommittee on Military Installations and Facilities
+,,"Subcommittee on Telecommunications, Trade, and Consumer Protection"
+,,Subcommittee on Federal Credit Programs
+,,Subcommittee on Nutrition
+,,Subcommittee on HUD and Independent Agencies
+,,Subcommittee on International Security and Scientific Affairs
+,,"Subcommittee on Risk Management, Research and Specialty Crops"
+,,Subcommittee on Select Revenue Measures
+,,Subcommittee on Private Retirement Plans and Oversight of the Internal Revenue Service
+,,Subcommittee on Services
+,,Subcommittee on Civil Service and Agency Organization
+,,Subcommittee on Antitrust (Full Committee Task Force)
+,,Subcommittee on Technology and Competitiveness
+,,Subcommittee on Housing and Memorial Affairs
+,,Subcommittee on Technology and Procurement Policy
+,,"Subcommittee on Regulatory Affairs, Stimulus Oversight and Government Spending"
+,,Subcommittee on Water and Wildlife
+,,Subcommittee on Surface Transportation
+,,Subcommittee on Education and Early Childhood Development
+,,Subcommittee on Social Security and Family Policy
+,,"Subcommittee on Technology, Information Policy, Intergovernmental Relations and the Census"
+,,Subcommittee on Criminal Law
+,,Subcommittee on Government Programs
+,,Subcommittee on Agricultural Credit and Rural Electrification
+,,Subcommittee on Energy Research and Development
+,,Subcommittee on SeaPower
+,,"Subcommittee on Defense Technology, Acquisition, and Industrial Base"
+,,"Subcommittee on Commerce, Transportation and Tourism"
+,,"Subcommittee on Financial Management, the Budget and International Security"
+,,Subcommittee on Railroads
+,,Subcommittee on Foreign Commerce and Tourism
+,,Subcommittee on Civil Service
+,,Subcommittee on Energy Research and Production
+,,Subcommittee on Foreign Agricultural Policy
+,,Subcommittee on Energy
+,,"Subcommittee on State, Justice, Commerce, the Judiciary"
+,,Subcommittee on Health
+,,Subcommittee on Strategic Forces and Nuclear Deterrence
+,,Subcommittee on Manpower and Personnel
+,,Subcommittee on Department of Homeland Security
+,,Subcommittee on Foreign Operations
+,,Subcommittee on Securities
+,,Subcommittee on Manpower and Personnel
+,,"Subcommittee on Criminal Justice, Drug Policy and Human Resources"
+,,Subcommittee on Federalism and the Census
+,,Subcommittee on Regional and Community Development
+,,Subcommittee on Water and Power
+,,Democrat
+,,Republican-Conservative
+,,Popular Democrat
+,,AL
+,,Independent
+,,Democratic-Liberal
+,,New Progressive
+,,Conservative
+,,Ind. Democrat
+,,Democrat-Liberal
+,,United States Congress
+,,United States Senate
+,,United States House of Representatives
+,,Senate Committee on Impeachment (Special) (Hastings)
+,,House Committee on Ethics (Select)
+,,House Committee on Outer Continental Shelf (Select)
+,,Temporary Joint Committee on Deficit Reduction
+,,Senate Committee on Official Conduct (Special)
+,,House Committee on Joint Atomic Energy
+,,House Committee on Merchant Marine and Fisheries
+,,Joint Atomic Energy
+,,Commission on Security and Cooperation in Europe (Helsinki Commission)
+,,Senate Committee on Whitewater Dev Corp Investigation (Special)
+,,Temporary Joint Committee on Deficit Reduction
+,,House Committee on Internal Security
+,,House Committee on Energy (Ad Hoc)
+,,Senate Committee on POW/MIA Affairs
+,,House Committee on Post Office and Civil Service
+,,Senate Committee on District of Columbia
+,,Senate Committee on Post Office and Civil Service
+,,House Committee on District of Columbia
+,,House Select Committee on Energy Independence and Global Warming
+,,Senate Committee on Aeronautical and Space Sciences
+,,House Committee on Committees (Select)
+,,"Subcommittee on Domestic Marketing, Consumer Relations, and Nutrition"
+,,Subcommittee on Military Acquisition
+,,Subcommittee on Surface Transportation
+,,Subcommittee on Coast Guard and Navigation
+,,"Subcommittee on Science, Research and Technology"
+,,Subcommittee on Insular and International Affairs
+,,"Subcommittee on Science, Technology, and Space"
+,,Subcommittee on Panama Canal and Outer Continental Shelf
+,,Subcommittee on Oversight of Government Management
+,,Subcommittee on Security and Terrorism
+,,Subcommittee on Primary Health and Aging
+,,Subcommittee on Energy Research and Development
+,,"Subcommittee on Commerce, Consumer, and Monetary Affairs"
+,,Subcommittee on Governmental Efficiency and the District of Columbia
+,,Subcommittee on Seapower and Strategic and Critical Materials
+,,Subcommittee on Communications
+,,Subcommittee on Policy Research and Insurance
+,,Subcommittee on Postal Personnel and Modernization
+,,Subcommittee on Research and Development
+,,Subcommittee on Total Force
+,,Subcommittee on Regulations and Healthcare
+,,Subcommittee on Administrative Law and Governmental Relations
+,,Subcommittee on Transportation and Infrastructure
+,,Subcommittee on Postsecondary Education
+,,Subcommittee on Defense
+,,Subcommittee on Conventional Forces and Alliance Defense
+,,Subcommittee on Airland Forces
+,,"Subcommittee on Education, Arts and Humanities"
+,,"Subcommittee on Cotton, Rice, and Sugar"
+,,Subcommittee on Energy Conservation and Supply
+,,Subcommittee on Human Resources
+,,"Subcommittee on Treasury, Postal Service, General Government"
+,,"Subcommittee on Domestic Monetary Policy, Technology, and Economic Growth"
+,,Subcommittee on Rural Housing and Development
+,,Subcommittee on Intergovernmental Relations
+,,"Subcommittee on Terrorism, Narcotics and International Communications"
+,,"Subcommittee on Workforce, Empowerment, and Government Programs"
+,,Subcommittee on Soil and Water Conservation
+,,Subcommittee on Insular Affairs
+,,Subcommittee on Public Buildings and Grounds
+,,Subcommittee on International Monetary Policy and Trade
+,,Subcommittee on Courts and Administrative Practice
+,,Subcommittee on Mines and Mining
+,,"Subcommittee on Intellectual Property, Competition and the Internet"
+,,Subcommittee on Labor
+,,Subcommittee on District of Columbia
+,,Subcommittee on Energy and Water Development
+,,"Subcommittee on Economic Growth, Employment and Revenue Sharing"
+,,Subcommittee on Task Force on Science Policy
+,,Subcommittee on Government Efficiency and Financial Management
+,,"Subcommittee on Procurement, Tourism, and Rural Development"
+,,"Subcommittee on Department Operations, Research, and Foreign Agriculture"
+,,Subcommittee on Aging
+,,Subcommittee on European Affairs
+,,Subcommittee on Housing and Urban Affairs
+,,"Subcommittee on Natural Resources, Agricultural Research and Environment"
+,,Subcommittee on Agriculture and Related Agencies
+,,Subcommittee on Investigations and Oversight
+,,"Subcommittee on Rural Development, Oversight, and Investigations"
+,,"Subcommittee on SBA and SBIC Authority, Minority Enterprise, and General Small Business"
+,,Subcommittee on Insurance
+,,"Subcommittee on SBA, the General Economy and Minority Enterprise Development"
+,,Subcommittee on Commercial and Administrative Law
+,,Subcommittee on General Oversight
+,,Subcommittee on Finance and Hazardous Materials
+,,"Subcommittee on Departments of Labor, Health and Human Services, and Education, and Related Agencies"
+,,"Subcommittee on Agricultural Production, Marketing, and Stabilization of Prices"
+,,"Subcommittee on International Organizations, Human Rights, and Oversight"
+,,Subcommittee on Financial Institutions and Regulatory Relief
+,,Subcommittee on Specialty Crops and Natural Resources
+,,"Subcommittee on General Oversight, Northwest Power, and Forest Management"
+,,Subcommittee on Technology
+,,Subcommittee on International Operations and Human Rights
+,,Subcommittee on Europe and the Middle East
+,,Subcommittee on Energy and Agricultural Taxation
+,,"Subcommittee on Energy, Nuclear Proliferation and Government Processes"
+,,Subcommittee on Projection Forces
+,,Subcommittee on Environmental Pollution
+,,Subcommittee on Economic Development
+,,Subcommittee on Water and Power
+,,"Subcommittee on Aging, Family, and Human Services"
+,,Subcommittee on Foreign Agriculture and Hunger
+,,Subcommittee on National Parks and Recreation
+,,"Subcommittee on Competition, Foreign Commerce, and Infrastructure"
+,,"Subcommittee on Consumer Protection, Product Safety, and Insurance"
+,,Subcommittee on Manpower and Housing
+,,Subcommittee on Postal Service
+,,"Subcommittee on Early Childhood, Youth and Families"
+,,Subcommittee on Health Care
+,,"Subcommittee on Antitrust, Monopolies and Business Rights"
+,,"Subcommittee on Transportation, Treasury and General Government"
+,,"Subcommittee on Government Efficiency, Financial Management and Intergovernmental Relations"
+,,Subcommittee on Natural Resources Development and Production
+,,"Subcommittee on Forestry, Water Resources, and Environment"
+,,Subcommittee on Aging
+,,Subcommittee on Defense Acquisition Policy
+,,Subcommittee on Estate and Gift Taxation
+,,Subcommittee on Government Activities and Transportation
+,,Subcommittee on Financial Institutions
+,,Subcommittee on Military Construction
+,,Subcommittee on Judiciary and Education
+,,Subcommittee on Consumer Affairs and Coinage
+,,Subcommittee on Oversight and Investigations
+,,Subcommittee on Administrative Practice and Procedure
+,,Subcommittee on Office Systems
+,,Subcommittee on International Economic Policy
+,,"Subcommittee on Education, Arts, and Humanities"
+,,Subcommittee on Oversight of Government Management
+,,Subcommittee on Handicapped
+,,Subcommittee on African Affairs
+,,"Subcommittee on Superfund, Waste Control, and Risk Assessment"
+,,Subcommittee on Federal Workforce and Agency Organization
+,,"Subcommittee on Consumer Affairs, Product Safety, and Insurance"
+,,Subcommittee on Rural Economy and Family Farming
+,,Subcommittee on Oceanography
+,,Subcommittee on Water Resources
+,,Subcommittee on International Development Institutions and Finance
+,,Subcommittee on Innovation and Technology
+,,Subcommittee on Federal Spending Oversight and Emergency Management
+,,Subcommittee on International Scientific Cooperation
+,,Subcommittee on Ground Transportation
+,,Subcommittee on Rules and Organization of the House
+,,Subcommittee on Criminal Justice
+,,"Subcommittee on Oceans, Atmosphere, Fisheries, and Coast Guard"
+,,"Subcommittee on Education, Training, Employment and Housing"
+,,Subcommittee on Environment and the Economy
+,,Subcommittee on Labor Standards
+,,"Subcommittee on Nuclear Deterrence, Arms Control, and Defense Intelligence"
+,,Subcommittee on Disaster Recovery (Ad Hoc)
+,,Subcommittee on Government Information and Individual Rights
+,,"Subcommittee on Census, Statistics and Postal Personnel"
+,,Subcommittee on Health and Environment
+,,Subcommittee on International Operations
+,,Subcommittee on Postal Operations and Services
+,,"Subcommittee on Drinking Water, Fisheries, and Wildlife"
+,,Subcommittee on and Federal Management
+,,"Subcommittee on Public Lands, Reserved Water and Resource Conservation"
+,,"Subcommittee on General Farm Commodities, Resource Conservation and Credit"

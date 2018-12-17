@@ -21,4 +21,5 @@ class WitnessDetails(models.Model):
 
 class Committee(models.Model):
     lugar_id = models.IntegerField(null=True, blank=True, primary_key=False)
-    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    lugar_name = models.CharField(max_length=200, null=True, blank=True, primary_key=False)
+    organization = models.ForeignKey(Organization, null=True, blank=True, on_delete=models.CASCADE)

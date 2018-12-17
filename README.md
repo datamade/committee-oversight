@@ -35,9 +35,9 @@ Perform the following steps from your terminal.
 
 5. Start a `hearings` database with a scrape from the [hearings repo](https://github.com/datamade/hearings) or a data dump from a pal. If you're following the latter path and have a `hearings.dump` file in the root of this project, restore it by running:
 
-  ```bash
-  pg_restore -C -j4 --no-owner hearings.dump | psql
-  ```
+    ```bash
+    pg_restore -C -j4 --no-owner hearings.dump | psql
+    ```
 
 6. Run migrations:
 

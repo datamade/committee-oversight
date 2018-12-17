@@ -3,18 +3,28 @@ import csv
 
 from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.db import IntegrityError
 from django.db.models import Q
 
 from opencivicdata.core.models import Organization, OrganizationName
-from opencivicdata.legislative.models import Event, EventSource
+from opencivicdata.legislative.models import Event, EventSource, EventParticipant
 from committeeoversightapp.models import HearingCategory, Committee
 
 jurisdiction_id = 'ocd-jurisdiction/country:us/legislature'
 bad_rows = []
 
-# organization = Organization.objects.filter(Q(name__icontains=committee_name) | Q(other_names__name__icontains=committee_name))[0]
+def new_committee(committee_key, event, row_count):
+    try:
+        name = Committee.objects.get(lugar_id=committee_key).organization.name
+        organization = Committee.objects.get(lugar_id=committee_key).organization
+        entity_type = "organization"
+        committee, created = EventParticipant.objects.get_or_create(name=name, event=event, organization=organization, entity_type=entity_type)
+
+    except (ObjectDoesNotExist, AttributeError, ValueError) as e:
+        bad_rows.append("Row " + str(row_count) + ": Bad committee key " + committee_key)
+
 
 class Command(BaseCommand):
     help = "Import Lugar spreadsheets data"
@@ -23,20 +33,24 @@ class Command(BaseCommand):
 
         # Create commmittees from key
         self.stdout.write(str(datetime.now()) + ': Creating House committees from key...')
+        bad_rows.append("House Committees\n")
         self.add_house_committees()
         self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': House committees imported successfully!'))
 
         self.stdout.write(str(datetime.now()) + ': Creating Senate committees from key...')
+        bad_rows.append("\nSenate Committees\n")
         self.add_senate_committees()
         self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': Senate committees imported successfully!'))
 
         # Create hearings
         self.stdout.write(str(datetime.now()) + ': Creating database entries for the House...')
+        bad_rows.append("\nHouse Hearings\n")
         self.add_house_hearings()
         self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': House hearings imported successfully!'))
 
 
         self.stdout.write(str(datetime.now()) + ': Creating database entries for the Senate...')
+        bad_rows.append("\nSenate Hearings\n")
         self.add_senate_hearings()
         self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': Senate hearings imported successfully!'))
 
@@ -73,11 +87,10 @@ class Command(BaseCommand):
                                 organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=parent, classification=classification) |
                                             Q(other_names__name__icontains=committee_name, parent=parent, classification=classification))[0]
 
-                            new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, organization=organization)
-                            self.stdout.write(self.style.SUCCESS("Successfully created " + committee_name + " as " + new_committee.organization.name + " with parent " + parent.name))
+                            new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
                     except IndexError:
-                        self.stdout.write(self.style.ERROR("No committee entry found in database for " + committee_name))
-                        bad_rows.append("Missing from House: " + committee_name + " (" + committee_key + ")" )
+                        new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
+                        bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
 
     def add_senate_committees(self):
         senate = Organization.objects.get(name="United States Senate")
@@ -94,11 +107,11 @@ class Command(BaseCommand):
                     organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=senate, classification=classification) |
                                 Q(other_names__name__icontains=committee_name, parent=senate, classification=classification))[0]
 
-                    new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, organization=organization)
+                    new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
 
                 except IndexError:
-                    self.stdout.write(self.style.ERROR("No committee entry found in database for " + committee_name))
-                    bad_rows.append("Missing from Senate: " + committee_name + " (" + committee_key + ")" )
+                    new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
+                    bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
 
     def add_house_hearings(self):
         with open('data/final/house.csv', 'r') as csvfile:
@@ -111,7 +124,10 @@ class Command(BaseCommand):
                 start_date = row['Date']
                 name = row['Hearing/Report']
                 classification = row['Type']
-                committees = [row['Committee1'], row['Committee1'], row['Subcommittee'], row['Subcommittee2']]
+                committee1 = row['Committee1']
+                committee2 = row['Committee2']
+                subcommittee1 = row['Subcommittee']
+                subcommittee2 = row['Subcommittee2']
                 category = row['Category1']
 
                 if name:
@@ -121,15 +137,23 @@ class Command(BaseCommand):
                                     start_date = start_date,
                                     classification = classification)
 
-                    if created:
+                    # save committee1 data
+                    if committee1 and not subcommittee1:
+                        new_committee(committee1, event, row_count)
+                    elif subcommittee1 == (committee1 + str(0)):
+                        new_committee(committee1, event, row_count)
+                    elif committee1:
+                        new_committee(subcommittee1, event, row_count)
 
-                        # save committee data
-                        # for committee_key in committees:
-                        #     name = Committee.objects.get(lugar_id=committee_key).organization.name
-                        #     organization = Committee.objects.get(lugar_id=committee_key).organization
-                        #     entity_type = "organization"
-                        #     committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
-                        #     committee.save()
+                    # save committee2 data
+                    if committee2 and not subcommittee2:
+                        new_committee(committee2, event, row_count)
+                    elif committee2 and subcommittee2 == (committee2 + str(0)):
+                        new_committee(committee2, event, row_count)
+                    elif committee2:
+                        new_committee(subcommittee2, event, row_count)
+
+                    if created:
 
                         # save event source
                         source = EventSource(event=event, note="spreadsheet", url=source)
@@ -140,8 +164,7 @@ class Command(BaseCommand):
                             category = HearingCategory(event=event, category_id=category)
                             category.save()
                         except IntegrityError:
-                            self.stdout.write(self.style.ERROR("Unrecognized category on House row " + str(row_count) + ": " + event.name))
-                            bad_rows.append("Unrecognized category on House row " + str(row_count) + ": " + event.name)
+                            bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category.category_id + " on " + event.name)
 
                     row_count += 1
 
@@ -165,11 +188,14 @@ class Command(BaseCommand):
                                     name = name,
                                     start_date = start_date,
                                     classification = classification)
+
+
+                    # save committee data
+                    for committee in committees:
+                        if committee:
+                            new_committee(committee, event, row_count)
+
                     if created:
-
-                        # save committee data (TK)
-                        # for committee in committees:
-
                         # save event source
                         source = EventSource(event=event, note="spreadsheet", url=source)
                         source.save()
@@ -179,7 +205,6 @@ class Command(BaseCommand):
                             category = HearingCategory(event=event, category_id=category)
                             category.save()
                         except IntegrityError:
-                            self.stdout.write(self.style.ERROR("Unrecognized category on House row " + str(row_count) + ": " + event.name))
-                            bad_rows.append("Unrecognized category on Senate row " + str(row_count) + ": " + event.name)
+                            bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category.category_id + " on " + event.name)
 
                     row_count += 1
