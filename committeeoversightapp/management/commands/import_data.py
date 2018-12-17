@@ -77,7 +77,7 @@ class Command(BaseCommand):
                             self.stdout.write(self.style.SUCCESS("Successfully created " + committee_name + " as " + new_committee.organization.name + " with parent " + parent.name))
                     except IndexError:
                         self.stdout.write(self.style.ERROR("No committee entry found in database for " + committee_name))
-                        bad_rows.append("No House committee entry found in database for " + committee_name + " (" + committee_key + ")" )
+                        bad_rows.append("Missing from House: " + committee_name + " (" + committee_key + ")" )
 
     def add_senate_committees(self):
         senate = Organization.objects.get(name="United States Senate")
@@ -98,7 +98,7 @@ class Command(BaseCommand):
 
                 except IndexError:
                     self.stdout.write(self.style.ERROR("No committee entry found in database for " + committee_name))
-                    bad_rows.append("No Senate committee entry found in database for " + committee_name + " (" + committee_key + ")" )
+                    bad_rows.append("Missing from Senate: " + committee_name + " (" + committee_key + ")" )
 
     def add_house_hearings(self):
         with open('data/final/house.csv', 'r') as csvfile:
