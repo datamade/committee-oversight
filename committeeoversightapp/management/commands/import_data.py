@@ -14,6 +14,8 @@ from committeeoversightapp.models import HearingCategory, Committee
 jurisdiction_id = 'ocd-jurisdiction/country:us/legislature'
 bad_rows = []
 
+# organization = Organization.objects.filter(Q(name__icontains=committee_name) | Q(other_names__name__icontains=committee_name))[0]
+
 class Command(BaseCommand):
     help = "Import Lugar spreadsheets data"
 
@@ -46,7 +48,7 @@ class Command(BaseCommand):
     def add_house_committees(self):
         house = Organization.objects.get(name="United States House of Representatives")
 
-        with open('data/final/house_committees.csv', 'r') as csvfile:
+        with open('data/final/house_committees_edited.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
 
             for row in reader:
@@ -56,7 +58,7 @@ class Command(BaseCommand):
 
                 if committee_key:
                     try:
-                        if committee_name == "Full Committee":
+                        if committee_name == "Full Committee" or committee_name == "Full Commission":
                             pass
                         else:
                             if len(committee_key) == 3:
@@ -80,7 +82,7 @@ class Command(BaseCommand):
     def add_senate_committees(self):
         senate = Organization.objects.get(name="United States Senate")
 
-        with open('data/final/senate_committees.csv', 'r') as csvfile:
+        with open('data/final/senate_committees_edited.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
 
             for row in reader:

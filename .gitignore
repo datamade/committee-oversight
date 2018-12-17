@@ -8,3 +8,4 @@ local_settings.py
 /configs/committee-oversight-staging.conf.nginx
 /configs/committee-oversight-staging.conf.supervisor
 hearings.dump
+scratch.sql

@@ -23,7 +23,6 @@ No House committee entry found in database for Subcommittee on Workforce Protect
 No House committee entry found in database for Digital Commerce and Consumer Protections (1062)
 No House committee entry found in database for Energy and Commerce (1067)
 No House committee entry found in database for Capital Markets, Securities, and Investment (1081)
-No House committee entry found in database for Terrorism and Illicit Finance (1086)
 No House committee entry found in database for Africa, Global Health, Global Human Rights, and International Organizations (1091)
 No House committee entry found in database for Border and Martime Security (1101)
 No House committee entry found in database for Cybersecurity and Infrastructure Protection (1103)
@@ -65,7 +64,6 @@ No House committee entry found in database for Health (1203)
 No House committee entry found in database for Oversight and Investigations (1204)
 No House committee entry found in database for Tax Policy (1216)
 No House committee entry found in database for Congressional Executive Commission on China (122)
-No House committee entry found in database for Full Commission (1220)
 No Senate committee entry found in database for United States Senate Caucus on International Narcotics Control (220)
 Unrecognized category on Senate row 195: Press Conference: Introduction of the Federal Water Quality Protection Act 
 Unrecognized category on Senate row 2009: House/Senate Conference H.R. 4173, WALL STREET REFORM LEGISLATION 
