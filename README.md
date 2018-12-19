@@ -33,7 +33,7 @@ Perform the following steps from your terminal.
     cp committeeoversight/local_settings.example.py committeeoversight/local_settings.py
     ```
 
-5. Start a `hearings` database with a scrape from the [hearings repo](https://github.com/datamade/hearings) or a data dump from a pal. If you're following the latter path and have a `hearings.dump` file in the root of this project, restore it by running:
+5. Start a `hearings` database with a scrape from the [hearings repo](https://github.com/datamade/hearings) or a data dump from a pal. If you're following the latter path and have an archival format `hearings.dump` file (see [documentation](https://www.postgresql.org/docs/10/app-pgrestore.html)) in the root of this project, restore it by running:
 
     ```bash
     pg_restore -C -j4 --no-owner hearings.dump | psql

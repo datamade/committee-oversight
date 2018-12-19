@@ -121,7 +121,7 @@ class Command(BaseCommand):
             for row in reader:
 
                 source = row['source']
-                start_date = row['Date']
+                start_date = row['Date'].split('T', 1)[0]
                 name = row['Hearing/Report']
                 classification = row['Type']
                 committee1 = row['Committee1']
@@ -176,7 +176,7 @@ class Command(BaseCommand):
             for row in reader:
 
                 source = row['source']
-                start_date = row['Date']
+                start_date = row['Date'].split('T', 1)[0]
                 name = row['Hearing/Report']
                 classification = row['Type']
                 committees = [row['Committee1'], row['Committee2']]

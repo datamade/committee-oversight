@@ -780,3 +780,394 @@ Row 6506: Unrecognized category  on Listening Session on Testing the Website
 Row 8262: Unrecognized category 14 on “Connecting Businesses with Contracts Procurement Conference” 
 Row 8310: Unrecognized category 14 on PRESS CONFERENCE: VA MISSION Act 
 Row 8354: Unrecognized category 14 on Press Conference: Veterans First Act 
+House Committees
+
+Not recognized: 1038, Panel on Business Challenges within the Defense Industry
+Not recognized: 1039, Panel on Defense Financial Management and Auditability Reform
+Not recognized: 10301, Panel on Defense Acquisition Reform
+Not recognized: 1062, Digital Commerce and Consumer Protections
+Not recognized: 1067, Energy and Commerce
+Not recognized: 1107, DHS Management and Acquisitions
+Not recognized: 1108, Fusion Centers
+Not recognized: 1109, Weapons of Mass Destruction
+Not recognized: 11001, First Responder Communications
+Not recognized: 1114, Subcommittee on Oversight
+Not recognized: 1121, CIA 
+Not recognized: 1122, Department of Defense Intelligence and Overhead Architecture
+Not recognized: 1123, Emerging Threats
+Not recognized: 1124, NSA and Cybersecurity 
+Not recognized: 1136, Antitrust Task Force
+Not recognized: 1152, Healthcare, Benefits, and Administrative Rules
+Not recognized: 1153, Information Technology
+Not recognized: 1179, Select Committee on Energy Independence and Global Warming 
+Not recognized: 1182, The Subcommittee on Health and Technology 
+Not recognized: 1185, The Subcommittee on Contracting and Workforce 
+Not recognized: 1197, Panel on Public-Private Partnerships 
+Not recognized: 1198, Panel on 21st Century Freight Transportation
+Not recognized: 1216, Tax Policy
+Not recognized: 122, Congressional Executive Commission on China
+
+Senate Committees
+
+
+House Hearings
+
+Row 8: Bad committee key 1122
+Row 9: Bad committee key 1123
+Row 13: Bad committee key 1121
+Row 14: Bad committee key 1121
+Row 15: Bad committee key 1122
+Row 16: Bad committee key 1122
+Row 18: Bad committee key 1122
+Row 19: Bad committee key 1124
+Row 20: Bad committee key 1125
+Row 25: Bad committee key 1122
+Row 27: Bad committee key 1122
+Row 28: Bad committee key 1122
+Row 29: Bad committee key 1124
+Row 30: Bad committee key 1123
+Row 34: Bad committee key 1122
+Row 36: Bad committee key 1122
+Row 38: Bad committee key 1123
+Row 39: Bad committee key 1122
+Row 40: Bad committee key 1122
+Row 41: Bad committee key 1122
+Row 43: Bad committee key 1124
+Row 45: Bad committee key 1121
+Row 47: Bad committee key 1124
+Row 48: Bad committee key 1122
+Row 90: Bad committee key 1017?
+Row 113: Bad committee key 1182
+Row 114: Bad committee key 1182
+Row 117: Bad committee key 1185
+Row 303: Bad committee key 1062
+Row 308: Bad committee key 1062
+Row 309: Bad committee key 1062
+Row 313: Bad committee key 1062
+Row 317: Bad committee key 1062
+Row 572: Bad committee key 1062
+Row 574: Bad committee key 1062
+Row 582: Bad committee key 1062
+Row 583: Bad committee key 1062
+Row 584: Bad committee key 1062
+Row 598: Bad committee key 1062
+Row 599: Bad committee key 1062
+Row 600: Bad committee key 1062
+Row 603: Bad committee key 1062
+Row 606: Bad committee key 1062
+Row 607: Bad committee key 1062
+Row 609: Bad committee key 1062
+Row 612: Bad committee key 1062
+Row 614: Bad committee key 1062
+Row 615: Bad committee key 1062
+Row 616: Bad committee key 1062
+Row 618: Bad committee key 1062
+Row 621: Bad committee key 1062
+Row 626: Bad committee key 1062
+Row 628: Bad committee key 1062
+Row 629: Bad committee key 1068
+Row 632: Bad committee key 1062
+Row 633: Bad committee key 1062
+Row 634: Bad committee key 1068
+Row 636: Bad committee key 1062
+Row 638: Bad committee key 1062
+Row 639: Bad committee key 1062
+Row 641: Bad committee key 1062
+Row 642: Bad committee key 1062
+Row 645: Bad committee key 1062
+Row 649: Bad committee key 1062
+Row 654: Bad committee key 1062
+Row 659: Bad committee key 1062
+Row 661: Bad committee key 1062
+Row 666: Bad committee key 1062
+Row 668: Bad committee key 1062
+Row 682: Bad committee key 1062
+Row 684: Bad committee key 1062
+Row 686: Bad committee key 1062
+Row 689: Bad committee key 1062
+Row 690: Bad committee key 1062
+Row 695: Bad committee key 1062
+Row 697: Bad committee key 1062
+Row 698: Bad committee key 1062
+Row 699: Bad committee key 1062
+Row 700: Bad committee key 1062
+Row 701: Bad committee key 1062
+Row 706: Bad committee key 1062
+Row 708: Bad committee key 1062
+Row 709: Bad committee key 1062
+Row 716: Bad committee key 1062
+Row 721: Bad committee key 1062
+Row 727: Bad committee key 1062
+Row 729: Bad committee key 1062
+Row 736: Bad committee key 1062
+Row 740: Bad committee key 1062
+Row 741: Bad committee key 1062
+Row 745: Bad committee key 1062
+Row 748: Bad committee key 1062
+Row 753: Bad committee key 1062
+Row 754: Bad committee key 1062
+Row 759: Bad committee key 1062
+Row 763: Bad committee key 1062
+Row 777: Bad committee key 1062
+Row 785: Bad committee key 1062
+Row 786: Bad committee key 1062
+Row 787: Bad committee key 1062
+Row 791: Bad committee key 1062
+Row 793: Bad committee key 1062
+Row 798: Bad committee key 1062
+Row 799: Bad committee key 1062
+Row 1392: Bad committee key 1125
+Row 1419: Bad committee key 1040
+Row 1424: Bad committee key 1040
+Row 1425: Bad committee key 1040
+Row 1426: Bad committee key 1040
+Row 1430: Bad committee key 1040
+Row 1453: Bad committee key 1040
+Row 1455: Bad committee key 1040
+Row 1479: Bad committee key 1152
+Row 1480: Bad committee key 1153
+Row 1482: Bad committee key 1152
+Row 1483: Bad committee key 1153
+Row 1485: Bad committee key 1153
+Row 1488: Bad committee key 1153
+Row 1489: Bad committee key 1153
+Row 1695: Bad committee key 1182
+Row 1697: Bad committee key 1182
+Row 1720: Bad committee key 1185
+Row 1723: Bad committee key 1185
+Row 1725: Bad committee key 1185
+Row 1727: Bad committee key 1182
+Row 1735: Bad committee key 1185
+Row 1736: Bad committee key 1182
+Row 1744: Bad committee key 1185
+Row 1750: Bad committee key 1182
+Row 1756: Bad committee key 1182
+Row 1813: Bad committee key 1197
+Row 1817: Bad committee key 1197
+Row 1824: Bad committee key 1198
+Row 1825: Bad committee key 1198
+Row 1868: Bad committee key 1198
+Row 1871: Bad committee key 1198
+Row 1906: Bad committee key 1198
+Row 1909: Bad committee key 1198
+Row 1929: Bad committee key 1216
+Row 1933: Bad committee key 1216
+Row 1940: Bad committee key 1216
+Row 1941: Bad committee key 1216
+Row 1988: Bad committee key 1216
+Row 2003: Bad committee key 1216
+Row 2007: Bad committee key 1216
+Row 2011: Bad committee key 1216
+Row 2040: Bad committee key 1216
+Row 2053: Bad committee key 1216
+Row 2062: Bad committee key 1216
+Row 2073: Bad committee key 1216
+Row 2082: Bad committee key 122
+Row 2083: Bad committee key 122
+Row 2084: Bad committee key 122
+Row 2085: Bad committee key 122
+Row 2086: Bad committee key 122
+Row 2087: Bad committee key 122
+Row 2088: Bad committee key 122
+Row 2089: Bad committee key 122
+Row 2090: Bad committee key 122
+Row 2091: Bad committee key 122
+Row 2092: Bad committee key 122
+Row 2093: Bad committee key 122
+Row 2094: Bad committee key 122
+Row 2095: Bad committee key 122
+Row 2096: Bad committee key 122
+Row 2097: Bad committee key 122
+Row 2098: Bad committee key 122
+Row 2099: Bad committee key 122
+Row 2100: Bad committee key 122
+Row 2101: Bad committee key 122
+Row 2102: Bad committee key 122
+Row 2103: Bad committee key 122
+Row 2104: Bad committee key 122
+Row 2105: Bad committee key 122
+Row 2106: Bad committee key 122
+Row 2107: Bad committee key 122
+Row 2108: Bad committee key 122
+Row 2109: Bad committee key 122
+Row 2110: Bad committee key 122
+Row 2111: Bad committee key 122
+Row 2112: Bad committee key 122
+Row 2113: Bad committee key 122
+Row 2114: Bad committee key 122
+Row 2115: Bad committee key 122
+Row 2116: Bad committee key 122
+Row 2117: Bad committee key 122
+Row 2118: Bad committee key 122
+Row 2119: Bad committee key 122
+Row 2120: Bad committee key 122
+Row 2121: Bad committee key 122
+Row 2127: Bad committee key 1062
+Row 2130: Bad committee key 1062
+Row 2131: Bad committee key 1062
+Row 2136: Bad committee key 1062
+Row 2273: Bad committee key 1040
+Row 2283: Bad committee key 1040
+Row 2288: Bad committee key 1040
+Row 2294: Bad committee key 1152
+Row 2334: Bad committee key 1185
+Row 2340: Bad committee key 1185
+Row 2341: Bad committee key 1185
+Row 2344: Bad committee key 1182
+Row 2347: Bad committee key 1185
+Row 2352: Bad committee key 1185
+Row 2354: Bad committee key 1185
+Row 2590: Bad committee key 1062
+Row 2597: Bad committee key 1062
+Row 2628: Bad committee key 1062
+Row 2657: Bad committee key 1062
+Row 2668: Bad committee key 1062
+Row 2681: Bad committee key 1062
+Row 2684: Bad committee key 1062
+Row 2695: Bad committee key 1062
+Row 2697: Bad committee key 1062
+Row 2735: Bad committee key 1062
+Row 2765: Bad committee key 1062
+Row 2786: Bad committee key 1062
+Row 2789: Bad committee key 1062
+Row 2812: Bad committee key 1062
+Row 2817: Bad committee key 1062
+Row 2828: Bad committee key 1062
+Row 2856: Bad committee key 1062
+Row 2871: Bad committee key 1062
+Row 2876: Bad committee key 1062
+Row 2879: Bad committee key 1062
+Row 2882: Bad committee key 1062
+Row 2883: Bad committee key 1062
+Row 2887: Bad committee key 1062
+Row 2888: Bad committee key 1062
+Row 2889: Bad committee key 1062
+Row 2890: Bad committee key 1062
+Row 2892: Bad committee key 1062
+Row 2895: Bad committee key 1062
+Row 2899: Bad committee key 1062
+Row 2900: Bad committee key 1062
+Row 2901: Bad committee key 1062
+Row 2902: Bad committee key 1062
+Row 3448: Bad committee key 1107
+Row 3470: Bad committee key 1040
+Row 3496: Bad committee key 1040
+Row 3499: Bad committee key 1040
+Row 3505: Bad committee key 1040
+Row 3506: Bad committee key 1040
+Row 3510: Bad committee key 1040
+Row 3515: Bad committee key 1040
+Row 3537: Bad committee key 1153
+Row 3546: Bad committee key 1153
+Row 3553: Bad committee key 1153
+Row 3709: Bad committee key 1062
+Row 3733: Bad committee key 1062
+Row 3803: Bad committee key 1185
+Row 3807: Bad committee key 1185
+Row 3812: Bad committee key 1185
+Row 3823: Bad committee key 1185
+Row 3829: Bad committee key 1185
+Row 3835: Bad committee key 1185
+Row 3839: Bad committee key 1185
+Row 3841: Bad committee key 1185
+Row 3843: Bad committee key 1182
+Row 3849: Bad committee key 1185
+Row 3855: Bad committee key 1185
+Row 3856: Bad committee key 1185
+Row 3863: Bad committee key 1185
+Row 3864: Bad committee key 1185
+Row 3865: Bad committee key 1182
+Row 3870: Bad committee key 1185
+Row 3872: Bad committee key 1185
+Row 4067: Bad committee key 1216
+Row 4134: Bad committee key 1216
+Row 4164: Bad committee key 1216
+Row 4166: Bad committee key 1216
+Row 4330: Bad committee key 1062
+Row 4333: Bad committee key 1062
+Row 4356: Bad committee key 1062
+Row 4371: Bad committee key 1062
+Row 4392: Bad committee key 1062
+Row 4398: Bad committee key 1062
+Row 4403: Bad committee key 1062
+Row 4421: Bad committee key 1062
+Row 4428: Bad committee key 1062
+Row 4429: Bad committee key 1062
+Row 4443: Bad committee key 1062
+Row 4444: Bad committee key 1062
+Row 4457: Bad committee key 1062
+Row 4458: Bad committee key 1062
+Row 4463: Bad committee key 1062
+Row 4473: Bad committee key 1062
+Row 4482: Bad committee key 1062
+Row 4486: Bad committee key 1062
+Row 4491: Bad committee key 1062
+Row 4508: Bad committee key 1062
+Row 4517: Bad committee key 1062
+Row 4526: Bad committee key 1062
+Row 4532: Bad committee key 1062
+Row 4536: Bad committee key 1062
+Row 4537: Bad committee key 1062
+Row 4539: Bad committee key 1062
+Row 4542: Bad committee key 1062
+Row 4545: Bad committee key 1062
+Row 4546: Bad committee key 1062
+Row 4548: Bad committee key 1062
+Row 4549: Bad committee key 1062
+Row 4551: Bad committee key 1062
+Row 4553: Bad committee key 1062
+Row 4570: Bad committee key 1062
+Row 4571: Bad committee key 1062
+Row 4578: Bad committee key 1062
+Row 4771: Bad committee key 1040
+Row 4777: Bad committee key 1040
+Row 4822: Bad committee key 1040
+Row 4861: Bad committee key 1152
+Row 5441: Bad committee key 1216
+Row 5442: Bad committee key 1216
+Row 5443: Bad committee key 1216
+Row 5449: Bad committee key 1216
+Row 5453: Bad committee key 1216
+Row 5456: Bad committee key 1216
+Row 5458: Bad committee key 1216
+Row 5461: Bad committee key 1216
+Row 5462: Bad committee key 1216
+
+Senate Hearings
+
+Row 195: Unrecognized category 14 on Press Conference: Introduction of the Federal Water Quality Protection Act 
+Row 2009: Unrecognized category 14 on House/Senate Conference H.R. 4173, WALL STREET REFORM LEGISLATION 
+Row 2011: Unrecognized category 14 on House/Senate Conference H.R. 4173/S. 3217, WALL STREET REFORM LEGISLATION
+Row 2012: Unrecognized category 14 on House/Senate Conference H.R. 4173/S. 3217, WALL STREET REFORM LEGISLATION 
+Row 2013: Unrecognized category 14 on House/Senate Conference H.R. 4173/S. 3217, WALL STREET REFORM LEGISLATION 
+Row 2014: Unrecognized category 14 on House/Senate Conference H.R. 4173/S. 3217, WALL STREET REFORM LEGISLATION 
+Row 2018: Unrecognized category 14 on House-Senate Conference Meeting on the Comprehensive Iran Sanctions, Accountability, and Divestment Act (S.2799 and H.R. 2194)
+Row 2618: Unrecognized category  on Live Briefing with Astronaut Onboard International Space Station
+Row 3682: Unrecognized category 14 on PRESS CONFERENCE: Senator Boxer to Hold Press Conference on Murkowski Proposal to Overturn EPA Global Warming Endangerment Finding
+Row 3683: Unrecognized category 14 on PRESS CONFERENCE: Senator Boxer to Deliver Remarks on Copenhagen and Climate Change
+Row 3688: Unrecognized category 14 on Press Conference: Senator Boxer and Transportation Officials to Discuss Opportunities for Job Creation
+Row 3689: Unrecognized category  on FULL COMMITTEE TRANSPORTATION BRIEFING
+Row 3850: Unrecognized category 14 on Conference Committee on H.R. 644, the Trade Facilitation and Trade Enforcement Act of 2015 
+Row 4013: Unrecognized category 14 on Conference Committee on H.R. 3630: Temporary Payroll Tax Cut Continuation Act of 2011 
+Row 4015: Unrecognized category 14 on Conference Committee on H.R. 3630: Temporary Payroll Tax Cut Continuation Act of 2011 
+Row 4016: Unrecognized category 14 on Conference Committee on H.R. 3630: Temporary Payroll Tax Cut Continuation Act of 2011 
+Row 4327: Unrecognized category 14 on Commemorative Event: “Inside Syria’s Torture Machine” 
+Row 5792: Unrecognized category 0 on Press Conference : PRESS CONFERENCE: America’s Foster Youth at Risk: Addressing a Broken System 
+Row 5914: Unrecognized category 0 on Press Conference : Press conference: Cosponsors Discuss revised Cybersecurity Act, S.3414, and the concessions made to win support for legislation to address a threat that is well upon us 
+Row 5935: Unrecognized category 0 on Press Conference : Lead Sponsors Hold Media Availability on Postal Reform Bill 
+Row 6262: Unrecognized category  on Voting Rights, Access, and Barriers in Indian Country (webcast)
+Row 6263: Unrecognized category  on School Infrastructure Needs in Indian Country: Examining Opportunities for Success
+Row 6277: Unrecognized category  on A Listening Session on "Tribal Higher Education Priorities"
+Row 6280: Unrecognized category  on A Listening Session on "Addressing Gaps in Protections and Services for Native Women"
+Row 6281: Unrecognized category  on Roundtable on "Advancing Native Food Traditions in Indian Country"
+Row 6285: Unrecognized category  on Roundtable on "Confronting the Crisis: the Opioid Epidemic in Indian Country"
+Row 6292: Unrecognized category  on Roundtable on “Best Practices in Tribal Consultation and Stakeholder Engagement: Federal Permitting and Infrastructure Project Review in Indian Country.” 
+Row 6309: Unrecognized category  on Roundtable Discussion on "Building Native America Together: Infrastructure Innovation and Improvements for the New Administration and Indian Country." (Live Webcast)
+Row 6375: Unrecognized category  on Roundtable Discussion on "The Carcieri v. Salazar Supreme Court Decision and Exploring a Way Forward." Wednesday, March 25, 2015, 2:30 PM (EST)
+Row 6383: Unrecognized category  on Listening Session on "The President's FY 2016 Budget Request for Indian Programs."
+Row 6384: Unrecognized category  on Listening Session on "The President's FY 2016 Budget Request for Indian Programs."
+Row 6385: Unrecognized category  on Listening Session on "The President's FY 2016 Budget Request for Indian Programs."
+Row 6506: Unrecognized category  on Listening Session on Testing the Website
+Row 8262: Unrecognized category 14 on “Connecting Businesses with Contracts Procurement Conference” 
+Row 8310: Unrecognized category 14 on PRESS CONFERENCE: VA MISSION Act 
+Row 8354: Unrecognized category 14 on Press Conference: Veterans First Act 
