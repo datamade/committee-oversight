@@ -72,9 +72,11 @@ class Command(BaseCommand):
 
                 if committee_key:
                     try:
+                        # ignore subcommittees that are actually a full committee meeting
                         if committee_name == "Full Committee" or committee_name == "Full Commission":
                             pass
                         else:
+                            # full committees are three digits
                             if len(committee_key) == 3:
                                 parent = house
 
