@@ -15,6 +15,17 @@ from committeeoversightapp.models import HearingCategory, Committee
 jurisdiction_id = 'ocd-jurisdiction/country:us/legislature'
 bad_rows = []
 
+def get_committee(committee_name, parent):
+    classification = "committee"
+    organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=parent, classification=classification) |
+                Q(other_names__name__icontains=committee_name, parent=parent, classification=classification))
+    if organization.count() == 1:
+        return organization[0]
+    elif organization.count() == 0:
+        return IndexError
+    else:
+        return ValueError
+
 def new_committee(committee_key, event, row_count):
     try:
         name = Committee.objects.get(lugar_id=committee_key).organization.name
@@ -24,7 +35,6 @@ def new_committee(committee_key, event, row_count):
 
     except (ObjectDoesNotExist, AttributeError, ValueError) as e:
         bad_rows.append("Row " + str(row_count) + ": Bad committee key " + committee_key)
-
 
 class Command(BaseCommand):
     help = "Import Lugar spreadsheets data"
@@ -79,20 +89,16 @@ class Command(BaseCommand):
                             # full committees are three digits
                             if len(committee_key) == 3:
                                 parent = house
-
-                                organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=parent, classification=classification) |
-                                            Q(other_names__name__icontains=committee_name, parent=parent, classification=classification))[0]
-
+                                organization = get_committee(committee_name, parent)
                                 parent = organization
-
                             else:
-                                organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=parent, classification=classification) |
-                                            Q(other_names__name__icontains=committee_name, parent=parent, classification=classification))[0]
-
+                                organization = get_committee(committee_name, parent)
                             new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
                     except IndexError:
                         new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
                         bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
+                    except ValueError:
+                        bad_rows.append("Multiple possible committees for " + committee_key + ": " + committee_name)
 
     def add_senate_committees(self):
         senate = Organization.objects.get(name="United States Senate")
@@ -106,14 +112,13 @@ class Command(BaseCommand):
                 classification = "committee"
 
                 try:
-                    organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=senate, classification=classification) |
-                                Q(other_names__name__icontains=committee_name, parent=senate, classification=classification))[0]
-
+                    organization = get_committee(committee_name, senate)
                     new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
-
                 except IndexError:
                     new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
                     bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
+                except ValueError:
+                    bad_rows.append("Multiple possible committees for" + committee_key + ": " + committee_name)
 
     def add_house_hearings(self):
         with open('data/final/house.csv', 'r') as csvfile:
@@ -158,15 +163,13 @@ class Command(BaseCommand):
                     if created:
 
                         # save event source
-                        source = EventSource(event=event, note="spreadsheet", url=source)
-                        source.save()
+                        source = EventSource.objects.create(event=event, note="spreadsheet", url=source)
 
                         # save category data
                         try:
-                            category = HearingCategory(event=event, category_id=category)
-                            category.save()
+                            hearing_category = HearingCategory.objects.create(event=event, category_id=category)
                         except IntegrityError:
-                            bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category.category_id + " on " + event.name)
+                            bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category + " on " + event.name)
 
                     row_count += 1
 
@@ -199,14 +202,12 @@ class Command(BaseCommand):
 
                     if created:
                         # save event source
-                        source = EventSource(event=event, note="spreadsheet", url=source)
-                        source.save()
+                        source = EventSource.objects.create(event=event, note="spreadsheet", url=source)
 
                         # save category data
                         try:
-                            category = HearingCategory(event=event, category_id=category)
-                            category.save()
+                            hearing_category = HearingCategory.objects.create(event=event, category_id=category)
                         except IntegrityError:
-                            bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category.category_id + " on " + event.name)
+                            bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category + " on " + event.name)
 
                     row_count += 1
