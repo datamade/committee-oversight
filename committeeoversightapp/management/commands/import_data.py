@@ -12,27 +12,6 @@ from opencivicdata.core.models import Organization, OrganizationName
 from opencivicdata.legislative.models import Event, EventSource, EventParticipant
 from committeeoversightapp.models import HearingCategory, Committee
 
-def get_committee(committee_name, parent):
-    classification = "committee"
-    organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=parent, classification=classification) |
-                Q(other_names__name__icontains=committee_name, parent=parent, classification=classification))
-    if organization.count() == 1:
-        return organization[0]
-    elif organization.count() == 0:
-        return IndexError
-    else:
-        return ValueError
-
-def new_committee(self, committee_key, event, row_count):
-    try:
-        name = Committee.objects.get(lugar_id=committee_key).organization.name
-        organization = Committee.objects.get(lugar_id=committee_key).organization
-        entity_type = "organization"
-        committee, created = EventParticipant.objects.get_or_create(name=name, event=event, organization=organization, entity_type=entity_type)
-
-    except (ObjectDoesNotExist, AttributeError, ValueError) as e:
-        self.bad_rows.append("Row " + str(row_count) + ": Bad committee key " + committee_key)
-
 class Command(BaseCommand):
     help = "Import Lugar spreadsheets data"
 
@@ -85,13 +64,13 @@ class Command(BaseCommand):
                         if committee_name == "Full Committee" or committee_name == "Full Commission":
                             pass
                         else:
-                            # full committees are three digits
+                            # full committees have three digit lugar keys, eg 201 "Aging"
                             if len(committee_key) == 3:
                                 parent = house
-                                organization = get_committee(committee_name, parent)
+                                organization = self.get_committee(committee_name, parent)
                                 parent = organization
                             else:
-                                organization = get_committee(committee_name, parent)
+                                organization = self.get_committee(committee_name, parent)
                             new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
                     except IndexError:
                         new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
@@ -111,7 +90,7 @@ class Command(BaseCommand):
                 classification = "committee"
 
                 try:
-                    organization = get_committee(committee_name, senate)
+                    organization = self.get_committee(committee_name, senate)
                     new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
                 except IndexError:
                     new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
@@ -145,19 +124,19 @@ class Command(BaseCommand):
 
                     # save committee1 data
                     if committee1 and not subcommittee1:
-                        new_committee(self, committee1, event, row_count)
+                        self.new_committee(committee1, event, row_count)
                     elif subcommittee1 == (committee1 + str(0)):
-                        new_committee(self, committee1, event, row_count)
+                        self.new_committee(committee1, event, row_count)
                     elif committee1:
-                        new_committee(self, subcommittee1, event, row_count)
+                        self.new_committee(subcommittee1, event, row_count)
 
                     # save committee2 data
                     if committee2 and not subcommittee2:
-                        new_committee(self, committee2, event, row_count)
+                        self.new_committee(committee2, event, row_count)
                     elif committee2 and subcommittee2 == (committee2 + str(0)):
-                        new_committee(self, committee2, event, row_count)
+                        self.new_committee(committee2, event, row_count)
                     elif committee2:
-                        new_committee(self, subcommittee2, event, row_count)
+                        self.new_committee(subcommittee2, event, row_count)
 
                     if created:
 
@@ -197,7 +176,7 @@ class Command(BaseCommand):
                     # save committee data
                     for committee in committees:
                         if committee:
-                            new_committee(self, committee, event, row_count)
+                            self.new_committee(committee, event, row_count)
 
                     if created:
                         # save event source
@@ -210,3 +189,24 @@ class Command(BaseCommand):
                             self.bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category + " on " + event.name)
 
                     row_count += 1
+
+    def get_committee(self, committee_name, parent):
+        classification = "committee"
+        organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=parent, classification=classification) |
+                    Q(other_names__name__icontains=committee_name, parent=parent, classification=classification))
+        if organization.count() == 1:
+            return organization[0]
+        elif organization.count() == 0:
+            return IndexError
+        else:
+            return ValueError
+
+    def new_committee(self, committee_key, event, row_count):
+        try:
+            name = Committee.objects.get(lugar_id=committee_key).organization.name
+            organization = Committee.objects.get(lugar_id=committee_key).organization
+            entity_type = "organization"
+            committee, created = EventParticipant.objects.get_or_create(name=name, event=event, organization=organization, entity_type=entity_type)
+
+        except (ObjectDoesNotExist, AttributeError, ValueError) as e:
+            self.bad_rows.append("Row " + str(row_count) + ": Bad committee key " + committee_key)
