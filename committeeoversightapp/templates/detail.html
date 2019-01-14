@@ -15,7 +15,11 @@
      <td><b>Committees</b></td>
      <td>
        {% for committee in committees %}
-       {{committee.name}}<br />
+       {% if committee.organization.parent %}
+       {{committee.organization.parent}},
+       {% endif %}
+       {{committee.name}}
+       <br />
        {% endfor %}
      </td>
    </tr>
@@ -59,7 +63,10 @@
      <td><b>Sources</b></td>
      <td>
        {% for source in hearing.sources.all %}
-        <a href={{source}} target="_blank">{{source}}<br /></a>
+        {{source.note | title}}
+        {% if source.url %}
+           (<a href={{source}} target="_blank">link</a>)
+        {% endif %}<br />
        {% endfor %}
      </td>
    </tr>

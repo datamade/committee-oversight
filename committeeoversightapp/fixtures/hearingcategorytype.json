@@ -3,56 +3,91 @@
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 1,
     "fields": {
-      "name": "Nominations Hearing"
+      "name": "Nominations"
     }
   },
   {
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 2,
     "fields": {
-      "name": "Legislative Hearing"
+      "name": "Legislative"
     }
   },
   {
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 3,
     "fields": {
-      "name": "Policy Hearing"
+      "name": "Policy"
     }
   },
   {
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 4,
     "fields": {
-      "name": "Agency Conduct Hearing"
+      "name": "Agency Conduct"
     }
   },
   {
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 5,
     "fields": {
-      "name": "Private Sector Oversight Hearing"
+      "name": "Private Sector Oversight"
     }
   },
   {
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 6,
     "fields": {
-      "name": "Fact Finding Hearing"
+      "name": "Fact Finding"
     }
   },
   {
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 7,
     "fields": {
-      "name": "Field Hearing"
+      "name": "Field"
     }
   },
   {
     "model": "committeeoversightapp.HearingCategoryType",
     "pk": 8,
     "fields": {
-      "name": "Closed Hearing"
+      "name": "Closed"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 9,
+    "fields": {
+      "name": "Meeting/Markup"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 10,
+    "fields": {
+      "name": "Postponed"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 11,
+    "fields": {
+      "name": "Report"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 12,
+    "fields": {
+      "name": "Cancelled"
+    }
+  },
+  {
+    "model": "committeeoversightapp.HearingCategoryType",
+    "pk": 13,
+    "fields": {
+      "name": "Testimony"
     }
   }
 ]
