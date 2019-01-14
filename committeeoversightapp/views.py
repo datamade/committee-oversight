@@ -107,7 +107,7 @@ class EventList(LoginRequiredMixin, ListView):
     model = Event
     template_name = 'list.html'
     context_object_name = 'hearings'
-    queryset = Event.objects.all().order_by('-created_at')[:500]
+    queryset = Event.objects.all().order_by('-updated_at')[:500]
 
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
