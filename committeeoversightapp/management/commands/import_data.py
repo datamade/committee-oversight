@@ -36,7 +36,6 @@ class Command(BaseCommand):
         self.add_house_hearings()
         self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': House hearings imported successfully!'))
 
-
         self.stdout.write(str(datetime.now()) + ': Creating database entries for the Senate...')
         self.bad_rows.append("\nSenate Hearings\n")
         self.add_senate_hearings()
@@ -59,24 +58,18 @@ class Command(BaseCommand):
                 classification = "committee"
 
                 if committee_key:
-                    try:
-                        # ignore subcommittees that are actually a full committee meeting
-                        if committee_name == "Full Committee" or committee_name == "Full Commission":
-                            pass
+                    # ignore subcommittees that are actually a full committee meeting
+                    if committee_name == "Full Committee" or committee_name == "Full Commission":
+                        pass
+                    else:
+                        # full committees have three digit lugar keys, eg 201 "Aging"
+                        if len(committee_key) == 3:
+                            parent = house
+                            organization = self.get_committee(committee_name, parent, committee_key)
+                            parent = organization
                         else:
-                            # full committees have three digit lugar keys, eg 201 "Aging"
-                            if len(committee_key) == 3:
-                                parent = house
-                                organization = self.get_committee(committee_name, parent)
-                                parent = organization
-                            else:
-                                organization = self.get_committee(committee_name, parent)
-                            new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
-                    except IndexError:
-                        new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
-                        self.bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
-                    except ValueError:
-                        self.bad_rows.append("Multiple possible committees for " + committee_key + ": " + committee_name)
+                            organization = self.get_committee(committee_name, parent, committee_key)
+                        new_event_participant, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
 
     def add_senate_committees(self):
         senate = Organization.objects.get(name="United States Senate")
@@ -89,14 +82,8 @@ class Command(BaseCommand):
                 committee_name = row['b']
                 classification = "committee"
 
-                try:
-                    organization = self.get_committee(committee_name, senate)
-                    new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
-                except IndexError:
-                    new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
-                    self.bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
-                except ValueError:
-                    self.bad_rows.append("Multiple possible committees for" + committee_key + ": " + committee_name)
+                organization = self.get_committee(committee_name, senate, committee_key)
+                new_event_participant, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
 
     def add_house_hearings(self):
         with open('data/final/house.csv', 'r') as csvfile:
@@ -124,19 +111,19 @@ class Command(BaseCommand):
 
                     # save committee1 data
                     if committee1 and not subcommittee1:
-                        self.new_committee(committee1, event, row_count)
+                        self.new_event_participant(committee1, event, row_count)
                     elif subcommittee1 == (committee1 + str(0)):
-                        self.new_committee(committee1, event, row_count)
+                        self.new_event_participant(committee1, event, row_count)
                     elif committee1:
-                        self.new_committee(subcommittee1, event, row_count)
+                        self.new_event_participant(subcommittee1, event, row_count)
 
                     # save committee2 data
                     if committee2 and not subcommittee2:
-                        self.new_committee(committee2, event, row_count)
+                        self.new_event_participant(committee2, event, row_count)
                     elif committee2 and subcommittee2 == (committee2 + str(0)):
-                        self.new_committee(committee2, event, row_count)
+                        self.new_event_participant(committee2, event, row_count)
                     elif committee2:
-                        self.new_committee(subcommittee2, event, row_count)
+                        self.new_event_participant(subcommittee2, event, row_count)
 
                     if created:
 
@@ -162,8 +149,39 @@ class Command(BaseCommand):
                 start_date = row['Date'].split('T', 1)[0]
                 name = row['Hearing/Report']
                 classification = row['Type']
-                committees = [row['Committee1'], row['Committee2']]
                 category = row['Category1']
+
+                committees = [row['Committee1'], row['Committee2']]
+                committees_filtered = [committee for committee in committees if committee]
+
+                # find the start_date and participants
+                # committees = Committee.objects.filter(lugar_id__in=committees_filtered).values('organization')
+                # # print(committees)
+                #
+                # matching_hearings = Event.participants.filter(entity_type='organization', start_date=start_date, participants=participants)
+                # print(matching_hearings)
+
+                # find matching_hearings on the same day and with the same event participants
+                # matching_hearings = Event.objects.filter(start_date=start_date, participants=participants)
+                # print(matching_hearings)
+
+                # if matching_hearings == 0 and name:
+                #     create new hearing
+                #
+                # if matching_hearings == 1:
+                #     assign category to existing hearing
+                #
+                # if matching_hearings > 1:
+                #
+                #     no_match = True
+                #
+                #     for hearing in matching_hearings:
+                #         if hearing name matches name:
+                #             assign category to that hearing
+                #             no_match = False
+                #
+                #     if no_match:
+                #         log to bad_rows
 
                 if name:
                     # get or create hearing
@@ -176,7 +194,7 @@ class Command(BaseCommand):
                     # save committee data
                     for committee in committees:
                         if committee:
-                            self.new_committee(committee, event, row_count)
+                            self.new_event_participant(committee, event, row_count)
 
                     if created:
                         # save event source
@@ -190,18 +208,27 @@ class Command(BaseCommand):
 
                     row_count += 1
 
-    def get_committee(self, committee_name, parent):
+    def get_committee(self, committee_name, parent, committee_key):
         classification = "committee"
-        organization = Organization.objects.filter(Q(name__icontains=committee_name, parent=parent, classification=classification) |
-                    Q(other_names__name__icontains=committee_name, parent=parent, classification=classification))
-        if organization.count() == 1:
-            return organization[0]
-        elif organization.count() == 0:
-            return IndexError
-        else:
-            return ValueError
+        organization_exact = Organization.objects.filter(name=committee_name, parent=parent, classification=classification)
+        organization_contains = Organization.objects.filter(name__icontains=committee_name, parent=parent, classification=classification)
 
-    def new_committee(self, committee_key, event, row_count):
+        if organization_exact.count() == 1:
+            return organization_exact[0]
+        else:
+            if organization_contains.count() == 1:
+                return organization_contains[0]
+            elif organization_contains.count() == 0:
+                organization_other_name = Organization.objects.filter(other_names__name__icontains=committee_name, parent=parent, classification=classification)
+                try:
+                    return organization_other_name[0]
+                except IndexError:
+                    new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
+                    self.bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
+            else:
+                self.bad_rows.append("Multiple possible committees for " + committee_key + ": " + committee_name)
+
+    def new_event_participant(self, committee_key, event, row_count):
         try:
             name = Committee.objects.get(lugar_id=committee_key).organization.name
             organization = Committee.objects.get(lugar_id=committee_key).organization
