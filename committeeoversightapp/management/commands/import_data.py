@@ -35,8 +35,8 @@ class Command(BaseCommand):
 
         # Create hearings
         self.stdout.write(str(datetime.now()) + ': Creating database entries for the House...')
-        # self.bad_rows.append("\nHouse Hearings\n")
-        # self.add_house_hearings()
+        self.bad_rows.append("\nHouse Hearings\n")
+        self.add_house_hearings()
         self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': House hearings imported successfully!'))
 
         self.stdout.write(str(datetime.now()) + ': Creating database entries for the Senate...')
@@ -75,7 +75,7 @@ class Command(BaseCommand):
                             parent = organization
                         else:
                             organization = self.get_committee(committee_name, parent, committee_key)
-                        new_event_participant, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
+                        new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
 
     def add_senate_committees(self):
         senate = Organization.objects.get(name="United States Senate")
@@ -89,14 +89,16 @@ class Command(BaseCommand):
                 classification = "committee"
 
                 organization = self.get_committee(committee_name, senate, committee_key)
-                new_event_participant, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
+                new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name, organization=organization)
 
     def add_house_hearings(self):
         with open('data/final/house.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
-            row_count = 2
+            self.row_count = 2
 
             for row in reader:
+
+                matched = False
 
                 source = row['source']
                 start_date = row['Date'].split('T', 1)[0]
@@ -108,46 +110,38 @@ class Command(BaseCommand):
                 subcommittee2 = row['Subcommittee2']
                 category = row['Category1']
 
-                if name:
-                    # get or create hearing
-                    event, created = Event.objects.get_or_create(jurisdiction_id = self.jurisdiction_id,
-                                    name = name,
-                                    start_date = start_date,
-                                    classification = classification)
+                # get committees into a edited list format
+                # committee codes with a zero appended indicate "full committee"
+                # and only the full committee will be recorded as an event participant
+                # hearings with a subcommittee listed will only have the subcommittee saved,
+                # as the full committee is attached as a parent
+                committees_filtered = []
 
-                    # save committee1 data
-                    if committee1 and not subcommittee1:
-                        self.new_event_participant(committee1, event, row_count)
-                    elif subcommittee1 == (committee1 + str(0)):
-                        self.new_event_participant(committee1, event, row_count)
-                    elif committee1:
-                        self.new_event_participant(subcommittee1, event, row_count)
+                if (committee1 and not subcommittee1) or (subcommittee1 == (committee1 + str(0))):
+                    committees_filtered.append(committee1)
+                elif committee1:
+                    committees_filtered.append(subcommittee1)
 
-                    # save committee2 data
-                    if committee2 and not subcommittee2:
-                        self.new_event_participant(committee2, event, row_count)
-                    elif committee2 and subcommittee2 == (committee2 + str(0)):
-                        self.new_event_participant(committee2, event, row_count)
-                    elif committee2:
-                        self.new_event_participant(subcommittee2, event, row_count)
+                if (committee2 and not subcommittee2) or (subcommittee2 == (committee2 + str(0))):
+                    committees_filtered.append(committee2)
+                elif committee2:
+                    committees_filtered.append(subcommittee2)
 
-                    if created:
-
-                        # save event source
-                        source = EventSource.objects.create(event=event, note="spreadsheet", url=source)
-
-                        # save category data
-                        try:
-                            hearing_category = HearingCategory.objects.create(event=event, category_id=category)
-                        except IntegrityError:
-                            self.bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category + " on " + event.name)
-
-                    row_count += 1
+                try:
+                    event = Event.objects.get(
+                                            name=name,
+                                            start_date=start_date,
+                                            jurisdiction_id=self.jurisdiction_id,
+                                            classification=classification
+                                            )
+                except ObjectDoesNotExist:
+                    if name:
+                        self.smart_match(matched, name, committees_filtered, start_date, category, source, classification)
 
     def add_senate_hearings(self):
         with open('data/final/senate.csv', 'r') as csvfile:
             reader = csv.DictReader(csvfile)
-            row_count = 2
+            self.row_count = 2
 
             for row in reader:
 
@@ -155,90 +149,41 @@ class Command(BaseCommand):
 
                 name = row['Hearing/Report']
                 start_date = row['Date'].split('T', 1)[0]
+                source = row['source']
+                classification = row['Type']
+                category = row['Category1']
+                hearing_number_raw = row['Hearing #']
 
                 committees = [row['Committee1'], row['Committee2']]
                 committees_filtered = [committee for committee in committees if committee]
 
-                source = row['source']
-                classification = row['Type']
-                category = row['Category1']
+                try:
+                    event = Event.objects.get(
+                                            name=name,
+                                            start_date=start_date,
+                                            jurisdiction_id=self.jurisdiction_id,
+                                            classification=classification
+                                            )
+                except ObjectDoesNotExist:
+                    # try to match by serial number
+                    if name and hearing_number_raw:
+                        try:
+                            hearing_number = re.search(r'\d{2,}-\d{1,}', hearing_number_raw).group(0)
+                            matched_events = Event.objects.filter(extras__hearing_number__endswith=hearing_number)
 
-                hearing_number_raw = row['Hearing #']
+                            for event in matched_events:
+                                self.new_category(event, category)
+                                self.new_source(event, "spreadsheet", source)
+                                self.match_count += 1
+                                print("Matched (#" + str(self.match_count) + ") on hearing number " + event.name)
 
-                # try to match by serial number
-                if hearing_number_raw:
-                    try:
-                        hearing_number = re.search(r'\d{2,}-\d{1,}', hearing_number_raw).group(0)
-                        matched_events = Event.objects.filter(extras__hearing_number__endswith=hearing_number)
+                            matched = True
 
-                        for event in matched_events:
-                            self.new_category(event, category, row_count)
-                            self.match_count += 1
+                        except AttributeError:
+                            self.bad_rows.append("Row " + str(self.row_count) + ": Unrecognized hearing number " + hearing_number_raw + " on " + name)
 
-                        matched = True
-
-                    except AttributeError:
-                        self.bad_rows.append("Row " + str(row_count) + ": Unrecognized hearing number " + hearing_number_raw + " on " + name)
-
-                # try to match by date and committees
-
-                if not matched:
-                # find the start_date and participants
-                    committee_qs = Committee.objects.filter(lugar_id__in=committees_filtered).values_list('organization', flat=True)
-                    committee_set = set(committee for committee in committee_qs)
-                    matched_events = Event.objects.filter(participants__ino=committee_set).extra({'opencivicdata_eventparticipant.id': "CAST(opencivicdata_eventparticipant.id as TEXT)"})
-
-                    EventParticipant.objects.filter(organization__in=committee_set, event__start_date=start_date)
-                    print(matched_events)
-
-                # matching_hearings = Event.participants.filter(entity_type='organization', start_date=start_date, participants=participants)
-                # print(matching_hearings)
-
-                # find matching_hearings on the same day and with the same event participants
-                # matching_hearings = Event.objects.filter(start_date=start_date, participants=participants)
-                # print(matching_hearings)
-
-                # if matching_hearings == 0 and name:
-                #     create new hearing
-                #
-                # if matching_hearings == 1:
-                #     assign category to existing hearing
-                #
-                # if matching_hearings > 1:
-                #
-                #     no_match = True
-                #
-                #     for hearing in matching_hearings:
-                #         if hearing name matches name:
-                #             assign category to that hearing
-                #             no_match = False
-                #
-                #     if no_match:
-                #         log to bad_rows
-
-                # if name:
-                #     # get or create hearing
-                #     event, created = Event.objects.get_or_create(jurisdiction_id = self.jurisdiction_id,
-                #                     name = name,
-                #                     start_date = start_date,
-                #                     classification = classification)
-                #
-                #     # save committee data
-                #     for committee in committees:
-                #         if committee:
-                #             self.new_event_participant(committee, event, row_count)
-                #
-                #     if created:
-                #         # save event source
-                #         source = EventSource.objects.create(event=event, note="spreadsheet", url=source)
-                #
-                #         # save category data
-                #         try:
-                #             hearing_category = HearingCategory.objects.create(event=event, category_id=category)
-                #         except IntegrityError:
-                #             self.bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category + " on " + event.name)
-                #
-                #     row_count += 1
+                    elif name:
+                        self.smart_match(matched, name, committees_filtered, start_date, category, source, classification)
 
     def get_committee(self, committee_name, parent, committee_key):
         classification = "committee"
@@ -260,7 +205,7 @@ class Command(BaseCommand):
             else:
                 self.bad_rows.append("Multiple possible committees for " + committee_key + ": " + committee_name)
 
-    def new_event_participant(self, committee_key, event, row_count):
+    def new_event_participant(self, committee_key, event):
         try:
             name = Committee.objects.get(lugar_id=committee_key).organization.name
             organization = Committee.objects.get(lugar_id=committee_key).organization
@@ -268,11 +213,62 @@ class Command(BaseCommand):
             committee, created = EventParticipant.objects.get_or_create(name=name, event=event, organization=organization, entity_type=entity_type)
 
         except (ObjectDoesNotExist, AttributeError, ValueError) as e:
-            self.bad_rows.append("Row " + str(row_count) + ": Bad committee key " + committee_key)
+            self.bad_rows.append("Row " + str(self.row_count) + ": Bad committee key " + committee_key)
 
-    def new_category(self, event, category, row_count):
+    def new_category(self, event, category):
         try:
-            hearing_category = HearingCategory.objects.create(event=event, category_id=category)
+            hearing_category, _ = HearingCategory.objects.get_or_create(event=event, category_id=category)
 
         except IntegrityError:
-            self.bad_rows.append("Row " + str(row_count) + ": Unrecognized category " + category + " on " + event.name)
+            self.bad_rows.append("Row " + str(self.row_count) + ": Unrecognized category " + category + " on " + event.name)
+
+    def new_source(self, event, note, url):
+        source, _ = EventSource.objects.get_or_create(event=event, note=note, url=url)
+
+    def smart_match(self, matched, name, committees_filtered, start_date, category, source, classification):
+        # try to match by date and committees
+        print("Attempting to match " + name)
+        try:
+            committee_qs = Committee.objects.filter(lugar_id__in=committees_filtered)
+            committee_set = set(committee.organization.name for committee in committee_qs)
+            matched_events = Event.objects.filter(participants__name__in=committee_set, start_date=start_date).distinct()
+        except ValueError:
+            matched_events = []
+            self.bad_rows.append("Row " + str(self.row_count) + ": Bad committee value in " + str(committees_filtered))
+
+        if len(matched_events) == 1:
+            event = matched_events[0]
+            self.new_category(event, category)
+            self.new_source(event, "spreadsheet", source)
+
+            matched = True
+            self.match_count += 1
+            print("Matched (#" + str(self.match_count) + ") on commmittee, single " + event.name)
+
+        elif len(matched_events) > 1:
+            for event in matched_events:
+                if not matched and event.name.lower() == name.lower():
+                    self.new_category(event, category)
+                    self.new_source(event, "spreadsheet", source)
+
+                    matched = True
+                    self.match_count += 1
+                    print("Matched (#" + str(self.match_count) + ") on commmittee, multiple " + event.name)
+
+            if not matched:
+                self.bad_rows.append("Row " + str(self.row_count) + ": Multiple possible matches but no matching name " + str(matched_events))
+
+        else:
+            event = Event.objects.create(jurisdiction_id = self.jurisdiction_id,
+                                            name = name,
+                                            start_date = start_date,
+                                            classification = classification)
+
+            for committee in committees_filtered:
+                self.new_event_participant(committee, event)
+
+            self.new_category(event, category)
+            self.new_source(event, "spreadsheet", source)
+            print("Created as new event " + event.name)
+
+        self.row_count += 1
