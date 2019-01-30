@@ -1,7 +1,6 @@
 import os
 import csv
 import re
-import uuid
 
 from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
