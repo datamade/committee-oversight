@@ -116,11 +116,11 @@ class Command(BaseCommand):
                 category = row['Category1']
 
                 if name:
-                    print("\nHouse row " + str(self.row_count) + ": " + name)
+                    self.stdout.write("\nHouse row " + str(self.row_count) + ": " + name)
                     exists = self.does_hearing_exist(name, start_date, classification, category)
 
                     if exists:
-                        print("Already exists!")
+                        self.stdout.write("Already exists!")
                         self.noop_count += 1
 
                     else:
@@ -151,11 +151,11 @@ class Command(BaseCommand):
                 participating_committees = [committee for committee in committees if committee]
 
                 if name:
-                    print("\nSenate row " + str(self.row_count) + ": " + name)
+                    self.stdout.write("\nSenate row " + str(self.row_count) + ": " + name)
                     exists = self.does_hearing_exist(name, start_date, classification, category)
 
                     if exists:
-                        print("Already exists!")
+                        self.stdout.write("Already exists!")
                         self.noop_count += 1
 
                     else:
@@ -301,10 +301,10 @@ class Command(BaseCommand):
 
         if category_created or source_created:
             self.updated_count += 1
-            print("Match #" + str(self.updated_count) + ": " + event.name)
+            self.stdout.write("Match #" + str(self.updated_count) + ": " + event.name)
         else:
             self.noop_count += 1
-            print("Already exists!")
+            self.stdout.write("Already exists!")
 
     def create_hearing(self, name, start_date, participating_committees, classification, category, source):
         event = Event.objects.create(name=name,
@@ -318,4 +318,4 @@ class Command(BaseCommand):
         self.new_category(event, category)
         self.new_source(event, "spreadsheet", source)
         self.created_count += 1
-        print("Created #" + str(self.created_count) + ": " + event.name)
+        self.stdout.write("Created #" + str(self.created_count) + ": " + event.name)
