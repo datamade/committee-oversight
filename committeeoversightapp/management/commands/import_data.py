@@ -19,7 +19,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.bad_rows = []
         self.jurisdiction_id = 'ocd-jurisdiction/country:us/legislature'
-        self.scraper_match_count = 0
+        self.noop_count = 0
+        self.updated_count = 0
         self.created_count = 0
 
         # Create commmittees from key
@@ -49,8 +50,9 @@ class Command(BaseCommand):
             for row in self.bad_rows:
                 f.write(row + '\n')
 
-        # Print match count
-        self.stdout.write("Hearings updated: " + str(self.scraper_match_count))
+        # Log match and created counts
+        self.stdout.write("Hearings already in database: " + str(self.noop_count))
+        self.stdout.write("Hearings updated: " + str(self.updated_count))
         self.stdout.write("Hearings created: " + str(self.created_count))
 
     def add_house_committees(self):
@@ -76,7 +78,7 @@ class Command(BaseCommand):
                             parent = organization
                         else:
                             organization = self.get_committee(committee_name, parent, committee_key)
-                        new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key,
+                        committee, _ = Committee.objects.get_or_create(lugar_id=committee_key,
                                                                            lugar_name=committee_name,
                                                                            organization=organization)
 
@@ -92,7 +94,7 @@ class Command(BaseCommand):
                 classification = "committee"
 
                 organization = self.get_committee(committee_name, senate, committee_key)
-                new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key,
+                committee, _ = Committee.objects.get_or_create(lugar_id=committee_key,
                                                                    lugar_name=committee_name,
                                                                    organization=organization)
 
@@ -102,7 +104,6 @@ class Command(BaseCommand):
             self.row_count = 2
 
             for row in reader:
-                self.matched = False
 
                 source = row['source']
                 start_date = row['Date'].split('T', 1)[0]
@@ -115,16 +116,23 @@ class Command(BaseCommand):
                 category = row['Category1']
 
                 if name:
-                    participating_committees = self.get_participating_committees(committee1, committee2, subcommittee1, subcommittee2)
-                    self.matched = self.does_hearing_exist(name, start_date, classification)
+                    print("\nHouse row " + str(self.row_count) + ": " + name)
+                    exists = self.does_hearing_exist(name, start_date, classification, category)
 
-                    if not self.matched:
-                        self.match_by_date_and_participants(name, participating_committees, start_date, category, source, classification)
+                    if exists:
+                        print("Already exists!")
+                        self.noop_count += 1
 
-                    if not self.matched:
-                        self.create_hearing(name, start_date, participating_committees, classification, category, source)
+                    else:
+                        participating_committees = self.get_participating_committees(committee1, committee2, subcommittee1, subcommittee2)
+                        event = self.match_by_date_and_participants(name, participating_committees, start_date, category, source, classification)
 
-                    self.row_count += 1
+                        if event:
+                            self.update_hearing(event, category, source)
+                        else:
+                            self.create_hearing(name, start_date, participating_committees, classification, category, source)
+
+                self.row_count += 1
 
     def add_senate_hearings(self):
         with open('data/final/senate.csv', 'r') as csvfile:
@@ -132,8 +140,6 @@ class Command(BaseCommand):
             self.row_count = 2
 
             for row in reader:
-                self.matched = False
-
                 name = row['Hearing/Report']
                 start_date = row['Date'].split('T', 1)[0]
                 source = row['source']
@@ -145,18 +151,30 @@ class Command(BaseCommand):
                 participating_committees = [committee for committee in committees if committee]
 
                 if name:
-                    self.matched = self.does_hearing_exist(name, start_date, classification)
+                    print("\nSenate row " + str(self.row_count) + ": " + name)
+                    exists = self.does_hearing_exist(name, start_date, classification, category)
 
-                    if (not self.matched) and hearing_number_raw:
-                        self.match_by_hearing_number(hearing_number_raw, name, category, source)
+                    if exists:
+                        print("Already exists!")
+                        self.noop_count += 1
 
-                    if not self.matched:
-                        self.match_by_date_and_participants(name, participating_committees, start_date, category, source, classification)
+                    else:
+                        events = self.match_by_hearing_number(hearing_number_raw, name, category, source)
+                        if events is not None:
+                            # hearing numbers can be non-unique if a hearing has multiple sessions
+                            # these are recorded in the Lugar data as separate events
+                            for event in events:
+                                self.update_hearing(event, category, source)
+                                break
 
-                    if not self.matched:
-                        self.create_hearing(name, start_date, participating_committees, classification, category, source)
+                        event = self.match_by_date_and_participants(name, participating_committees, start_date, category, source, classification)
 
-                    self.row_count += 1
+                        if event:
+                            self.update_hearing(event, category, source)
+                        else:
+                            self.create_hearing(name, start_date, participating_committees, classification, category, source)
+
+                self.row_count += 1
 
     def get_committee(self, committee_name, parent, committee_key):
         classification = "committee"
@@ -173,7 +191,7 @@ class Command(BaseCommand):
             try:
                 return organization_other_name[0]
             except IndexError:
-                new_committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
+                committee, _ = Committee.objects.get_or_create(lugar_id=committee_key, lugar_name=committee_name)
                 self.bad_rows.append("Not recognized: " + committee_key + ", " + committee_name)
         else:
             self.bad_rows.append("Multiple possible committees for " + committee_key + ": " + committee_name)
@@ -209,21 +227,28 @@ class Command(BaseCommand):
 
     def new_category(self, event, category):
         try:
-            hearing_category, _ = HearingCategory.objects.get_or_create(event=event, category_id=category)
+            hearing_category, created = HearingCategory.objects.get_or_create(event=event, category_id=category)
+            return created
+
+        # in case manually entered hearings have a mistakenly category not described in this fixture:
+        # https://github.com/datamade/committee-oversight/blob/master/committeeoversightapp/fixtures/hearingcategorytype.json
         except IntegrityError:
             self.bad_rows.append("Row " + str(self.row_count) + ": Unrecognized category " + category + " on " + event.name)
+            return False
 
     def new_source(self, event, note, url):
-        source, _ = EventSource.objects.get_or_create(event=event, note=note, url=url)
+        source, created = EventSource.objects.get_or_create(event=event, note=note, url=url)
+        return created
 
-    def does_hearing_exist(self, name, start_date, classification):
+    def does_hearing_exist(self, name, start_date, classification, category):
         try:
             event = Event.objects.get(
                                 name=name,
                                 start_date=start_date,
                                 jurisdiction_id=self.jurisdiction_id,
                                 classification=classification,
-                                sources__note="spreadsheet"
+                                sources__note="spreadsheet",
+                                hearingcategory__category_id=category
                                 )
             return True
         except ObjectDoesNotExist:
@@ -233,18 +258,17 @@ class Command(BaseCommand):
             return True
 
     def match_by_hearing_number(self, hearing_number_raw, name, category, source):
-        try:
-            hearing_number = re.search(r'\d{2,}-\d{1,}', hearing_number_raw).group(0)
-            matched_events = Event.objects.filter(extras__hearing_number__endswith=hearing_number)
+        if hearing_number_raw:
+            try:
+                hearing_number = re.search(r'\d{2,}-\d{1,}', hearing_number_raw).group(0)
+                events = Event.objects.filter(extras__hearing_number__endswith=hearing_number)
+                return events
 
-            # hearing numbers can be non-unique if a hearing has multiple sessions
-            # these are recorded in the Lugar data as separate events
-            for event in matched_events:
-                event.extras['hearing_number'] = hearing_number
-                self.update_hearing(event, category, source)
-
-        except AttributeError:
-            self.bad_rows.append("Row " + str(self.row_count) + ": Unrecognized hearing number " + hearing_number_raw + " on " + name)
+            except AttributeError:
+                self.bad_rows.append("Row " + str(self.row_count) + ": Unrecognized hearing number " + hearing_number_raw + " on " + name)
+                return
+        else:
+            return
 
     def match_by_date_and_participants(self, name, participating_committees, start_date, category, source, classification):
         try:
@@ -256,22 +280,28 @@ class Command(BaseCommand):
             self.bad_rows.append("Row " + str(self.row_count) + ": Bad committee value in " + str(participating_committees))
 
         if len(matched_events) == 1:
-            event = matched_events[0]
-            self.update_hearing(event, category, source)
+            return matched_events[0]
 
         elif len(matched_events) > 1:
             for event in matched_events:
-                if not self.matched and event.name.lower() == name.lower():
-                    self.update_hearing(event, category, source)
-            if not self.matched:
-                self.bad_rows.append("Row " + str(self.row_count) + ": Multiple possible matches but no matching name " + str(matched_events))
+                if event.name.lower() == name.lower():
+                    return event
+                else:
+                    self.bad_rows.append("Row " + str(self.row_count) + ": Multiple possible matches but no matching name " + str(matched_events))
+                    return
+        else:
+            return
 
     def update_hearing(self, event, category, source):
-        self.new_category(event, category)
-        self.new_source(event, "spreadsheet", source)
-        self.matched = True
+        category_created = self.new_category(event, category)
+        source_created = self.new_source(event, "spreadsheet", source)
 
-        self.scraper_match_count += 1
+        if category_created or source_created:
+            self.updated_count += 1
+            print("Match #" + str(self.updated_count) + ": " + event.name)
+        else:
+            self.noop_count += 1
+            print("Already exists!")
 
     def create_hearing(self, name, start_date, participating_committees, classification, category, source):
         event = Event.objects.create(name=name,
@@ -284,5 +314,5 @@ class Command(BaseCommand):
 
         self.new_category(event, category)
         self.new_source(event, "spreadsheet", source)
-
         self.created_count += 1
+        print("Created #" + str(self.created_count) + ": " + event.name)
