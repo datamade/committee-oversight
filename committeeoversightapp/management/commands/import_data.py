@@ -165,14 +165,14 @@ class Command(BaseCommand):
                             # these are recorded in the Lugar data as separate events
                             for event in events:
                                 self.update_hearing(event, category, source)
-                                break
 
-                        event = self.match_by_date_and_participants(name, participating_committees, start_date, category, source, classification)
-
-                        if event:
-                            self.update_hearing(event, category, source)
                         else:
-                            self.create_hearing(name, start_date, participating_committees, classification, category, source)
+                            event = self.match_by_date_and_participants(name, participating_committees, start_date, category, source, classification)
+
+                            if event:
+                                self.update_hearing(event, category, source)
+                            else:
+                                self.create_hearing(name, start_date, participating_committees, classification, category, source)
 
                 self.row_count += 1
 
@@ -262,7 +262,10 @@ class Command(BaseCommand):
             try:
                 hearing_number = re.search(r'\d{2,}-\d{1,}', hearing_number_raw).group(0)
                 events = Event.objects.filter(extras__hearing_number__endswith=hearing_number)
-                return events
+                if len(events) > 0:
+                    return events
+                else:
+                    return
 
             except AttributeError:
                 self.bad_rows.append("Row " + str(self.row_count) + ": Unrecognized hearing number " + hearing_number_raw + " on " + name)
