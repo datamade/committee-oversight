@@ -276,9 +276,9 @@ class Command(BaseCommand):
     def match_by_date_and_participants(self, name, participating_committees, start_date, category, source, classification):
         try:
             committee_qs = Committee.objects.filter(lugar_id__in=participating_committees)
-            committee_set = set(committee.organization.name for committee in committee_qs)
+            committee_set = set(committee.organization.name for committee in committee_qs if committee.organization)
             matched_events = Event.objects.filter(participants__name__in=committee_set, start_date=start_date).distinct()
-        except (ValueError, AttributeError) as e:
+        except ValueError:
             matched_events = []
             self.bad_rows.append("Row " + str(self.row_count) + ": Bad committee value in " + str(participating_committees))
 
