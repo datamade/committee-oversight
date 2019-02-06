@@ -33,6 +33,7 @@ class Migration(migrations.Migration):
                 ('organization', models.CharField(blank=True, max_length=100, null=True)),
                 ('document', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='legislative.EventDocument')),
                 ('witness', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='legislative.EventParticipant')),
+                ('witnessdetails', models.BooleanField(default=False))
             ],
         ),
         migrations.AddField(

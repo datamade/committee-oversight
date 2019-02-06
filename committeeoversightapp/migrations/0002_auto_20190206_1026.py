@@ -20,10 +20,5 @@ class Migration(migrations.Migration):
                 ('lugar_name', models.CharField(blank=True, max_length=200, null=True)),
                 ('organization', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='core.Organization')),
             ],
-        ),
-        migrations.AddField(
-            model_name='witnessdetails',
-            name='retired',
-            field=models.BooleanField(default=False),
-        ),
+        )
     ]
