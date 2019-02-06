@@ -278,7 +278,7 @@ class Command(BaseCommand):
             committee_qs = Committee.objects.filter(lugar_id__in=participating_committees)
             committee_set = set(committee.organization.name for committee in committee_qs)
             matched_events = Event.objects.filter(participants__name__in=committee_set, start_date=start_date).distinct()
-        except ValueError:
+        except (ValueError, AttributeError) as e:
             matched_events = []
             self.bad_rows.append("Row " + str(self.row_count) + ": Bad committee value in " + str(participating_committees))
 
