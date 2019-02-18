@@ -4,7 +4,10 @@ from urllib.parse import urlparse
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from opencivicdata.legislative.models import EventDocument, EventDocumentLink
+from opencivicdata.legislative.models import EventDocument, EventDocumentLink, \
+                                             EventParticipant
+from opencivicdata.core.models import Organization
+from .models import WitnessDetails, HearingCategory
 
 # given a url string, find the file extension at the end
 def get_ext(url):
@@ -72,3 +75,54 @@ def get_document_context(context):
             pass
 
     return context
+
+def save_witnesses(event, witnesses):
+    for witness in witnesses:
+        name = witness.get('name', None)
+        if name:
+            # add witness as EventParticipant
+            entity_type = "person"
+            note = "witness"
+            new_witness = EventParticipant(
+                                name=name,
+                                event=event,
+                                entity_type=entity_type,
+                                note=note
+                          )
+            new_witness.save()
+
+            #save witness statement urls TK
+            witness_url = witness.get('url', None)
+            witness_document = save_document(witness_url, "witness statement", event)
+
+            #save witness organizations and link to statement urls
+            organization = witness.get('organization', None)
+            retired = witness.get('retired', False)
+            new_witness_details = WitnessDetails(
+                                witness=new_witness,
+                                document=witness_document,
+                                organization=organization,
+                                retired=retired
+            )
+            new_witness_details.save()
+
+def save_documents(event, transcript_data):
+    # if form includes a transcript URL create EventDocument with original and archived url
+    documents = [('transcript_url', "transcript"), ('opening_statement_chair', "chair opening statement"), ('opening_statement_rm', "ranking member opening statement")]
+
+    for (field, note) in documents:
+        url = transcript_data[field]
+        save_document(url, note, event)
+
+def save_category(event, category):
+    new_category = HearingCategory(event=event, category=category)
+    new_category.save()
+
+def save_committees(event, committees):
+    # find and create committees as EventParticipants
+    for committee in committees:
+        name = committee.name
+        organization = Organization.objects.get(id=committee.id)
+        entity_type = "organization"
+        new_committee = EventParticipant(name=name, event=event, organization=organization, entity_type=entity_type)
+        new_committee.save()
