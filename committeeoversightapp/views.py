@@ -38,7 +38,8 @@ class EventCreate(LoginRequiredMixin, TemplateView):
         print("Checking if forms are valid...")
 
         forms_valid = [event_form.is_valid(), committee_form.is_valid(),
-                       category_form.is_valid(), transcript_form.is_valid()]
+                       category_form.is_valid(), transcript_form.is_valid(),
+                       witness_formset.is_valid()]
 
         if all(forms_valid):
             print("All forms valid! Saving...")
@@ -149,6 +150,8 @@ class EventEdit(LoginRequiredMixin, TemplateView):
 
         context['witness_formset'] = WitnessFormset(prefix="witness", initial=witness_list)
 
+        context['witness_list'] = witness_list
+
         return context
 
     def post(self, request, **kwargs):
@@ -161,7 +164,8 @@ class EventEdit(LoginRequiredMixin, TemplateView):
         print("Checking if forms are valid...")
 
         forms_valid = [event_form.is_valid(), committee_form.is_valid(),
-                       category_form.is_valid(), transcript_form.is_valid()]
+                       category_form.is_valid(), transcript_form.is_valid(),
+                       witness_formset.is_valid()]
 
         if all(forms_valid):
             print("All forms valid! Saving...")
