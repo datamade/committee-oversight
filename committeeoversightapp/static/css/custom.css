@@ -9,6 +9,7 @@
   --dark-green-color: #218838;
   --red-color: #b80026;
   --dark-red-color: #6f0017;
+  --yellow-color: #de8d00;
 }
 
 body {
@@ -19,6 +20,11 @@ body {
 
 .btn-success {
   background-color: var(--green-color);
+}
+
+.btn-edit {
+  color: white;
+  background-color: var(--yellow-color);
 }
 
 .btn-danger {
@@ -112,6 +118,10 @@ input[type='checkbox'] {
 
 #delete-icon {
   color: var(--red-color);
+}
+
+#edit-icon {
+  color: var(--yellow-color);
 }
 
 #hearing-table_paginate {

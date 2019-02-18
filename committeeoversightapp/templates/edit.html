@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 {% block content %}
@@ -14,16 +15,22 @@
 </script>
 
 <div class="hearing-form card">
-  <h1>Create New Hearing Record</h1>
+  <h1>Edit Hearing Record</h1>
   <br />
   <form method="POST" class="form">
 
     {% include 'hearing_form.html' %}
 
-    <button type="submit" class="btn-lg btn-edit float-right" id="save-hearing-button">
-      <i class="far fa-save"></i>&nbsp;
-      Save hearing
-    </button>
+    <div class="float-right">
+      <a href="/list" class="btn btn-success">
+        <i class="fas fa-arrow-circle-left"></i>&nbsp;
+        Back to list view
+      </a>
+      <button type="submit" class="btn btn-edit" id="delete-hearing-button">
+        <i class="fas fa-times-circle"></i>&nbsp;
+        Update hearing
+      </button>
+    </div>
 
   </form>
 </div>

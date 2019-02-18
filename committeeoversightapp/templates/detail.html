@@ -1,4 +1,5 @@
-<div>Created at <b>{{hearing.created_at | date:"Y-m-d H:i:s"}}</b></div><br />
+<div>Created at <b>{{hearing.created_at | date:"Y-m-d H:i:s"}}</b></div>
+<div>Updated at <b>{{hearing.updated_at | date:"Y-m-d H:i:s"}}</b></div><br />
 <table class="table table-striped table-bordered" id="hearing-table">
  <thead>
  </thead>
@@ -28,27 +29,33 @@
      <td>{{category_name}}</td>
    </tr>
    <tr>
-     <td><b>Transcript URL</b></td>
-     {% if transcript_archived %}
-        <td><a href={{transcript_archived}} target="_blank">{{transcript}}</a></td>
-     {% else %}
-        <td><a href={{transcript}} target="_blank">{{transcript}}</a></td>
-     {% endif %}
+       <td><b>Transcript URL</b></td>
+       {% if transcript_archived and transcript%}
+          <td><a href={{transcript_archived}} target="_blank">{{transcript}}</a></td>
+       {% elif transcript %}
+          <td><a href={{transcript}} target="_blank">{{transcript}}</a></td>
+       {% else %}
+          <td></td>
+       {% endif %}
    </tr>
    <tr>
      <td><b>Chair Opening Statement URL</b></td>
-     {% if opening_statement_chair_archived %}
+     {% if opening_statement_chair_archived and opening_statement_chair %}
        <td><a href={{opening_statement_chair_archived}} target="_blank">{{opening_statement_chair}}</a></td>
-     {% else %}
+     {% elif opening_statement_chair %}
        <td><a href={{opening_statement_chair}} target="_blank">{{opening_statement_chair}}</a></td>
+     {% else %}
+       <td></td>
      {% endif %}
    </tr>
    <tr>
      <td><b>Ranking Member Opening Statement URL</b></td>
-     {% if opening_statement_rm_archived %}
+     {% if opening_statement_rm_archived and opening_statement_rm %}
        <td><a href={{opening_statement_rm_archived}} target="_blank">{{opening_statement_rm}}</a></td>
-     {% else %}
+     {% elif opening_statement_rm %}
        <td><a href={{opening_statement_rm}} target="_blank">{{opening_statement_rm}}</a></td>
+     {% else %}
+       <td></td>
      {% endif %}
    </tr>
    <tr>

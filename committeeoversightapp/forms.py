@@ -69,8 +69,6 @@ class TranscriptForm(Form):
         required=False
     )
 
-
-
 # add category as foreign key in table HearingCategory
 class CategoryForm(Form):
     category = ModelChoiceField(queryset=HearingCategoryType.objects.all())
@@ -96,4 +94,4 @@ class WitnessForm(Form):
         required=False
     )
 
-WitnessFormset = formset_factory(WitnessForm, extra=1)
+WitnessFormset = formset_factory(WitnessForm)
