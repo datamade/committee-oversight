@@ -48,14 +48,14 @@ body {
   padding: 30px;
 }
 
-.dynamic-form {
+.form-container {
   background: var(--light-blue-color);
   padding: 0px 20px 50px 20px;
   margin-bottom: 10px;
   border-radius: 5px;
 }
 
-.dynamic-form div div {
+.form-container div div {
   padding-top: 10px;
 }
 
@@ -87,6 +87,7 @@ input[type='checkbox'] {
 
 .form-check {
   padding-left: .3rem;
+  padding-top: 1rem;
 }
 
 .form-check-label {
@@ -97,9 +98,10 @@ input[type='checkbox'] {
 .delete-row {
   color: var(--red-color);
   float: right;
-  padding: 15px 0px;
   font-size: 14px;
   font-weight: 500;
+  margin-top: -50px;
+  margin-right: 20px;
 }
 
 .delete-row:hover {

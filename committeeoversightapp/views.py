@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic import ListView, TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import formset_factory
 
 from opencivicdata.legislative.models import Event, EventParticipant, \
                         EventDocument, EventDocumentLink, EventSource
@@ -12,7 +13,7 @@ from opencivicdata.core.models import Organization
 from .utils import save_document, get_document_context, save_witnesses, \
                    save_documents, save_category, save_committees
 from .models import HearingCategory, HearingCategoryType, WitnessDetails
-from .forms import EventForm, CategoryForm, CommitteeForm, WitnessFormset, TranscriptForm
+from .forms import EventForm, CategoryForm, CommitteeForm, WitnessForm, WitnessFormset, TranscriptForm
 
 class EventCreate(LoginRequiredMixin, TemplateView):
     template_name = "create.html"
@@ -149,8 +150,6 @@ class EventEdit(LoginRequiredMixin, TemplateView):
                                                     })
 
         context['witness_formset'] = WitnessFormset(prefix="witness", initial=witness_list)
-
-        context['witness_list'] = witness_list
 
         return context
 
