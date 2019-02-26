@@ -94,4 +94,4 @@ class WitnessForm(Form):
         required=False
     )
 
-WitnessFormset = formset_factory(WitnessForm)
+WitnessFormset = formset_factory(WitnessForm, extra=1)

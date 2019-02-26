@@ -10,10 +10,15 @@ from opencivicdata.legislative.models import Event, EventParticipant, \
                         EventDocument, EventDocumentLink, EventSource
 from opencivicdata.core.models import Organization
 
+from django_datatables_view.base_datatable_view import BaseDatatableView
+
 from .utils import save_document, get_document_context, save_witnesses, \
                    save_documents, save_category, save_committees
 from .models import HearingCategory, HearingCategoryType, WitnessDetails
 from .forms import EventForm, CategoryForm, CommitteeForm, WitnessForm, WitnessFormset, TranscriptForm
+
+import datetime
+
 
 class EventCreate(LoginRequiredMixin, TemplateView):
     template_name = "create.html"
@@ -59,11 +64,41 @@ class EventCreate(LoginRequiredMixin, TemplateView):
 
         return redirect('list-event')
 
-class EventList(LoginRequiredMixin, ListView):
-    model = Event
+class EventList(LoginRequiredMixin, TemplateView):
     template_name = 'list.html'
-    context_object_name = 'hearings'
-    queryset = Event.objects.all().order_by('-updated_at')[:500]
+
+class EventListJson(BaseDatatableView):
+    # The model we're going to show
+    model = Event
+
+    # define the columns that will be returned
+    columns = ['updated_at', 'name', 'start_date', 'id', 'id']
+
+    # define column names that will be used in sorting
+    # order is important and should be same as order of columns
+    # displayed by datatables. For non sortable columns use empty
+    # value like ''
+    order_columns = ['updated_at', 'name', 'start_date', '', '']
+
+    # set max limit of records returned, this is used to protect our site if someone tries to attack our site
+    # and make it return huge amount of data
+    max_display_length = 500
+
+    def prepare_results(self, qs):
+        json_data = []
+        edit_string = "<a href=\"/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
+        delete_string = "<a href=\"/delete/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
+
+        for item in qs:
+            json_data.append([
+                item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
+                item.name,
+                item.start_date,
+                edit_string.format(item.pk),
+                delete_string.format(item.pk),
+            ])
+        return json_data
+
 
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
@@ -149,7 +184,9 @@ class EventEdit(LoginRequiredMixin, TemplateView):
                                                              'opening_statement_rm':context['opening_statement_rm'],
                                                     })
 
-        context['witness_formset'] = WitnessFormset(prefix="witness", initial=witness_list)
+        context['witness_formset'] = WitnessFormset(prefix="witness")
+
+        context['witness_list'] = witness_list
 
         return context
 
