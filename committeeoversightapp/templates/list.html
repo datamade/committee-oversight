@@ -17,23 +17,6 @@
     </tr>
   </thead>
   <tbody>
-    {% for hearing in hearings %}
-    <tr>
-      <td>{{hearing.updated_at | date:"Y-m-d H:i:s"}}</td>
-      <td>{{hearing | title}}</td>
-      <td>{{hearing}}</td>
-      <td>
-        <a href="/edit/{{hearing}}">
-          <i class="fas fa fa-pencil-alt" id="edit-icon"></i>
-        </a>
-      </td>
-      <td>
-        <a href="/delete/{{hearing}}">
-          <i class="fas fa fa-times-circle" id="delete-icon"></i>
-        </a>
-      </td>
-    </tr>
-    {% endfor %}
   </tbody>
   </table>
 
