@@ -5,6 +5,7 @@ from django.views.generic import ListView, TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import formset_factory
+from django.utils.html import escape
 
 from opencivicdata.legislative.models import Event, EventParticipant, \
                         EventDocument, EventDocumentLink, EventSource
@@ -68,7 +69,7 @@ class EventList(LoginRequiredMixin, TemplateView):
     template_name = 'list.html'
 
 class EventListJson(BaseDatatableView):
-    # The model we're going to show
+    """ Uses django-datatables-view for server-side DataTable processing."""
     model = Event
 
     # define the columns that will be returned
@@ -80,8 +81,7 @@ class EventListJson(BaseDatatableView):
     # value like ''
     order_columns = ['updated_at', 'name', 'start_date', '', '']
 
-    # set max limit of records returned, this is used to protect our site if someone tries to attack our site
-    # and make it return huge amount of data
+    # max limit of records returned
     max_display_length = 500
 
     def prepare_results(self, qs):
@@ -94,8 +94,8 @@ class EventListJson(BaseDatatableView):
                 item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
                 item.name,
                 item.start_date,
-                edit_string.format(item.pk),
-                delete_string.format(item.pk),
+                edit_string.format(escape(item.pk)),
+                delete_string.format(escape(item.pk)),
             ])
         return json_data
 
@@ -184,9 +184,7 @@ class EventEdit(LoginRequiredMixin, TemplateView):
                                                              'opening_statement_rm':context['opening_statement_rm'],
                                                     })
 
-        context['witness_formset'] = WitnessFormset(prefix="witness")
-
-        context['witness_list'] = witness_list
+        context['witness_formset'] = WitnessFormset(prefix="witness", initial=witness_list)
 
         return context
 
