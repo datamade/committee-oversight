@@ -8,11 +8,15 @@ python:
 install:
 - pip install --upgrade pip
 - pip install -r requirements.txt
+dist: trusty
+sudo: required
+services:
+  - postgresql
 addons:
-  postgresql: '9.6'
-sudo: true
+  postgresql: 9.6
 before_script:
-- sudo apt-get install postgresql-9.6-postgis-2.3 postgis -y -q
+- sudo apt-get -qq update
+- sudo apt-get install -y postgresql-9.6-postgis-2.4
 - psql -U postgres -d travis -c "create extension postgis"
 - mv configs/local_settings.py.travis committeeoversight/local_settings.py
 script:
