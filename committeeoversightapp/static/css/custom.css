@@ -59,7 +59,16 @@ body {
   padding-top: 10px;
 }
 
-.dynamic-form div div input[type="text"] {
+.dynamic-form .delete-row {
+  margin-top: -50px;
+}
+
+.form-container.dynamic-form .delete-row {
+  margin-top: 0px;
+}
+
+.dynamic-form div div input[type="text"],
+.dynamic-form div input[type="text"] {
   display: block;
   width: 100%;
   height: calc(2.25rem + 2px);
@@ -100,7 +109,6 @@ input[type='checkbox'] {
   float: right;
   font-size: 14px;
   font-weight: 500;
-  margin-top: -50px;
   margin-right: 20px;
 }
 

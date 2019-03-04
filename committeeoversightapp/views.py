@@ -133,6 +133,7 @@ class EventEdit(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        # retrieve hearing data and prep it to insert into form as initial data
         context['hearing'] = Event.objects.get(id=context['pk'])
 
         participants = context['hearing'].participants.filter(entity_type='organization').values_list('organization_id', flat=True)
@@ -165,11 +166,16 @@ class EventEdit(LoginRequiredMixin, TemplateView):
 
                 witness_list.append(witness_dict)
 
+            # reverse the order of the witness list so the formset displays in
+            # the order witnesses were entered
+            witness_list = list(reversed(witness_list))
+
         except AttributeError:
             witnessess = None
 
         context = get_document_context(context)
 
+        # instantiate forms with initial hearing data
         context['event_form'] = EventForm(prefix="event",
                                           initial={'name': context['hearing'].name,
                                                     'start_date': context['hearing'].start_date,
