@@ -58,7 +58,9 @@ def save_document(url, note, event):
         return new_document
 
 def get_document_context(context):
-    document_types = {'transcript':'transcript', 'opening_statement_chair':'chair opening statement', 'opening_statement_rm':'ranking member opening statement'}
+    document_types = {'transcript':'transcript',
+                      'opening_statement_chair':'chair opening statement',
+                      'opening_statement_rm':'ranking member opening statement'}
 
     eventdocuments_qs = EventDocument.objects.filter(event_id=context['hearing'])
 

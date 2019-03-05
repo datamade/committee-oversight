@@ -81,7 +81,8 @@ class EventListJson(BaseDatatableView):
     # value like ''
     order_columns = ['updated_at', 'name', 'start_date', '', '']
 
-    # max limit of records returned
+    # max number of records returned at a time; protects site from large
+    # requests
     max_display_length = 500
 
     def prepare_results(self, qs):
