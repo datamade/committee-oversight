@@ -1,5 +1,4 @@
-<div>Created at <b>{{hearing.created_at | date:"Y-m-d H:i:s"}}</b></div>
-<div>Updated at <b>{{hearing.updated_at | date:"Y-m-d H:i:s"}}</b></div><br />
+{% include 'partials/created_edited_dates.html' %}
 <table class="table table-striped table-bordered" id="hearing-table">
  <thead>
  </thead>

@@ -17,9 +17,10 @@
 <div class="hearing-form card">
   <h1>Edit Hearing Record</h1>
   <br />
+  {% include 'partials/created_edited_dates.html'}
   <form method="POST" class="form">
 
-    {% include 'hearing_form.html' %}
+    {% include 'partials/hearing_form.html' %}
 
     <div class="float-right edit-buttons">
       <a href="/list" class="btn btn-back">
