@@ -28,6 +28,7 @@ $(document).ready( function () {
     $('#hearing-table').DataTable({
       "dom": "Bfrtip",
       "order": [[ 0, "desc" ]],
+      "columnDefs": [{ "orderable": false, "targets": [3, 4] }],
       "processing": true,
       "serverSide": true,
       "ajax": "{% url 'order_list_json' %}"

@@ -77,12 +77,6 @@ class EventListJson(BaseDatatableView):
     # define the columns that will be returned
     columns = ['updated_at', 'name', 'start_date', 'id', 'id']
 
-    # define column names that will be used in sorting
-    # order is important and should be same as order of columns
-    # displayed by datatables. For non sortable columns use empty
-    # value like ''
-    order_columns = ['updated_at', 'name', 'start_date', '', '']
-
     # max number of records returned at a time; protects site from large
     # requests
     max_display_length = 500
