@@ -155,17 +155,9 @@ class EventEdit(LoginRequiredMixin, TemplateView):
                 witness_dict = {
                     'name': witness.name,
                     'retired': witness.witnessdetails_set.first().retired,
+                    'organization': witness.witnessdetails_set.first().organization,
+                    'url': witness.witnessdetails_set.first().document.links.exclude(text='archived').first().url
                 }
-
-                try:
-                    witness_dict['organization'] = witness.witnessdetails_set.first().organization
-                except:
-                    pass
-
-                try:
-                    witness_dict['url'] = witness.witnessdetails_set.first().document.links.exclude(text='archived').first().url
-                except:
-                    pass
 
                 witness_list.append(witness_dict)
 
