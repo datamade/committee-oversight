@@ -117,8 +117,9 @@ def save_documents(event, transcript_data):
         save_document(url, note, event)
 
 def save_category(event, category):
-    new_category = HearingCategory(event=event, category=category)
-    new_category.save()
+    if category is not None:
+        new_category = HearingCategory(event=event, category=category)
+        new_category.save()
 
 def save_committees(event, committees):
     # find and create committees as EventParticipants

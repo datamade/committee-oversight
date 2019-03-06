@@ -16,7 +16,9 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from .utils import save_document, get_document_context, save_witnesses, \
                    save_documents, save_category, save_committees
 from .models import HearingCategory, HearingCategoryType, WitnessDetails
-from .forms import EventForm, CategoryForm, CommitteeForm, WitnessForm, WitnessFormset, TranscriptForm
+from .forms import EventForm, CategoryForm, CommitteeForm, WitnessForm, \
+                   WitnessFormset, TranscriptForm, CategoryEditForm, \
+                   CommitteeEditForm
 
 import datetime
 
@@ -181,9 +183,9 @@ class EventEdit(LoginRequiredMixin, TemplateView):
                                           initial={'name': context['hearing'].name,
                                                     'start_date': context['hearing'].start_date,
                                                   })
-        context['committee_form'] = CommitteeForm(prefix="committee",
+        context['committee_form'] = CommitteeEditForm(prefix="committee",
                                                   initial={'name': Organization.objects.filter(id__in=participants)})
-        context['category_form'] = CategoryForm(prefix="category",
+        context['category_form'] = CategoryEditForm(prefix="category",
                                                 initial={'category': hearing_category_type})
         context['transcript_form'] = TranscriptForm(prefix="transcript",
                                                     initial={'transcript_url':context['transcript'],
@@ -197,8 +199,8 @@ class EventEdit(LoginRequiredMixin, TemplateView):
 
     def post(self, request, **kwargs):
         event_form = EventForm(request.POST, prefix="event")
-        committee_form = CommitteeForm(request.POST, prefix="committee")
-        category_form = CategoryForm(request.POST, prefix="category")
+        committee_form = CommitteeEditForm(request.POST, prefix="committee")
+        category_form = CategoryEditForm(request.POST, prefix="category")
         transcript_form = TranscriptForm(request.POST, prefix="transcript")
         witness_formset = WitnessFormset(request.POST, prefix="witness")
 
