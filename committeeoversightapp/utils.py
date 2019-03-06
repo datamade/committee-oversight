@@ -9,13 +9,13 @@ from opencivicdata.legislative.models import EventDocument, EventDocumentLink, \
 from opencivicdata.core.models import Organization
 from .models import WitnessDetails, HearingCategory
 
-# given a url string, find the file extension at the end
 def get_ext(url):
+    """ Given a url string, find the file extension at the end """
+    
     path = urlparse(url).path
     ext = splitext(path)[1]
     return ext
 
-# archive a url string
 def archive_url(url):
     wayback_host = 'http://web.archive.org'
     save_url = '{0}/save/{1}'.format(wayback_host, url)
@@ -58,6 +58,10 @@ def save_document(url, note, event):
         return new_document
 
 def get_document_context(context):
+    """ Lugar staff will be entering and editing URLs for the following 3
+    document types, and should be editable in their original form but
+    also saved as archived links """
+
     document_types = {'transcript':'transcript',
                       'opening_statement_chair':'chair opening statement',
                       'opening_statement_rm':'ranking member opening statement'}
@@ -109,7 +113,9 @@ def save_witnesses(event, witnesses):
             new_witness_details.save()
 
 def save_documents(event, transcript_data):
-    # if form includes a transcript URL create EventDocument with original and archived url
+    """ Create EventDocument with original and archived url if form includes a
+    transcript URL """
+
     documents = [('transcript_url', "transcript"), ('opening_statement_chair', "chair opening statement"), ('opening_statement_rm', "ranking member opening statement")]
 
     for (field, note) in documents:
@@ -122,7 +128,8 @@ def save_category(event, category):
         new_category.save()
 
 def save_committees(event, committees):
-    # find and create committees as EventParticipants
+    """Find and create committees as EventParticipants"""
+
     for committee in committees:
         name = committee.name
         organization = Organization.objects.get(id=committee.id)
