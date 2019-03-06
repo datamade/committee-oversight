@@ -9,6 +9,7 @@
   --dark-green-color: #218838;
   --red-color: #b80026;
   --dark-red-color: #6f0017;
+  --yellow-color: #de8d00;
 }
 
 body {
@@ -21,8 +22,22 @@ body {
   background-color: var(--green-color);
 }
 
+.btn-edit {
+  color: white;
+  background-color: var(--yellow-color);
+}
+
 .btn-danger {
   background-color: var(--red-color);
+}
+
+.btn-back {
+  color: var(--darkest-blue-color);
+  font-size: 14px;
+}
+
+.edit-buttons {
+  padding-top: 45px;
 }
 
 .container {
@@ -33,18 +48,27 @@ body {
   padding: 30px;
 }
 
-.dynamic-form {
+.form-container {
   background: var(--light-blue-color);
   padding: 0px 20px 50px 20px;
   margin-bottom: 10px;
   border-radius: 5px;
 }
 
-.dynamic-form div div {
+.form-container div div {
   padding-top: 10px;
 }
 
-.dynamic-form div div input[type="text"] {
+.dynamic-form .delete-row {
+  margin-top: -50px;
+}
+
+.form-container.dynamic-form .delete-row {
+  margin-top: 0px;
+}
+
+.dynamic-form div div input[type="text"],
+.dynamic-form div input[type="text"] {
   display: block;
   width: 100%;
   height: calc(2.25rem + 2px);
@@ -72,6 +96,7 @@ input[type='checkbox'] {
 
 .form-check {
   padding-left: .3rem;
+  padding-top: 1rem;
 }
 
 .form-check-label {
@@ -82,9 +107,9 @@ input[type='checkbox'] {
 .delete-row {
   color: var(--red-color);
   float: right;
-  padding: 15px 0px;
   font-size: 14px;
   font-weight: 500;
+  margin-right: 20px;
 }
 
 .delete-row:hover {
@@ -112,6 +137,10 @@ input[type='checkbox'] {
 
 #delete-icon {
   color: var(--red-color);
+}
+
+#edit-icon {
+  color: var(--yellow-color);
 }
 
 #hearing-table_paginate {

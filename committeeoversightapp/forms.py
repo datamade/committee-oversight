@@ -44,7 +44,7 @@ class CommitteeForm(ModelForm):
         fields = ['name']
 
     def __init__(self, *args, **kwargs):
-        super(self.__class__, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['class'] = 'basic-multiple'
         self.fields['name'].widget.attrs['multiple'] = 'multiple'
 
@@ -53,6 +53,11 @@ class CommitteeForm(ModelForm):
         queryset=Organization.objects.filter(classification='committee').order_by('parent__name'),
         group_by_field='parent',
         )
+
+class CommitteeEditForm(CommitteeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].required = False
 
 # add a field for transcript url
 class TranscriptForm(Form):
@@ -69,11 +74,15 @@ class TranscriptForm(Form):
         required=False
     )
 
-
-
 # add category as foreign key in table HearingCategory
 class CategoryForm(Form):
     category = ModelChoiceField(queryset=HearingCategoryType.objects.all())
+
+# when editing a hearing, category is not required
+class CategoryEditForm(CategoryForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].required = False
 
 # add witnesses as event participants
 class WitnessForm(Form):

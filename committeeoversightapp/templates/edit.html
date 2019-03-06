@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div class="col col-lg-9">
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('.basic-multiple').select2();
+    });
+
+    $(function() {
+        $('#WitnessForm .form-container').formset();
+    })
+</script>
+
+<div class="hearing-form card">
+  <h1>Edit Hearing Record</h1>
+  <br />
+  {% include 'partials/created_edited_dates.html' %}
+  <form method="POST" class="form">
+
+    {% include 'partials/hearing_form.html' %}
+
+    <div class="float-right edit-buttons">
+      <a href="/list" class="btn btn-back">
+        <i class="fas fa-arrow-circle-left"></i>&nbsp;
+        Back to list view
+      </a>
+      <button type="submit" class="btn btn-edit">
+        <i class="fas fa-times-circle"></i>&nbsp;
+        Update hearing
+      </button>
+    </div>
+
+  </form>
+</div>
+</div>
+{% endblock %}
