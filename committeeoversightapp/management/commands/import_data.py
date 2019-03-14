@@ -6,8 +6,9 @@ from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.conf import settings
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction, connection
 from django.db.models import Q
+
 
 from opencivicdata.core.models import Organization, OrganizationName
 from opencivicdata.legislative.models import Event, EventSource, EventParticipant
@@ -110,64 +111,74 @@ class Command(BaseCommand):
             self.row_count = 2
             non_blank_rows = 1
 
-            for row in reader:
+            with transaction.atomic():
 
-                source = csvfile.name
-                start_date = row['Date'].split('T', 1)[0]
-                name = row['Hearing/Report']
-                classification = row['Type']
-                category = row['Category1']
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        '''CREATE TEMPORARY TABLE participants AS
+                           SELECT event_id,
+                                  ARRAY_AGG(organization_id::text) AS committees
+                           FROM opencivicdata_eventparticipant
+                           GROUP BY event_id''')
 
-                committee1 = row['Committee1']
-                committee2 = row['Committee2']
-                subcommittee1 = row['Subcommittee']
-                subcommittee2 = row['Subcommittee2']
+                for row in reader:
 
-                participating_committees = self.get_participating_committees(committee1,
-                                                                             committee2,
-                                                                             subcommittee1,
-                                                                             subcommittee2)
+                    source = csvfile.name
+                    start_date = row['Date'].split('T', 1)[0]
+                    name = row['Hearing/Report']
+                    classification = row['Type']
+                    category = row['Category1']
+
+                    committee1 = row['Committee1']
+                    committee2 = row['Committee2']
+                    subcommittee1 = row['Subcommittee']
+                    subcommittee2 = row['Subcommittee2']
+
+                    participating_committees = self.get_participating_committees(committee1,
+                                                                                 committee2,
+                                                                                 subcommittee1,
+                                                                                 subcommittee2)
 
 
-                if name:
-                    non_blank_rows += 1
+                    if name:
+                        non_blank_rows += 1
 
-                    self.stdout.write("\nHouse row " + str(self.row_count) + ": " + name)
-                    exists = self.does_hearing_exist(name,
-                                                     start_date,
-                                                     participating_committees,
-                                                     classification,
-                                                     category)
+                        self.stdout.write("\nHouse row " + str(self.row_count) + ": " + name)
+                        exists = self.does_hearing_exist(name,
+                                                         start_date,
+                                                         participating_committees,
+                                                         classification,
+                                                         category)
 
-                    if exists:
-                        self.stdout.write("Already exists!")
-                        self.noop_count += 1
+                        if exists:
+                            self.stdout.write("Already exists!")
+                            self.noop_count += 1
 
-                    else:
-                        event = self.match_by_date_and_participants(name,
-                                                                    participating_committees,
-                                                                    start_date)
-
-                        if event:
-                            self.update_hearing(event,
-                                                name,
-                                                start_date,
-                                                participating_committees,
-                                                classification,
-                                                category,
-                                                source)
                         else:
-                            self.create_hearing(name,
-                                                start_date,
-                                                participating_committees,
-                                                classification,
-                                                category,
-                                                source)
+                            event = self.match_by_date_and_participants(name,
+                                                                        participating_committees,
+                                                                        start_date)
 
-                self.row_count += 1
+                            if event:
+                                self.update_hearing(event,
+                                                    name,
+                                                    start_date,
+                                                    participating_committees,
+                                                    classification,
+                                                    category,
+                                                    source)
+                            else:
+                                self.create_hearing(name,
+                                                    start_date,
+                                                    participating_committees,
+                                                    classification,
+                                                    category,
+                                                    source)
 
-        lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
-        assert lugar_in_db == non_blank_rows
+                    self.row_count += 1
+
+            lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
+            assert lugar_in_db == non_blank_rows
 
 
     def add_senate_hearings(self):
@@ -318,30 +329,36 @@ class Command(BaseCommand):
         return created
 
     def does_hearing_exist(self, name, start_date, participating_committees, classification, category):
-        try:
-            if len(participating_committees):
-                Event.objects.filter(participants__organization__in=participating_committees.values('organization'))\
-                             .exclude(~Q(participants__organization__in=participating_committees.values('organization')))\
-                             .distinct()\
-                             .get(name=name,
-                                  start_date=start_date,
-                                  jurisdiction_id=self.jurisdiction_id,
-                                  classification=classification,
-                                  sources__note="spreadsheet",
-                                  hearingcategory__category_id=category
-                )
-            else:
-                Event.objects.get(name=name,
-                                  start_date=start_date,
-                                  jurisdiction_id=self.jurisdiction_id,
-                                  classification=classification,
-                                  sources__note="spreadsheet",
-                                  hearingcategory__category_id=category
-                )
+
+        lugar_committees = list(org['organization']
+                                     for org in participating_committees.values('organization'))
+
+        results = Event.objects.raw(
+                      '''SELECT opencivicdata_event.*
+                         FROM opencivicdata_event
+                         INNER JOIN participants
+                         ON opencivicdata_event.id = participants.event_id
+                         INNER JOIN committeeoversightapp_hearingcategory
+                         ON opencivicdata_event.id = committeeoversightapp_hearingcategory.event_id
+                         WHERE committees @> %(lugar_committees)s
+                         AND committees <@ %(lugar_committees)s
+                         AND start_date = %(start_date)s
+                         AND classification = %(classification)s
+                         AND name = %(name)s
+                         AND category_id = %(category)s
+                         AND opencivicdata_event.id IN
+                             (SELECT event_id FROM opencivicdata_eventsource
+                              WHERE note = 'spreadsheet')''',
+                      {'lugar_committees': lugar_committees,
+                       'start_date': start_date,
+                       'classification': classification,
+                       'category': category,
+                       'name': name})
+        if len(results) == 1:
             return True
-        except ObjectDoesNotExist:
+        elif len(results) == 0:
             return False
-        except MultipleObjectsReturned:
+        else:
             self.bad_rows.append("Row " + str(self.row_count) + ": Multiple matching committees found for " + name + " on " + start_date)
             return True
 
@@ -363,7 +380,21 @@ class Command(BaseCommand):
 
     def match_by_date_and_participants(self, name, participating_committees, start_date):
         try:
-            matched_events = ScrapedEvents.filter(participants__organization__in=participating_committees.values('organization'), start_date=start_date).distinct()
+            lugar_committees = list(org['organization']
+                                     for org in participating_committees.values('organization'))
+            matched_events = ScrapedEvents.raw(
+                '''SELECT opencivicdata_event.*
+                   FROM opencivicdata_event
+                   INNER JOIN participants
+                   ON opencivicdata_event.id = participants.event_id
+                   WHERE committees @> %(lugar_committees)s
+                   AND committees <@ %(lugar_committees)s
+                   AND start_date = %(start_date)s
+                   AND opencivicdata_event.id NOT IN
+                       (SELECT event_id FROM opencivicdata_eventsource
+                        WHERE note = 'spreadsheet')''',
+                {'lugar_committees': lugar_committees,
+                 'start_date': start_date})
         except ValueError:
             matched_events = []
             print(participating_committees)
@@ -373,7 +404,21 @@ class Command(BaseCommand):
             return matched_events[0]
 
         elif len(matched_events) > 1:
-            matched_events = matched_events.filter(name__iexact=name)
+            matched_events = ScrapedEvents.raw(
+                '''SELECT opencivicdata_event.* 
+                   FROM opencivicdata_event
+                   INNER JOIN participants
+                   ON opencivicdata_event.id = participants.event_id
+                   WHERE committees @> %(lugar_committees)s
+                   AND committees <@ %(lugar_committees)s
+                   AND start_date = %(start_date)s
+                   AND name ILIKE %(name)s
+                   AND opencivicdata_event.id NOT IN
+                       (SELECT event_id FROM opencivicdata_eventsource
+                        WHERE note = 'spreadsheet')''',
+                {'lugar_committees': lugar_committees,
+                 'start_date': start_date,
+                 'name': name})
             if len(matched_events) == 1:
                 return matched_events[0]
             else:
