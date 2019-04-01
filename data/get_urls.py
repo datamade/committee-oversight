@@ -7,7 +7,7 @@ new_path = argv[3]
 
 # load excel file and name first sheet
 wb = load_workbook(file_path)
-ws = wb.active
+ws = wb['Hearings']
 
 # insert column at 0
 ws.insert_cols(0)
