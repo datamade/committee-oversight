@@ -102,84 +102,76 @@ class Command(BaseCommand):
                                                                    organization=organization)
 
     def add_house_hearings(self):
-        with open('data/final/house.csv', 'r') as csvfile:
+        with open('data/final/house.csv', 'r') as csvfile, \
+             transaction.atomic():
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    '''CREATE TEMPORARY TABLE participants AS
+                       SELECT event_id,
+                              ARRAY_AGG(organization_id::text) AS committees
+                       FROM opencivicdata_eventparticipant
+                       GROUP BY event_id''')
+
             reader = csv.DictReader(csvfile)
+            # we want to know the original row index for debugging purposes
+            reader = enumerate(reader, 2)
+            # ignore rows with a missing name
+            reader = ((i, row) for i, row in reader if row['Hearing/Report'])
 
-            # we are doing this instead of enumerate so that
-            # so that we can get a handle on the row in error messages
-            # in some methods that will be down the stack
-            self.row_count = 2
-            non_blank_rows = 1
+            for i, (self.row_index, row) in enumerate(reader, 1):
 
-            with transaction.atomic():
+                source = csvfile.name
+                source_hash = str(sorted(row.items()))
+                start_date = row['Date'].split('T', 1)[0]
+                name = row['Hearing/Report']
+                classification = row['Type']
+                category = row['Category1']
 
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        '''CREATE TEMPORARY TABLE participants AS
-                           SELECT event_id,
-                                  ARRAY_AGG(organization_id::text) AS committees
-                           FROM opencivicdata_eventparticipant
-                           GROUP BY event_id''')
+                committee1 = row['Committee1']
+                committee2 = row['Committee2']
+                subcommittee1 = row['Subcommittee']
+                subcommittee2 = row['Subcommittee2']
 
-                for row in reader:
-
-                    source = csvfile.name
-                    source_hash = str(sorted(row.items()))
-                    start_date = row['Date'].split('T', 1)[0]
-                    name = row['Hearing/Report']
-                    classification = row['Type']
-                    category = row['Category1']
-
-                    committee1 = row['Committee1']
-                    committee2 = row['Committee2']
-                    subcommittee1 = row['Subcommittee']
-                    subcommittee2 = row['Subcommittee2']
-
-                    participating_committees = self.get_participating_committees(committee1,
-                                                                                 committee2,
-                                                                                 subcommittee1,
-                                                                                 subcommittee2)
+                participating_committees = self.get_participating_committees(committee1,
+                                                                             committee2,
+                                                                             subcommittee1,
+                                                                             subcommittee2)
 
 
-                    if name:
-                        non_blank_rows += 1
+                self.stdout.write("\nHouse row " + str(self.row_index) + ": " + name)
+                exists = self.does_hearing_exist(source_hash)
 
-                        self.stdout.write("\nHouse row " + str(self.row_count) + ": " + name)
-                        exists = self.does_hearing_exist(source_hash)
+                if exists:
+                    self.stdout.write("Already exists!")
+                    self.noop_count += 1
 
-                        if exists:
-                            self.stdout.write("Already exists!")
-                            self.noop_count += 1
+                else:
+                    event = self.match_by_date_and_participants(name,
+                                                                participating_committees,
+                                                                start_date)
 
-                        else:
-                            event = self.match_by_date_and_participants(name,
-                                                                        participating_committees,
-                                                                        start_date)
-
-                            if event:
-                                self.update_hearing(event,
-                                                    name,
-                                                    start_date,
-                                                    participating_committees,
-                                                    classification,
-                                                    category,
-                                                    source,
-                                                    source_hash)
-                            else:
-                                self.create_hearing(name,
-                                                    start_date,
-                                                    participating_committees,
-                                                    classification,
-                                                    category,
-                                                    source,
-                                                    source_hash)
-
-                    self.row_count += 1
+                    if event:
+                        self.update_hearing(event,
+                                            name,
+                                            start_date,
+                                            participating_committees,
+                                            classification,
+                                            category,
+                                            source,
+                                            source_hash)
+                    else:
+                        self.create_hearing(name,
+                                            start_date,
+                                            participating_committees,
+                                            classification,
+                                            category,
+                                            source,
+                                            source_hash)
 
             lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
 
-            print(lugar_in_db, non_blank_rows)
-            assert abs(lugar_in_db - non_blank_rows) < 5
+            assert abs(lugar_in_db - i) < 5
 
             with connection.cursor() as cursor:
                     cursor.execute(
@@ -188,97 +180,92 @@ class Command(BaseCommand):
 
 
     def add_senate_hearings(self):
-        with open('data/final/senate.csv', 'r') as csvfile:
+        with open('data/final/senate.csv', 'r') as csvfile, \
+             transaction.atomic():
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    '''CREATE TEMPORARY TABLE participants AS
+                       SELECT event_id,
+                              ARRAY_AGG(organization_id::text) AS committees
+                       FROM opencivicdata_eventparticipant
+                       GROUP BY event_id''')
+
             reader = csv.DictReader(csvfile)
+            # we want to know the original row index for debugging purposes
+            reader = enumerate(reader, 2)
+            # ignore rows with a missing name
+            reader = ((i, row) for i, row in reader if row['Hearing/Report'])
 
-            # we are doing this instead of enumerate so that
-            # so that we can get a handle on the row in error messages
-            # in some methods that will be down the stack
-            self.row_count = 2
-            non_blank_rows = 1
+            for i, (self.row_index, row) in enumerate(reader, 1):
+                name = row['Hearing/Report']
+                start_date = row['Date'].split('T', 1)[0]
+                source = csvfile.name
+                source_hash = str(sorted(row.items()))
+                classification = row['Type']
+                category = row['Category1']
+                hearing_number_raw = row['Hearing #']
 
-            with transaction.atomic():
+                committees = [row['Committee1'], row['Committee2']]
 
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        '''CREATE TEMPORARY TABLE participants AS
-                           SELECT event_id,
-                                  ARRAY_AGG(organization_id::text) AS committees
-                           FROM opencivicdata_eventparticipant
-                           GROUP BY event_id''')
+                
+                participating_committees = self.get_participating_committees(row['Committee1'],
+                                                                             row['Committee2'])
 
-                for row in reader:
-                    name = row['Hearing/Report']
-                    start_date = row['Date'].split('T', 1)[0]
-                    source = csvfile.name
-                    source_hash = str(sorted(row.items()))
-                    classification = row['Type']
-                    category = row['Category1']
-                    hearing_number_raw = row['Hearing #']
+                self.stdout.write("\nSenate row " + str(self.row_index) + ": " + name)
+                exists = self.does_hearing_exist(source_hash)
 
-                    committees = [row['Committee1'], row['Committee2']]
-                    participating_committees = [committee for committee in committees if committee]
-                    participating_committees = Committee.objects.filter(lugar_id__in=participating_committees, organization__isnull=False)
+                if exists:
+                    self.stdout.write("Already exists!")
+                    self.noop_count += 1
 
-                    if name:
-                        non_blank_rows += 1
+                else:
+                    events = self.match_by_hearing_number(hearing_number_raw, name, category, source)
+                    if events is not None:
+                        # hearing numbers can be non-unique if a
+                        # hearing has multiple sessions these are
+                        # recorded in the Lugar data as separate
+                        # events
+                        for event in events:
+                            self.update_hearing(event,
+                                                name,
+                                                start_date,
+                                                participating_committees,
+                                                classification,
+                                                category,
+                                                source,
+                                                source_hash)
 
-                        self.stdout.write("\nSenate row " + str(self.row_count) + ": " + name)
-                        exists = self.does_hearing_exist(source_hash)
+                    else:
+                        event = self.match_by_date_and_participants(name,
+                                                                    participating_committees,
+                                                                    start_date)
 
-                        if exists:
-                            self.stdout.write("Already exists!")
-                            self.noop_count += 1
-
+                        if event:
+                            self.update_hearing(event,
+                                                name,
+                                                start_date,
+                                                participating_committees,
+                                                classification,
+                                                category,
+                                                source,
+                                                source_hash)
                         else:
-                            events = self.match_by_hearing_number(hearing_number_raw, name, category, source)
-                            if events is not None:
-                                # hearing numbers can be non-unique if a
-                                # hearing has multiple sessions these are
-                                # recorded in the Lugar data as separate
-                                # events
-                                for event in events:
-                                    self.update_hearing(event,
-                                                        name,
-                                                        start_date,
-                                                        participating_committees,
-                                                        classification,
-                                                        category,
-                                                        source,
-                                                        source_hash)
+                            self.create_hearing(name,
+                                                start_date,
+                                                participating_committees,
+                                                classification,
+                                                category,
+                                                source,
+                                                source_hash)
 
-                            else:
-                                event = self.match_by_date_and_participants(name,
-                                                                            participating_committees,
-                                                                            start_date)
 
-                                if event:
-                                    self.update_hearing(event,
-                                                        name,
-                                                        start_date,
-                                                        participating_committees,
-                                                        classification,
-                                                        category,
-                                                        source,
-                                                        source_hash)
-                                else:
-                                    self.create_hearing(name,
-                                                        start_date,
-                                                        participating_committees,
-                                                        classification,
-                                                        category,
-                                                        source,
-                                                        source_hash)
+            lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
+            assert abs(lugar_in_db - i) < 80
 
-                    self.row_count += 1
-
-                lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
-                print(lugar_in_db, non_blank_rows)
-                assert abs(lugar_in_db - non_blank_rows) < 80
-
-                with connection.cursor() as cursor:
-                    cursor.execute(
-                        '''DROP TABLE participants''')
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    '''DROP TABLE participants''')
 
 
 
@@ -337,7 +324,7 @@ class Command(BaseCommand):
                 new_committee, created = EventParticipant.objects.get_or_create(name=committee.lugar_name, event=event, entity_type=entity_type)
 
         except (ObjectDoesNotExist, AttributeError, ValueError) as e:
-            self.bad_rows.append("Row " + str(self.row_count) + ": Bad committee key " + committee)
+            self.bad_rows.append("Row " + str(self.row_index) + ": Bad committee key " + committee)
         except MultipleObjectsReturned:
             pass
 
@@ -373,7 +360,7 @@ class Command(BaseCommand):
                     return
 
             except AttributeError:
-                self.bad_rows.append("Row " + str(self.row_count) + ": Unrecognized hearing number " + hearing_number_raw + " on " + name)
+                self.bad_rows.append("Row " + str(self.row_index) + ": Unrecognized hearing number " + hearing_number_raw + " on " + name)
                 return
         else:
             return
@@ -398,7 +385,7 @@ class Command(BaseCommand):
                  'start_date': start_date})
         except ValueError:
             matched_events = []
-            self.bad_rows.append("Row " + str(self.row_count) + ": Bad committee value in " + str(participating_committees))
+            self.bad_rows.append("Row " + str(self.row_index) + ": Bad committee value in " + str(participating_committees))
 
         if len(matched_events) == 1:
             return matched_events[0]
@@ -422,7 +409,7 @@ class Command(BaseCommand):
             if len(matched_events) == 1:
                 return matched_events[0]
             else:
-                self.bad_rows.append("Row " + str(self.row_count) + ": Multiple possible matches but no matching name " + str(matched_events))
+                self.bad_rows.append("Row " + str(self.row_index) + ": Multiple possible matches but no matching name " + str(matched_events))
                 return
         else:
             return
