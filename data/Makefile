@@ -26,4 +26,4 @@ final/senate.csv : processed/senate.xlsx
 	in2csv --sheet "Hearings" -S $^ | csvsort | uniq > $@
 
 final/senate_committees.csv : raw/Senate_AllHearings.xlsx
-	in2csv --sheet "Key" -S $^ | csvcut -c 1,2 | sed '1s/*./code,name/' > $@
+	in2csv --sheet "Key" -S $^ | csvcut -c 1,2 | sed '1s/.*/code,name/' > $@
