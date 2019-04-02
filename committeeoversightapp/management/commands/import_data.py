@@ -128,16 +128,7 @@ class Command(BaseCommand):
                 classification = row['Type']
                 category = row['Category1']
 
-                committee1 = row['Committee1']
-                committee2 = row['Committee2']
-                subcommittee1 = row['Subcommittee']
-                subcommittee2 = row['Subcommittee2']
-
-                participating_committees = self.get_participating_committees(committee1,
-                                                                             committee2,
-                                                                             subcommittee1,
-                                                                             subcommittee2)
-
+                participating_committees = self.get_participating_committees(row)
 
                 self.stdout.write("\nHouse row " + str(self.row_index) + ": " + name)
                 exists = self.does_hearing_exist(source_hash)
@@ -208,9 +199,8 @@ class Command(BaseCommand):
 
                 committees = [row['Committee1'], row['Committee2']]
 
-                
-                participating_committees = self.get_participating_committees(row['Committee1'],
-                                                                             row['Committee2'])
+                participating_committees = [committee for committee in committees if committee]
+                participating_committees = Committee.objects.filter(lugar_id__in=participating_committees, organization__isnull=False)
 
                 self.stdout.write("\nSenate row " + str(self.row_index) + ": " + name)
                 exists = self.does_hearing_exist(source_hash)
@@ -289,12 +279,18 @@ class Command(BaseCommand):
         else:
             self.bad_rows.append("Multiple possible committees for " + committee_key + ": " + committee_name)
 
-    def get_participating_committees(self, committee1, committee2, subcommittee1, subcommittee2):
+    def get_participating_committees(self, row):
         # get committees into a edited list format
         # committee codes with a zero appended indicate "full committee"
         # and only the full committee will be recorded as an event participant
         # hearings with a subcommittee listed will only have the subcommittee saved,
         # as the full committee is attached as a parent
+
+        committee1 = row['Committee1']
+        committee2 = row['Committee2']
+        subcommittee1 = row['Subcommittee']
+        subcommittee2 = row['Subcommittee2']
+
         participating_committees = []
 
         if (committee1 and not subcommittee1) or (subcommittee1 == (committee1 + str(0))):
