@@ -14,7 +14,7 @@ from opencivicdata.core.models import Organization, OrganizationName
 from opencivicdata.legislative.models import Event, EventSource, EventParticipant
 from committeeoversightapp.models import HearingCategory, Committee
 
-ExistingEvents = Event.objects.exclude(sources__note='spreadsheet').exclude(sources__note='web form')
+ExistingEvents = Event.objects.exclude(sources__note='spreadsheet file')
 
 class Command(BaseCommand):
     help = "Import Lugar spreadsheets data"
@@ -137,6 +137,9 @@ class Command(BaseCommand):
                 if exists:
                     self.stdout.write("Already exists!")
                     self.noop_count += 1
+                    import pdb
+                    pdb.set_trace()
+
 
                 else:
                     event = self.match_by_date_and_participants(name,
@@ -163,7 +166,8 @@ class Command(BaseCommand):
                                             source_hash,
                                             source_file)
 
-            lugar_in_db = len(Event.objects.filter(extras__source_file=csvfile.name))
+            lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
+
 
             assert abs(lugar_in_db - i) < 5
 
@@ -257,7 +261,7 @@ class Command(BaseCommand):
                                                 source_file)
 
 
-            lugar_in_db = len(Event.objects.filter(extras__source_file=csvfile.name))
+            lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
             # from manual checking this is acceptable
             assert abs(lugar_in_db - i) < 80
 
@@ -336,7 +340,7 @@ class Command(BaseCommand):
 
     def new_category(self, event, category):
 
-        valid_categories = set(range(1,14))
+        valid_categories = {str(category) for category in range(1,14)}
         if category not in valid_categories:
             return False
 
@@ -386,7 +390,7 @@ class Command(BaseCommand):
                    AND start_date = %(start_date)s
                    AND opencivicdata_event.id NOT IN
                        (SELECT event_id FROM opencivicdata_eventsource
-                        WHERE note = 'spreadsheet')''',
+                        WHERE note = 'spreadsheet file')''',
                 {'lugar_committees': lugar_committees,
                  'start_date': start_date})
         except ValueError:
@@ -408,7 +412,7 @@ class Command(BaseCommand):
                    AND name ILIKE %(name)s
                    AND opencivicdata_event.id NOT IN
                        (SELECT event_id FROM opencivicdata_eventsource
-                        WHERE note = 'spreadsheet')''',
+                        WHERE note = 'spreadsheet file')''',
                 {'lugar_committees': lugar_committees,
                  'start_date': start_date,
                  'name': name})
@@ -435,7 +439,6 @@ class Command(BaseCommand):
         event.start_date = start_date
         event.classification = classification
         event.extras['source_hash'] = source_hash
-        event.extras['source_file'] = source_file
         event.save()
 
         if category:
@@ -443,7 +446,10 @@ class Command(BaseCommand):
         else:
             category_created = False
 
-        source_created = self.new_source(event, "spreadsheet", source)
+        if source.strip():
+            source_created = self.new_source(event, "spreadsheet", source)
+
+        source_created = self.new_source(event, 'spreadsheet file', source_file)
 
         for committee in participating_committees:
             self.new_event_participant(committee, event)
@@ -474,6 +480,10 @@ class Command(BaseCommand):
         if category:
             self.new_category(event, category)
 
-        self.new_source(event, "spreadsheet", source)
+        if source.strip():
+            source_created = self.new_source(event, "spreadsheet", source)
+
+        source_created = self.new_source(event, 'spreadsheet file', source_file)
+
         self.created_count += 1
         self.stdout.write("Created #" + str(self.created_count) + ": " + event.name)
