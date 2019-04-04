@@ -14,7 +14,7 @@ from opencivicdata.core.models import Organization, OrganizationName
 from opencivicdata.legislative.models import Event, EventSource, EventParticipant
 from committeeoversightapp.models import HearingCategory, Committee
 
-ScrapedEvents = Event.objects.exclude(sources__note='spreadsheet')
+ExistingEvents = Event.objects.exclude(sources__note='spreadsheet').exclude(sources__note='web form')
 
 class Command(BaseCommand):
     help = "Import Lugar spreadsheets data"
@@ -121,7 +121,8 @@ class Command(BaseCommand):
 
             for i, (self.row_index, row) in enumerate(reader, 1):
 
-                source = csvfile.name
+                source = row['source']
+                source_file = csvfile.name
                 source_hash = str(sorted(row.items()))
                 start_date = row['Date'].split('T', 1)[0]
                 name = row['Hearing/Report']
@@ -150,7 +151,8 @@ class Command(BaseCommand):
                                             classification,
                                             category,
                                             source,
-                                            source_hash)
+                                            source_hash,
+                                            source_file)
                     else:
                         self.create_hearing(name,
                                             start_date,
@@ -158,9 +160,10 @@ class Command(BaseCommand):
                                             classification,
                                             category,
                                             source,
-                                            source_hash)
+                                            source_hash,
+                                            source_file)
 
-            lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
+            lugar_in_db = len(Event.objects.filter(extras__source_file=csvfile.name))
 
             assert abs(lugar_in_db - i) < 5
 
@@ -191,7 +194,8 @@ class Command(BaseCommand):
             for i, (self.row_index, row) in enumerate(reader, 1):
                 name = row['Hearing/Report']
                 start_date = row['Date'].split('T', 1)[0]
-                source = csvfile.name
+                source = row['source']
+                source_file = csvfile.name
                 source_hash = str(sorted(row.items()))
                 classification = row['Type']
                 category = row['Category1']
@@ -224,7 +228,8 @@ class Command(BaseCommand):
                                                 classification,
                                                 category,
                                                 source,
-                                                source_hash)
+                                                source_hash,
+                                                source_file)
 
                     else:
                         event = self.match_by_date_and_participants(name,
@@ -239,7 +244,8 @@ class Command(BaseCommand):
                                                 classification,
                                                 category,
                                                 source,
-                                                source_hash)
+                                                source_hash,
+                                                source_file)
                         else:
                             self.create_hearing(name,
                                                 start_date,
@@ -247,10 +253,12 @@ class Command(BaseCommand):
                                                 classification,
                                                 category,
                                                 source,
-                                                source_hash)
+                                                source_hash,
+                                                source_file)
 
 
-            lugar_in_db = len(Event.objects.filter(sources__url=csvfile.name))
+            lugar_in_db = len(Event.objects.filter(extras__source_file=csvfile.name))
+            # from manual checking this is acceptable
             assert abs(lugar_in_db - i) < 80
 
             with connection.cursor() as cursor:
@@ -322,6 +330,8 @@ class Command(BaseCommand):
         except (ObjectDoesNotExist, AttributeError, ValueError) as e:
             self.bad_rows.append("Row " + str(self.row_index) + ": Bad committee key " + committee)
         except MultipleObjectsReturned:
+            # there are a few scraped events that have multiple
+            # participants on them
             pass
 
     def new_category(self, event, category):
@@ -349,7 +359,7 @@ class Command(BaseCommand):
         if hearing_number_raw:
             try:
                 hearing_number = re.search(r'\d{2,}-\d{1,}', hearing_number_raw).group(0)
-                events = ScrapedEvents.filter(extras__hearing_number__endswith=hearing_number)
+                events = ExistingEvents.filter(extras__hearing_number__endswith=hearing_number)
                 if len(events) > 0:
                     return events
                 else:
@@ -366,7 +376,7 @@ class Command(BaseCommand):
             lugar_committees = list(org['organization']
                                     for org in participating_committees.values('organization')
                                     if org['organization'] is not None)
-            matched_events = ScrapedEvents.raw(
+            matched_events = ExistingEvents.raw(
                 '''SELECT opencivicdata_event.*
                    FROM opencivicdata_event
                    INNER JOIN participants
@@ -387,7 +397,7 @@ class Command(BaseCommand):
             return matched_events[0]
 
         elif len(matched_events) > 1:
-            matched_events = ScrapedEvents.raw(
+            matched_events = ExistingEvents.raw(
                 '''SELECT opencivicdata_event.* 
                    FROM opencivicdata_event
                    INNER JOIN participants
@@ -418,12 +428,14 @@ class Command(BaseCommand):
                        classification,
                        category,
                        source,
-                       source_hash):
+                       source_hash,
+                       source_file):
 
         event.name = name
         event.start_date = start_date
         event.classification = classification
         event.extras['source_hash'] = source_hash
+        event.extras['source_file'] = source_file
         event.save()
 
         if category:
@@ -446,12 +458,14 @@ class Command(BaseCommand):
                        classification,
                        category,
                        source,
-                       source_hash):
+                       source_hash,
+                       source_file):
         event = Event.objects.create(name=name,
                                      start_date=start_date,
                                      jurisdiction_id=self.jurisdiction_id,
                                      classification=classification)
         event.extras['source_hash'] = source_hash
+        event.extras['source_file'] = source_file
         event.save()
 
         for committee in participating_committees:
