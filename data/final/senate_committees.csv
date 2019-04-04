@@ -1,22 +1,22 @@
-Committees,b,c,Categorizations,e
-201,Aging,,1,Nominations
-202,"Agriculture, Nutrition, and Forestry",,2,Legislative
-203,Appropriations,,3,Policy
-204,Armed Services,,4,Agency Conduct
-205,"Banking, Housing, and Urban Affairs",,5,Private Sector Oversight
-206,Budget,,6,Fact Finding
-207,"Commerce, Science, and Transportation",,7,Field
-208,Energy and Natural Resources,,8,Closed
-209,Environment and Public Works,,9,Meeting/Markup
-210,Ethics,,10,Postponed
-211,Finance,,11,Report
-212,Foreign Relations,,12,Cancelled
-213,"Health, Education, Labor, and Pensions",,13,Testimony
-214,Homeland Security and Governmental Affairs,,,
-215,Indian Affairs,,,
-216,Intelligence,,,
-217,Judiciary,,,
-218,Rules and Administration,,,
-219,Small Business and Entrepreneurship,,,
-220,United States Senate Caucus on International Narcotics Control,,,
-221,Veterans' Affairs,,,
+code,name
+201,Senate Committee on Aging
+202,"Senate Committee on Agriculture, Nutrition, and Forestry"
+203,Senate Committee on Appropriations
+204,Senate Committee on Armed Services
+205,"Senate Committee on Banking, Housing, and Urban Affairs"
+206,Senate Committee on Budget
+207,"Senate Committee on Commerce, Science, and Transportation"
+208,Senate Committee on Energy and Natural Resources
+209,Senate Committee on Environment and Public Works
+210,Senate Committee on Ethics
+211,Senate Committee on Finance
+212,Senate Committee on Foreign Relations
+213,"Senate Committee on Health, Education, Labor, and Pensions"
+214,Senate Committee on Homeland Security and Governmental Affairs
+215,Senate Committee on Indian Affairs
+216,Senate Committee on Intelligence
+217,Senate Committee on Judiciary
+218,Senate Committee on Rules and Administration
+219,Senate Committee on Small Business and Entrepreneurship
+220,Senate Committee on International Narcotics Control
+221,Senate Committee on Veterans' Affairs

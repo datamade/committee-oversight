@@ -1,176 +1,178 @@
-Committees and Subcommittees,b,c,Categorizations,e
-101,"Agriculture, Nutrition, and Forestry",,1,Nominations
-1010,Full Committee,,2,Legislative
-1011,"Commodity Exchanges, Energy, and Credit",,3,Policy
-1012,Conservation and Forestry,,4,Agency Conduct
-1013,Nutrition,,5,Private Sector Oversight
-1014,General Farm Commodities and Risk Management,,6,Fact Finding
-1015,"Biotechnology, Horticulture, and Research",,7,Field
-1016,Livestock and Foreign Agriculture,,8,Closed
-102,Appropriations,,9,Meeting/Markup
-1020,Full Committee,,10,Postponed
-1021,"Agriculture, Rural Development, Food and Drug Administration, and Related Agencies",,11,Report
-1022,"Commerce, Justice, Science, and Related Agencies",,12,Cancelled
-1023,Defense,,13,Testimony
-1024,"Energy and Water Development, and Related Agencies",,,
-1025,Financial Services and General Government ,,,
-1026,Homeland Security,,,
-1027,"Interior, Environment, and Related Agencies ",,,
-1028,"Labor, Health and Human Services, Education, and Related Agencies ",,,
-1029,Legislative Branch,,,
-10201,"Military Construction, Veterans Affairs and Related Agencies",,,
-10202,"State, Foreign Operations, and Related Programs ",,,
-10203,"Transportation, Housing and Urban Development, and Related Agencies",,,
-103,Armed Services,,,
-1030,Full Committee,,,
-1031,Emerging Threats and Capabilities,,,
-1032,Military Personnel,,,
-1033,Oversight and Investigations,,,
-1034,Readiness,,,
-1035,Seapower and Projection Forces,,,
-1036,Strategic Forces,,,
-1037,Tactical Air and Land Forces,,,
-1038,Panel on Business Challenges within the Defense Industry,,,
-1039,Panel on Defense Financial Management and Auditability Reform,,,
-10301,Panel on Defense Acquisition Reform,,,
-104,Budget,,,
-1040,Full Committee,,,
-105,Education and the Workforce,,,
-1050,Full Committee,,,
-1051,"Subcommittee on Early Childhood, Elementary, and Secondary Education",,,
-1052,Subcommittee on Higher Education and Workforce Development ,,,
-1053,Subcommittee on Workforce Protections ,,,
-1054,"Subcommittee on Health, Employment, Labor, and Pensions",,,
-1055,Subcommittee on Healthy Families and Communities,,,
-106,Energy and Commerce,,,
-1060,Full Committee,,,
-1061,Communications and Technology,,,
-1062,Digital Commerce and Consumer Protections,,,
-1063,Energy,,,
-1064,Environment,,,
-1065,Health,,,
-1066,Oversight and Investigations,,,
-1067,Energy and Commerce,,,
-107,Ethics,,,
-1070,Full Committee,,,
-108,Financial Services,,,
-1080,Full Committee,,,
-1081,"Capital Markets, Securities, and Investment",,,
-1082,Financial Institutions and Consumer Credit,,,
-1083,Housing and Insurance,,,
-1084,Monetary Policy and Trade,,,
-1085,Oversight and Investigation,,,
-1086,Terrorism and Illicit Finance,,,
-1087,Domestic Monetary Policy and Technology,,,
-109,Foreign Affairs,,,
-1090,Full Committee,,,
-1091,"Africa, Global Health, Global Human Rights, and International Organizations",,,
-1092,Asia and the Pacific,,,
-1093,"Europe, Eurasia, and Emerging Threats",,,
-1094,Middle East and North Africa,,,
-1095,"Terrorism, Nonproliferation, and Trade",,,
-1096,Western Hemisphere,,,
-110,Homeland Security,,,
-1100,Full Committee,,,
-1101,Border and Martime Security,,,
-1102,Counterterrorism and Intelligence,,,
-1103,Cybersecurity and Infrastructure Protection,,,
-1104,"Emergency Preparedness, Response, and Communications",,,
-1105,Oversight and Management Efficiency,,,
-1106,Transportation and Protective Security,,,
-1107,DHS Management and Acquisitions,,,
-1108,Fusion Centers,,,
-1109,Weapons of Mass Destruction,,,
-11001,First Responder Communications,,,
-11002,"Chemical, Biological, Radiological, Nuclear and Explosives",,,
-11003,"Science, Technology, Research and Development",,,
-111,House Administration,,,
-1110,Full Committee,,,
-1111,Joint Committee on Library,,,
-1112,Joint Committee on Printing,,,
-1113,Subcommittee on Elections,,,
-1114,Subcommittee on Oversight,,,
-112,Intelligence,,,
-1120,Full Committee,,,
-1121,CIA ,,,
-1122,Department of Defense Intelligence and Overhead Architecture,,,
-1123,Emerging Threats,,,
-1124,NSA and Cybersecurity ,,,
-113,Judiciary,,,
-1130,Full Committee,,,
-,,,,
-1131,Constitution and Civil Justice,,,
-1132,"Courts, Intellectual Property, and the Internet",,,
-1133,"Crime, Terrorism, Homeland Security, and Investigations",,,
-1134,Immigration and Border Security,,,
-1135,"Regulatory Reform, Commercial and Antitrust Law",,,
-1136,Antitrust Task Force,,,
-1137," Citizenship, Refugees, Border Security, and International Law",,,
-1138,Commercial and Administrative Law,,,
-1139,"titution, Civil Rights, and Civil Liberties",,,
-114,Natural Resources,,,
-1140,Full Committee,,,
-1141,Energy and Mineral Resources,,,
-1142,Federal Lands,,,
-1143,"Indian, Insular and Alaska Native Affairs",,,
-1144,Oversight and Investigations,,,
-1145,"Water, Power and Oceans",,,
-1146,"Subcommittee of National Parks, Forests and Public Lands",,,
-1147,Subcommittee on Public Lands and Environmental Regulation,,,
-1148,"Subcommittee on Fisheries, Wildlife, Oceans, and Insular Affairs",,,
-115,Oversight and Government Reform,,,
-1150,Full Committee,,,
-1151,Government Operations,,,
-1152,"Healthcare, Benefits, and Administrative Rules",,,
-1153,Information Technology,,,
-1154,Intergovernmental Affairs,,,
-1155,"Interior, Energy, & Environment",,,
-1156,National Security,,,
-116,Rules,,,
-1160,Full Committee,,,
-1161,Legislative and Budget Process,,,
-1162,Rules and Organization of the House,,,
-117,"Science, Space, and Technology",,,
-1170,Full Committee,,,
-1171,Subcommittee on Energy,,,
-1172,Subcommittee on Environment,,,
-1173,Subcommittee on Oversight,,,
-1174,Subcommittee on Research and Technology,,,
-1175,Subcommittee on Space,,,
-1176,Subcommittee on Energy and Environment,,,
-1177,Subcommittee on Research and Science,,,
-1178,Subcommittee on Technology and Innovation,,,
-1179,Select Committee on Energy Independence and Global Warming ,,,
-118,Small Business,,,
-1180,Full Committee,,,
-1181,"The Subcommittee on Agriculture, Energy, and Trade ",,,
-1182,The Subcommittee on Health and Technology ,,,
-1183,"The Subcommittee on Economic Growth, Tax, and Capital Access ",,,
-1184,"The Subcommittee on Investigations, Oversight, and Regulations ",,,
-1185,The Subcommittee on Contracting and Workforce ,,,
-119,Transportation and Infrastructure,,,
-1190,Full Committee,,,
-1191,Aviation,,,
-1192,Coast Guard and Maritime Transportation,,,
-1193,"Economic Development, Public Buildings, and Emergency Management",,,
-1194,Highways and Transit,,,
-1195,"Railroads, Pipelines, and Hazardous Materials",,,
-1196,Water Resources and Environment,,,
-1197,Panel on Public-Private Partnerships ,,,
-1198,Panel on 21st Century Freight Transportation,,,
-120,Veterans Affairs,,,
-1200,Full Committee,,,
-1201,Disability Assistance and Memorial Affairs,,,
-1202,Economic Opportunity,,,
-1203,Health,,,
-1204,Oversight and Investigations,,,
-121,Ways and Means,,,
-1210,Full Committee,,,
-1211,Health,,,
-1212,Human Resources,,,
-1213,Oversight,,,
-1214,Social Security,,,
-1215,Trade,,,
-1216,Tax Policy,,,
-122,Congressional Executive Commission on China,,,
-1220,Full Commission,,,
+code,name
+101,House Committee on Agriculture
+1010,Full Committee
+1011,"Subcommittee on Commodity Exchanges, Energy, and Credit"
+1012,Subcommittee on Conservation and Forestry
+1013,Subcommittee on Nutrition
+1014,Subcommittee on General Farm Commodities and Risk Management
+1015,"Subcommittee on Biotechnology, Horticulture, and Research"
+1016,Subcommittee on Livestock and Foreign Agriculture
+102,House Committee on Appropriations
+1020,Full Committee
+1021,"Subcommittee on Agriculture, Rural Development, Food and Drug Administration, and Related Agencies"
+1022,"Subcommittee on Commerce, Justice, Science, and Related Agencies"
+1023,Subcommittee on Defense
+1024,Subcommittee on Energy and Water
+1025,Subcommittee on Financial Services and General Government
+1026,Subcommittee on Homeland Security
+1027,"Subcommittee on Interior, Environment, and Related Agencies"
+1028,"Subcommittee on Labor, Health and Human Services, Education, and Related Agencies"
+1029,Subcommittee on Legislative Branch
+10201,"Subcommittee on Military Construction, Veterans Affairs and Related Agencies"
+10202,"Subcommittee on State, Foreign Operations and Related Programs"
+10203,"Subcommittee on Transportation, Housing and Urban Development and Related Agencies"
+103,House Committee on Armed Services
+1030,Full Committee
+1031,Subcommittee on Emerging Threats and Capabilities
+1032,Subcommittee on Military Personnel
+1033,Subcommittee on Oversight and Investigations
+1034,Subcommittee on Readiness
+1035,Subcommittee on Seapower and Projection Forces
+1036,Subcommittee on Strategic Forces
+1037,Subcommittee on Tactical Air and Land Forces
+1038,Panel on Business Challenges within the Defense Industry
+1039,Panel on Defense Financial Management and Auditability Reform
+10301,Panel on Defense Acquisition Reform
+104,House Committee on the Budget
+1040,Full Committee
+105,House Committee on Education and the Workforce
+1050,Full Committee
+1051,"Subcommittee on Early Childhood, Elementary, and Secondary Education"
+1052,Subcommittee on Higher Education and Workforce Training
+1053,Subcommittee on Workforce Protections
+1054,"Subcommittee on Health, Employment, Labor, and Pensions"
+1055,Subcommittee on Healthy Families and Communities
+106,House Committee on Energy and Commerce
+1060,Full Committee
+1061,Subcommittee on Communications and Technology
+1062,Subcommittee on Digital Commerce and Consumer Protection
+1063,Subcommittee on Energy
+1064,Subcommittee on Environment
+1065,Subcommittee on Health
+1066,Subcommittee on Oversight and Investigations
+1068,Subcommittee on Environment and the Economy
+107,House Committee on Ethics
+1070,Full Committee
+108,House Committee on Financial Services
+1080,Full Committee
+1081,"Subcommittee on Capital Markets, Securities and Investment"
+1082,Subcommittee on Financial Institutions and Consumer Credit
+1083,Subcommittee on Housing and Insurance
+1084,Subcommittee on Monetary Policy and Trade
+1085,Subcommittee on Oversight and Investigation
+1086,Subcommittee on Terrorism and Illicit Finance
+1087,Subcommittee on Domestic Monetary Policy and Technology
+109,House Committee on Foreign Affairs
+1090,Full Committee
+1091,"Subcommittee on Africa, Global Health, Global Human Rights and International Organizations"
+1092,Subcommittee on Asia and the Pacific
+1093,"Subcommittee on Europe, Eurasia, and Emerging Threats"
+1094,Subcommittee on Middle East and North Africa
+1095,"Subcommittee on Terrorism, Nonproliferation, and Trade"
+1096,Subcommittee on Western Hemisphere
+1097,Subcommittee on Oversight and Investigations
+1098,"Subcommittee on International Organizations, Human Rights and Oversight"
+1099,Subcommittee on Africa and Global Health
+110,House Committee on Homeland Security
+1100,Full Committee
+1101,Subcommittee on Border and Maritime Security
+1102,Subcommittee on Counterterrorism and Intelligence
+1103,Subcommittee on Cybersecurity and Infrastructure Protection
+1104,"Subcommittee on Emergency Preparedness, Response, and Communications"
+1105,Subcommittee on Oversight and Management Efficiency
+1106,Subcommittee on Transportation and Protective Security
+1107,Subcommittee on Oversight and Management Efficiency
+1108,Subcommittee on Fusion Centers
+1109,Subcommittee on Weapons of Mass Destruction
+11001,Subcommittee on First Responder Communications
+11002,Subcommittee on Prevention of Nuclear and Biological Attack
+11003,"Subcommittee on Science, and Research and Development"
+111,House Committee on House Administration
+1110,Full Committee
+1111,Subcommittee on Libraries and Memorials
+1112,Subcommittee on Procurement and Printing
+1113,Subcommittee on Elections
+1114,Subcommittee on Oversight
+112,House Committee on Intelligence (Permanent Select)
+1120,Full Committee
+1121,Subcommittee on CIA
+1122,Subcommittee on Department of Defense Intelligence and Overhead Architecture
+1123,Subcommittee on Emerging Threats
+1124,Subcommittee on NSA and Cybersecurity
+113,House Committee on Judiciary
+1130,Full Committee
+1131,Subcommittee on Constitution and Civil Justice
+1132,"Subcommittee on Courts, Intellectual Property, and the Internet"
+1133,"Subcommittee on Crime, Terrorism, Homeland Security, and Investigations"
+1134,Subcommittee on Immigration and Border Security
+1135,"Subcommittee on Regulatory Reform, Commercial and Antitrust Law"
+1136,Task Force on Antitrust and Competition Policy
+1137,Subcommittee on Immigration and Border Security
+1138,Subcommittee on Commercial and Administrative Law
+1139,"titution, Civil Rights, and Civil Liberties"
+114,House Committee on Natural Resources
+1140,Full Committee
+1141,Subcommittee on Energy and Mineral Resources
+1142,Subcommittee on Federal Lands
+1143,"Subcommittee on Indian, Insular and Alaska Native Affairs"
+1144,Subcommittee on Oversight and Investigations
+1145,"Subcommittee on Water, Power and Oceans"
+1146,"Subcommittee of National Parks, Forests and Public Lands"
+1147,Subcommittee on Public Lands and Environmental Regulation
+1148,"Subcommittee on Fisheries, Wildlife, Oceans, and Insular Affairs"
+115,House Committee on Oversight and Government Reform
+1150,Full Committee
+1151,Subcommittee on Government Operations
+1152,"Subcommittee on Health Care, Benefits and Administrative Rules"
+1153,Subcommittee on Information Technology
+1154,Subcommittee on Intergovernmental Affairs
+1155,"Subcommittee on Interior, Energy and Environment"
+1156,Subcommittee on National Security
+116,House Committee on Rules
+1160,Full Committee
+1161,Subcommittee on Legislative and Budget Process
+1162,Subcommittee on Rules and the Organization of the House
+117,"House Committee on Science, Space, and Technology"
+1170,Full Committee
+1171,Subcommittee on Energy
+1172,Subcommittee on Environment
+1173,Subcommittee on Oversight
+1174,Subcommittee on Research and Technology
+1175,Subcommittee on Space
+1176,Subcommittee on Energy and Environment
+1177,Subcommittee on Research and Science
+1178,Subcommittee on Technology and Innovation
+1179,Select Committee on Energy Independence and Global Warming 
+118,House Committee on Small Business
+1180,Full Committee
+1181,"Subcommittee on Agriculture, Energy, and Trade"
+1182,Subcommittee on Health and Technology
+1183,"Subcommittee on Economic Growth, Tax and Capital Access"
+1184,"Subcommittee on Investigations, Oversight and Regulations"
+1185,Subcommittee on Contracting and Workforce
+119,House Committee on Transportation and Infrastructure
+1190,Full Committee
+1191,Subcommittee on Aviation
+1192,Subcommittee on Coast Guard and Maritime Transportation
+1193,"Subcommittee on Economic Development, Public Buildings and Emergency Management"
+1194,Subcommittee on Highways and Transit
+1195,"Subcommittee on Railroads, Pipelines, and Hazardous Materials"
+1196,Subcommittee on Water Resources and Environment
+1197,Panel on Public-Private Partnerships 
+1198,Panel on 21st Century Freight Transportation
+120,House Committee on Veterans' Affairs
+1200,Full Committee
+1201,Subcommittee on Disability Assistance and Memorial Affairs
+1202,Subcommittee on Economic Opportunity
+1203,Subcommittee on Health
+1204,Subcommittee on Oversight and Investigations
+121,House Committee on Ways and Means
+1210,Full Committee
+1211,Subcommittee on Health
+1212,Subcommittee on Human Resources
+1213,Subcommittee on Oversight
+1214,Subcommittee on Social Security
+1215,Subcommittee on Trade
+1216,Subcommittee on Tax Policy
+122,Congressional Executive Commission on China
+1220,Full Commission
