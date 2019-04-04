@@ -137,9 +137,6 @@ class Command(BaseCommand):
                 if exists:
                     self.stdout.write("Already exists!")
                     self.noop_count += 1
-                    import pdb
-                    pdb.set_trace()
-
 
                 else:
                     event = self.match_by_date_and_participants(name,
