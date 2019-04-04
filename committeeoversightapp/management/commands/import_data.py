@@ -468,7 +468,6 @@ class Command(BaseCommand):
                                      jurisdiction_id=self.jurisdiction_id,
                                      classification=classification)
         event.extras['source_hash'] = source_hash
-        event.extras['source_file'] = source_file
         event.save()
 
         for committee in participating_committees:
