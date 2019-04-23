@@ -76,7 +76,10 @@ class TranscriptForm(Form):
 
 # add category as foreign key in table HearingCategory
 class CategoryForm(Form):
-    category = ModelChoiceField(queryset=HearingCategoryType.objects.all())
+    category = ModelChoiceField(
+        queryset=HearingCategoryType.objects.all(),
+        required=False
+    )
 
 # when editing a hearing, category is not required
 class CategoryEditForm(CategoryForm):
