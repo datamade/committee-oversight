@@ -1,3 +1,4 @@
 beamalsky@datamade.us
 datamade@ssce.datamade.us
+fgregg@datamade.us
 ssce-staging@datamade.us
