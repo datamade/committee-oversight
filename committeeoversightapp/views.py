@@ -89,7 +89,6 @@ class EventListJson(BaseDatatableView):
 
         return qs
 
-
     def prepare_results(self, qs):
         json_data = []
         edit_string = "<a href=\"/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
