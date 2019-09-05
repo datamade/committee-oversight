@@ -66,3 +66,24 @@ Perform the following steps from your terminal.
     ```
 
     Then, navigate to http://localhost:8000/.
+
+## Initial CMS content
+
+*To create a new data dump* of all the content in the Wagtail backend—except for
+image files—run:
+
+```bash
+python manage.py dumpdata --natural-foreign --indent 2 -e core -e legislative -e committeeoversightapp -e contenttypes -e auth.permission -e wagtailcore.groupcollectionpermission -e wagtailcore.grouppagepermission -e wagtailimages.rendition -e sessions > committeeoversightapp/fixtures/initial_cms_content.json
+```
+
+This should update the `initial_cms_content.json` file in your `committeeoversightapp/fixtures`
+directory.
+
+To update the images, find your `media` folder copy the contents of `original_images`
+into `committeeoversightapp/fixtures/initial_images`.
+
+*To restore an existing CMS data dump*, run:
+
+```bash
+python manage.py load_cms_content
+```
