@@ -81,6 +81,14 @@ class EventListJson(BaseDatatableView):
     # requests
     max_display_length = 500
 
+    def filter_queryset(self, qs):
+        # based on example at https://pypi.org/project/django-datatables-view/
+        search = self.request.GET.get('search[value]', None)
+        if search:
+            qs = qs.filter(name__icontains=search)
+
+        return qs
+
     def prepare_results(self, qs):
         json_data = []
         edit_string = "<a href=\"/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
