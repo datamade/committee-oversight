@@ -11,7 +11,7 @@ install:
 dist: trusty
 sudo: required
 services:
-  - postgresql
+- postgresql
 addons:
   postgresql: 9.6
   apt:
@@ -24,8 +24,8 @@ script:
 - python manage.py migrate
 - pytest
 notifications:
-  webhooks:
-  - https://semabot.datamade.us/travis/
+  slack:
+    secure: WZE+shuIOGZGq+jBiM8AnsQH9uDmJ5utr3haTUh4bJuZyaE7ObzK3s4BJw5YUY9gaPu5X8pYGtD77Cz2Q+WwWeIOPnFGa7597n7aACONHE2kRr+gsDct+20tNnlYEgj1DykPYTtQ4SxgVR9aMl6+H9qr62nMWL2oOfPVhDe6ELMUdFkjsnCtKMUXUCc/Q60p4MhS9oh15gOZivrj/FDBxcqwdToXoDfXI5QkV6u620JhS/lFHGDk6vNllENsjuGh/pPNgXUY9WenaCWjS16lfeZhNP37mjTr790ET9ZtkS/dnx0A7O6t0fcgeUruV7jr25Z337RUtSBeUdWQRV2k7+z3vEWTIidJ+YacqtVUArCfBKr7mes5ADsMlLiEOcREBvQXdQ0osHiFo5vHXSjlEs++10TWvX/2SCiT6gW2x6LwdoX6lWw5KE3Yq8XySN/nxdD1wdRwjF3LDzKJmuZaa5O5VW0w7Ui7cXc89zQ/l5qAOH2Fh6wrYPqpbOS9dFsH/+z4ZtqFfbbPHaOMMGsOEmWI1pR/+K5w0MvzXTUcaYSit6F3C+aqlpWm2JHEWEJR6doH6mDYMxnnj/mqgVxh4+oCWFiECFgw+X3+ToGkSOAifudBZEA+GUKEfR1iCSRDbACFOsAOSbPzB49G4Tl/WtGk1VoQInZUTBSOna+TZro=
 deploy:
   provider: codedeploy
   access_key_id: AKIAJNYGDLOJKHOUWCAA
