@@ -16,7 +16,7 @@ sudo -H -u datamade $venv_dir/bin/pip install --upgrade pip
 sudo -H -u datamade $venv_dir/bin/pip install --upgrade setuptools
 sudo -H -u datamade $venv_dir/bin/pip install -r $project_dir/requirements.txt --upgrade
 
-cd $project_dir && sudo -H -u datamade GPG=gpg2 blackbox_postdeploy
+cd $project_dir && sudo -H -u datamade blackbox_postdeploy
 mv $project_dir/configs/local_settings.py.$DEPLOYMENT_GROUP_NAME $project_dir/committeeoversight/local_settings.py && chown datamade.www-data $project_dir/committeeoversight/local_settings.py
 
 psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'hearings'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE hearings"
