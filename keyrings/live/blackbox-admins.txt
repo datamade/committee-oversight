@@ -1,5 +1,6 @@
 beamalsky@datamade.us
 datamade@ssce.datamade.us
+derek.eder@datamade.us
 fgregg@datamade.us
 hannah.cushman@gmail.com
 ssce-staging@datamade.us
