@@ -1,5 +1,4 @@
 import pytest
-from committeeoversight.wsgi import *
 
 from committeeoversightapp.models import HearingCategory
 from opencivicdata.legislative.models import Event
