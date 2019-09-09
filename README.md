@@ -79,8 +79,12 @@ python manage.py dumpdata --natural-foreign --indent 2 -e core -e legislative -e
 This should update the `initial_cms_content.json` file in your `committeeoversightapp/fixtures`
 directory.
 
-To update the images, find your `media` folder copy the contents of `original_images`
-into `committeeoversightapp/fixtures/initial_images`.
+To update the images, find your `media` folder and copy the contents of `original_images`
+into `committeeoversightapp/fixtures/initial_images`. For local development:
+
+```bash
+cp -R media/original_images/. committeeoversightapp/fixtures/initial_images/
+```
 
 *To restore an existing CMS data dump*, run:
 
