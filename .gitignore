@@ -8,3 +8,6 @@ local_settings.py
 /configs/committee-oversight-staging.conf.nginx
 /configs/committee-oversight-staging.conf.supervisor
 bad_rows.txt
+
+# Wagtail media uploads
+media

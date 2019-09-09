@@ -23,6 +23,11 @@ psql -U postgres -d hearings -c "CREATE EXTENSION IF NOT EXISTS postgis"
 $venv_dir/bin/python $project_dir/manage.py migrate
 $venv_dir/bin/python $project_dir/manage.py collectstatic --no-input
 
+# Configure the media folder for user uploads
+media_dir=/home/datamade/media
+ls $media_dir || (mkdir -p $media_dir && chown -R datamade.www-data $media_dir)
+chmod -R g+r $media_dir
+
 # Assign variables based on deployment group
 if [ "$DEPLOYMENT_GROUP_NAME" == "staging" ]; then
     export DOMAIN="committeeoversight.datamade.us"
