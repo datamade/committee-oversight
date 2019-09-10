@@ -1,3 +1,5 @@
+import re
+
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView, DeleteView
@@ -82,7 +84,21 @@ class EventListJson(BaseDatatableView):
     max_display_length = 500
 
     def filter_queryset(self, qs):
-        # based on example at https://pypi.org/project/django-datatables-view/
+        # in order to filter by categories and committees, grab the detail
+        # object type and its pk from the url and filter
+        path = self.request.path
+        split_path = path.split('/')
+        detail_type = split_path[-2]
+        pk = int(split_path[-1])
+
+        # pk for the listing page for all hearings will be 0
+        if pk and detail_type == 'category':
+            qs = qs.filter(hearingcategory__category_id=pk)
+
+        if pk and detail_type == 'committee':
+            pass
+
+        # based on search example at https://pypi.org/project/django-datatables-view/
         search = self.request.GET.get('search[value]', None)
         if search:
             qs = qs.filter(name__icontains=search)
