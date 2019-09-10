@@ -53,6 +53,28 @@ class Committee(models.Model):
                                      on_delete=models.CASCADE)
 
 
+class StaticPage(Page):
+    body = StreamField([
+        ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+        ('button',
+         blocks.StructBlock([
+            ('button_text', blocks.CharBlock()),
+            ('button_link', blocks.URLBlock())
+            ],
+         icon='site'))
+    ])
+
+    # Editor configuration
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('body'),
+    ]
+    promote_panels = [
+        MultiFieldPanel(Page.promote_panels, "Page configuration"),
+    ]
+
+
 class CategoryDetailPage(Page):
     body = StreamField([
         ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
