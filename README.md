@@ -17,13 +17,7 @@ We use Docker for local development. To get started, run the following from your
     cd committee-oversight
     ```
 
-2. Load initial category data:
-
-    ```bash
-    docker-compose -f docker-compose.yml -f docker-compose.db-ops.yml run --rm dbload
-    ```
-
-3. Run the application:
+2. Run the application:
 
     ```bash
     docker-compose up
@@ -35,7 +29,7 @@ We use Docker for local development. To get started, run the following from your
     docker exec committeeoversight-postgres pg_restore -C -j4 --no-owner -U postgres -d hearings /app/hearings.dump
     ```
 
-    Note: To accommodate the restoration of this hearings dump, migrations are not run automatically with `docker-compose up`. If you need to run them manually, you can run `docker exec committeeoversight python manage.py migrate`
+    Note: To accommodate the restoration of this hearings dump, migrations are not run automatically with `docker-compose up`. If you need to run them manually, you can run `docker exec committeeoversight python manage.py migrate`.
 
 4. If you don't already have the `lugarcenter` development password, create a new superuser by running:
 

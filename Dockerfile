@@ -11,10 +11,8 @@ LABEL maintainer "DataMade <info@datamade.us>"
 
 # Install and upgrade pip
 # This may not be necessary, depending on your base Python image
-RUN apt-get update
-RUN apt-get install -y python-pip
-RUN pip install --upgrade pip setuptools
-RUN apt-get install -y binutils libproj-dev gdal-bin
+RUN apt-get update && \
+    apt-get install -y binutils libproj-dev gdal-bin
 
 # Inside the container, create an app directory and switch into it
 RUN mkdir /app
