@@ -85,17 +85,13 @@ class EventListJson(BaseDatatableView):
 
     def filter_queryset(self, qs):
         # in order to filter by categories and committees, grab the detail
-        # object type and its pk from the url and filter
-        path = self.request.path
-        split_path = path.split('/')
-        detail_type = split_path[-2]
-        pk = int(split_path[-1])
+        # object type and its pk from the ajax url paramenters
+        detail_type = self.request.GET.get('detail_type', None)
+        id = self.request.GET.get('id', None)
 
-        # pk for the listing page for all hearings will be 0
-        if pk and detail_type == 'category':
-            qs = qs.filter(hearingcategory__category_id=pk)
-
-        if pk and detail_type == 'committee':
+        if detail_type == 'category':
+            qs = qs.filter(hearingcategory__category_id=id)
+        if detail_type == 'committee':
             pass
 
         # based on search example at https://pypi.org/project/django-datatables-view/

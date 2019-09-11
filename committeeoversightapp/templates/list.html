@@ -20,7 +20,7 @@ $(document).ready( function () {
       "columnDefs": [{ "orderable": false, "targets": [3, 4] }],
       "processing": true,
       "serverSide": true,
-      "ajax": "{% url 'order_list_json' 0 %}"
+      "ajax": "{% url 'order_list_json' %}"
     });
 } );
 </script>

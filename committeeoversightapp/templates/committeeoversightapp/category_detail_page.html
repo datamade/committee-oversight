@@ -11,7 +11,14 @@
 
   <script>
   $(document).ready(function () {
-      var id = {{page.category.id}}
+      var categoryID = {{page.category.id}}
+
+      function makeAjaxUrl(categoryID) {
+        var ajaxUrl = "{% url 'order_list_json' %}" +
+               '?detail_type=category' +
+               '&id=' + categoryID;
+        return ajaxUrl;
+      }
 
       $('#hearing-table').DataTable({
         "dom": "Bfrtip",
@@ -19,7 +26,7 @@
         "columnDefs": [{ "orderable": false, "targets": [3, 4] }],
         "processing": true,
         "serverSide": true,
-        "ajax": "{% url 'order_list_json' 'category' %}/" + id
+        "ajax": makeAjaxUrl(categoryID)
       });
   });
   </script>
