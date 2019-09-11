@@ -71,6 +71,26 @@ class StaticPage(Page):
     ]
 
 
+class LandingPage(Page):
+    body = StreamField([
+        ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock()),
+        ('button',
+         blocks.StructBlock([
+            ('button_text', blocks.CharBlock()),
+            ('button_link', blocks.URLBlock())
+            ],
+         icon='site'))
+    ])
+
+    # Editor configuration
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('body'),
+    ]
+
+
+
 class CategoryDetailPage(Page):
     # model page method adapted from https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
     category = models.ForeignKey(
