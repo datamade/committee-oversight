@@ -183,6 +183,13 @@ input[type='checkbox'] {
   border-radius: .25rem;
 }
 
+.wagtail-userbar-trigger.wagtail-icon-wagtail::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f303";
+  font-size: 1.4rem !important;
+}
+
 /* Small devices (landscape phones, 576px and up) */
 @media (max-width: 767px) {
   .pagination {
