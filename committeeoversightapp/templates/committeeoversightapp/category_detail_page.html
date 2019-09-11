@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="col-12 col-lg-9 mx-auto">
-    <h1 class="mb-4">Category {{object.id}}: {{object.name}}</h1>
+    <h1 class="mb-4">Category {{page.detail_object.id}}: {{page.detail_object.name}}</h1>
   </div>
 
   {% include 'partials/streamfield.html' %}
@@ -10,8 +10,8 @@
   {% include 'partials/hearing_table.html' %}
 
   <script>
-  $(document).ready( function () {
-      var id = {{object.id}}
+  $(document).ready(function () {
+      var id = {{page.detail_object.id}}
 
       $('#hearing-table').DataTable({
         "dom": "Bfrtip",
@@ -21,7 +21,7 @@
         "serverSide": true,
         "ajax": "{% url 'order_list_json' 'category' %}/" + id
       });
-  } );
+  });
   </script>
 
 {% endblock %}
