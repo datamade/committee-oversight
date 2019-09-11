@@ -69,18 +69,16 @@ class StaticPage(Page):
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
     ]
-    promote_panels = [
-        MultiFieldPanel(Page.promote_panels, "Page configuration"),
-    ]
 
 
 class CategoryDetailPage(Page):
     # model page method adapted from https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
-    detail_object = models.ForeignKey(
+    category = models.ForeignKey(
         HearingCategoryType,
         blank=False,
         null=True,
-        on_delete=models.SET_NULL
+        on_delete=models.SET_NULL,
+        help_text="Select a category for this page."
     )
 
     body = StreamField([
@@ -97,15 +95,12 @@ class CategoryDetailPage(Page):
 
     # Editor configuration
     content_panels = [
-        FieldPanel('detail_object'),
+        FieldPanel('category'),
         StreamFieldPanel('body'),
-    ]
-    promote_panels = [
-        MultiFieldPanel(Page.promote_panels, "Page configuration"),
     ]
 
     def save(self, *args, **kwargs):
         print("saving now...")
-        self.title = "Category " + self.detail_object.id + ": " + self.detail_object.name
+        self.title = "Category " + self.category.id + ": " + self.category.name
         self.draft_title = self.title
         super().save(*args, **kwargs)
