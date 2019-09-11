@@ -5,7 +5,6 @@ from wagtail.core import hooks
 
 @hooks.register('insert_editor_js')
 def editor_js():
-    print("hook is running")
     js_files = [
         'committeeoversightapp/js/category_slug.js',
     ]
