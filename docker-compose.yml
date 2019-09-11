@@ -1,0 +1,47 @@
+version: '2.4'
+
+services:
+  app:
+    image: committeeoversight
+    container_name: committeeoversight
+    restart: always
+    build: .
+    # Allow container to be attached to, e.g., to access the pdb shell
+    stdin_open: true
+    tty: true
+    ports:
+      # Map ports on your computer to ports on your container. This allows you,
+      # e.g., to visit your containerized application in a browser on your
+      # computer.
+      - 8000:8000  # e.g., 8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      # Mount the development directory as a volume into the container, so
+      # Docker automatically recognizes your changes.
+      - .:/app
+      # Mount example configs as live configs in the container.
+      - ${PWD}/committeeoversight/local_settings.example.py:/app/committeeoversight/local_settings.py
+    command: python manage.py runserver 0.0.0.0:8000  # e.g., python manage.py runserver 0.0.0.0:8000
+
+  postgres:
+    container_name: committeeoversight-postgres
+    image: mdillon/postgis:10
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - committeeoversight-db-data:/var/lib/postgresql/
+      - ${PWD}/hearings.dump:/app/hearings.dump
+    environment:
+      - POSTGRES_DB=hearings
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 32001:5432
+
+volumes:
+  # Declare your named volume for Postgres.
+  committeeoversight-db-data:

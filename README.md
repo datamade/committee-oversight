@@ -3,12 +3,12 @@
 
 ## Requirements
 
-- Python 3.x
-- Postgres >= 9
+- [Docker](https://www.docker.com/)
+
 
 ## Running the app locally
 
-Perform the following steps from your terminal.
+We use Docker for local development. To get started, run the following from your terminal:
 
 1. Clone this repository and `cd` into your local copy.
 
@@ -16,78 +16,51 @@ Perform the following steps from your terminal.
     git clone git@github.com:datamade/committee-oversight.git
     cd committee-oversight
     ```
-2. Create a virtual environment. (We recommend using [`virtualenvwrapper`](http://virtualenvwrapper.readthedocs.org/en/latest/install.html) for working in a virtualized development environment.)
+
+2. Run the application:
 
     ```bash
-    mkvirtualenv committee-oversight
+    docker-compose up
     ```
-3. Install the requirements.
+
+3. The root of this repository has a file named `hearings.dump`, a sample set of hearings data for use in local development. With `docker-compose up` still running, open a new terminal tab and run:
 
     ```bash
-    pip install -r requirements.txt
+    docker-compose exec postgres pg_restore -C -j4 --no-owner -U postgres -d hearings /app/hearings.dump
     ```
 
-4. Copy the example local settings file to the correct location:
+    Note: To accommodate the restoration of this hearings dump, migrations are not run automatically with `docker-compose up`. If you need to run them manually, you can run `docker-compose run --rm app python manage.py migrate`.
+
+4. If you don't already have the `lugarcenter` development password, create a new superuser by running:
 
     ```bash
-    cp committeeoversight/local_settings.example.py committeeoversight/local_settings.py
+    docker-compose run --rm app python manage.py createsuperuser
     ```
 
-5. Start a `hearings` database with a scrape from the [hearings repo](https://github.com/datamade/hearings) or a data dump from a pal. If you're following the latter path and have an archival format `hearings.dump` file (see [documentation](https://www.postgresql.org/docs/10/app-pgrestore.html)) in the root of this project, restore it by running:
+5. Navigate to http://localhost:8000/ and you should be able to log in!
 
-    ```bash
-    pg_restore -C -j4 --no-owner hearings.dump | psql
-    ```
-
-6. Run migrations:
-
-    ```bash
-    python manage.py migrate
-    ```
-
-7. Make a superuser for so that you can access the admin interface:
-
-    ```bash
-     python manage.py createsuperuser
-    ```
-
-    Django should prompt you to provide a username, email, and password.
-
-8. Load hearing categories:
-
-    ```bash
-    python manage.py loaddata hearingcategorytype
-    ```
-
-9. Run the app locally!
-
-    ```bash
-    python manage.py runserver
-    ```
-
-    Then, navigate to http://localhost:8000/.
 
 ## Initial CMS content
 
-*To create a new data dump* of all the content in the Wagtail backend—except for
-image files—run:
+**To restore an existing backup of the Wagtail CMS**, run:
 
 ```bash
-python manage.py dumpdata --natural-foreign --indent 2 -e core -e legislative -e committeeoversightapp -e contenttypes -e auth.permission -e wagtailcore.groupcollectionpermission -e wagtailcore.grouppagepermission -e wagtailimages.rendition -e sessions > committeeoversightapp/fixtures/initial_cms_content.json
+docker-compose run --rm app python manage.py load_cms_content
 ```
 
-This should update the `initial_cms_content.json` file in your `committeeoversightapp/fixtures`
-directory.
+**To create a new dump** of all the content in the Wagtail backend, perform the following steps:
 
-To update the images, find your `media` folder and copy the contents of `original_images`
-into `committeeoversightapp/fixtures/initial_images`. For local development:
+1. Back up the CMS content (except for image files):
 
-```bash
-cp -R media/original_images/. committeeoversightapp/fixtures/initial_images/
-```
+    ```bash
+    docker-compose run --rm app python manage.py dumpdata --natural-foreign --indent 2 -e core -e legislative -e committeeoversightapp -e contenttypes -e auth.permission -e wagtailcore.groupcollectionpermission -e wagtailcore.grouppagepermission -e wagtailimages.rendition -e sessions > committeeoversightapp/fixtures/initial_cms_content.json
+    ```
 
-*To restore an existing CMS data dump*, run:
+    This should update the `initial_cms_content.json` file in your `committeeoversightapp/fixtures`
+    directory.
 
-```bash
-python manage.py load_cms_content
-```
+2. Update the image files by copying your local Wagtail images folder into `fixtures/initial_images`:
+
+    ```bash
+    cp -R media/original_images/. committeeoversightapp/fixtures/initial_images/
+    ```
