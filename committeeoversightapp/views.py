@@ -107,8 +107,8 @@ class EventListJson(BaseDatatableView):
 
     def prepare_results(self, qs):
         json_data = []
-        edit_string = "<a href=\"/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
-        delete_string = "<a href=\"/delete/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
+        edit_string = "<a href=\"edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
+        delete_string = "<a href=\"delete/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
         for item in qs:
             json_data.append([
