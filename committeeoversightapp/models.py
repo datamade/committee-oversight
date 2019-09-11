@@ -1,11 +1,10 @@
 from django.db import models
-import re
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.core import blocks
-from wagtail.admin.edit_handlers import StreamFieldPanel, MultiFieldPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.admin.edit_handlers import StreamFieldPanel, MultiFieldPanel, \
+                                        FieldPanel
 from wagtail.images.blocks import ImageChooserBlock
 
 from opencivicdata.core.models import Organization
@@ -76,6 +75,14 @@ class StaticPage(Page):
 
 
 class CategoryDetailPage(Page):
+    # model page method adapted from https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
+    detail_object = models.ForeignKey(
+        HearingCategoryType,
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL
+    )
+
     body = StreamField([
         ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
         ('paragraph', blocks.RichTextBlock()),
@@ -89,18 +96,16 @@ class CategoryDetailPage(Page):
     ])
 
     # Editor configuration
-    content_panels = Page.content_panels + [
+    content_panels = [
+        FieldPanel('detail_object'),
         StreamFieldPanel('body'),
     ]
     promote_panels = [
         MultiFieldPanel(Page.promote_panels, "Page configuration"),
     ]
 
-    def get_context(self, request):
-        context = super().get_context(request)
-        path = context['request'].path
-        pk = re.search(r'/(\d+)/', path).group(1)
-
-        context['object'] = HearingCategoryType.objects.get(id=pk)
-
-        return context
+    def save(self, *args, **kwargs):
+        print("saving now...")
+        self.title = "Category " + self.detail_object.id + ": " + self.detail_object.name
+        self.draft_title = self.title
+        super().save(*args, **kwargs)
