@@ -1,3 +1,5 @@
+import re
+
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView, DeleteView
@@ -82,7 +84,17 @@ class EventListJson(BaseDatatableView):
     max_display_length = 500
 
     def filter_queryset(self, qs):
-        # based on example at https://pypi.org/project/django-datatables-view/
+        # in order to filter by categories and committees, grab the detail
+        # object type and its pk from the ajax url paramenters
+        detail_type = self.request.GET.get('detail_type', None)
+        id = self.request.GET.get('id', None)
+
+        if detail_type == 'category':
+            qs = qs.filter(hearingcategory__category_id=id)
+        if detail_type == 'committee':
+            pass
+
+        # based on search example at https://pypi.org/project/django-datatables-view/
         search = self.request.GET.get('search[value]', None)
         if search:
             qs = qs.filter(name__icontains=search)
@@ -91,8 +103,8 @@ class EventListJson(BaseDatatableView):
 
     def prepare_results(self, qs):
         json_data = []
-        edit_string = "<a href=\"/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
-        delete_string = "<a href=\"/delete/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
+        edit_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
+        delete_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
         for item in qs:
             json_data.append([

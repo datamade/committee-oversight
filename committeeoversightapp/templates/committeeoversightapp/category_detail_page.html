@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="col-12 col-lg-9 mx-auto">
+    <h1 class="mb-4 text-center">Category {{page.category.id}}: {{page.category.name}}</h1>
+  </div>
+
+  {% include 'partials/streamfield.html'%}
+
+  {% include 'partials/hearing_table.html' %}
+
+  <script>
+  $(document).ready(function () {
+      var categoryID = {{page.category.id}}
+
+      function makeAjaxUrl(categoryID) {
+        var ajaxUrl = "{% url 'order_list_json' %}" +
+               '?detail_type=category' +
+               '&id=' + categoryID;
+        return ajaxUrl;
+      }
+
+      $('#hearing-table').DataTable({
+        "dom": "Bfrtip",
+        "order": [[ 0, "desc" ]],
+        "columnDefs": [{ "orderable": false, "targets": [3, 4] }],
+        "processing": true,
+        "serverSide": true,
+        "ajax": makeAjaxUrl(categoryID)
+      });
+  });
+  </script>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% load static %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+
+{% for block in page.body %}
+  {% if block.block_type == 'heading' %}
+    <div class="col-12 col-md-7">
+      <h2>{{ block.value }}</h2>
+    </div>
+  {% elif block.block_type == 'image' %}
+    <div class="col-12 text-center p-3 mb-4">
+      {% image block.value min-700x250 class="img-fluid" %}
+    </div>
+  {% elif block.block_type == 'button' %}
+    <div class="col-12 col-md-7">
+      <a class="btn btn-primary link-btn btn-lg mt-4 mb-4" href="{{ block.value.button_link }}">
+        {{ block.value.button_text }}
+      </a>
+    </div>
+  {% else %}
+    <div class="col-12 col-md-7">
+      {% include_block block %}
+    </div>
+  {% endif %}
+{% endfor %}
