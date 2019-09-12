@@ -1,0 +1,5 @@
+# /etc/cron.d/committee-oversight-crontasks
+
+# Back up the hearings database at midnight GMT every Thursday.
+# N.b., Thursday is arbitrary. Once weekly is the intent.
+0 0 * * 4 pg_dump -Fc -U postgres -d hearings | /usr/bin/aws s3 cp - s3://datamade-postgresql-backups/hearings/$(date -d "today" +"%Y%m%d%H%M").dump
