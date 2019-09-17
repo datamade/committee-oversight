@@ -9,7 +9,7 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from opencivicdata.core.models import Organization
 from opencivicdata.legislative.models import Event, EventParticipant, \
-                                             EventDocument
+                                             EventDocument, LegislativeSession
 
 
 class HearingCategoryType(models.Model):
@@ -40,6 +40,20 @@ class WitnessDetails(models.Model):
     retired = models.BooleanField(default=False)
 
 
+class Congress(models.Model):
+    '''
+    TO-DO:
+    1. Is this necessary, e.g., do we want to query ratings data by
+    Congress, or only by committee?
+    2. Consider using the LegislativeSession model from OCD. That makes this
+    a bit more complex, because we'll need to source start and end dates, and
+    they aren't always the same.
+    https://github.com/opencivicdata/python-opencivicdata/blob/master/opencivicdata/legislative/models/session.py
+    '''
+    identifier = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=200)
+
+
 class Committee(models.Model):
     lugar_id = models.IntegerField(null=True, blank=True, primary_key=False)
     lugar_name = models.CharField(max_length=200,
@@ -50,6 +64,12 @@ class Committee(models.Model):
                                      null=True,
                                      blank=True,
                                      on_delete=models.CASCADE)
+
+
+class CommitteeRating(models.Model):
+    committee = models.ForeignKey(Committee, on_delete=models.CASCADE)
+    congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
+    rating = models.CharField(max_length=100)
 
 
 class StaticPage(Page):
