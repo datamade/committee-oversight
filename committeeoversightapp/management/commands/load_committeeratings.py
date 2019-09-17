@@ -38,6 +38,15 @@ class Command(BaseCommand):
         # N.b., if we need to handle a large number of ratings in the future,
         # consider batching bulk_creates, as modeled in the docs:
         # https://docs.djangoproject.com/en/2.2/ref/models/querysets/#bulk-create
+        #
+        # I wrote this envisioning we'd receive ratings in a flat CSV file (or
+        # in a file we could convert to a flat CSV) containing columns for
+        # committee name (or some other unique identifier, e.g., Lugar ID),
+        # congress number, and rating.
+        #
+        # We could easily revise this to accept such input by iterating over a
+        # CSV reader grouped by the committee identifier, rather than the
+        # fixture dictionary.
         for committee, ratings in self.RATINGS_FIXTURE.items():
             committee = Committee.objects.get(lugar_name=committee)
 
