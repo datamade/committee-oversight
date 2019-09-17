@@ -10,7 +10,7 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from opencivicdata.core.models import Organization
 from opencivicdata.legislative.models import Event, EventParticipant, \
-                                             EventDocument, LegislativeSession
+                                             EventDocument
 
 
 class HearingCategoryType(models.Model):
