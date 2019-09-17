@@ -60,12 +60,10 @@ class Command(BaseCommand):
                         self.stdout.write('Created {}'.format(congress.name))
                     congress_cache[congress_id] = congress
 
-                committee_ratings.append({
-                    'committee': committee,
-                    'congress': congress,
-                    'rating': rating,
-                })
+                committee_ratings.append(CommitteeRating(committee=committee,
+                                                         congress=congress,
+                                                         rating=rating))
 
-                self.stdout.write('Added rating for {} in {}'.format(committee.name, congress.name))
+                self.stdout.write('Added rating for {} in {}'.format(committee.lugar_name, congress.name))
 
         CommitteeRating.objects.bulk_create(committee_ratings)
