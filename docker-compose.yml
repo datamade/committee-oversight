@@ -34,7 +34,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - committeeoversight-db-data:/var/lib/postgresql/
+      - committeeoversight-db-data:/var/lib/postgresql/data
       - ${PWD}/hearings.dump:/app/hearings.dump
     environment:
       - POSTGRES_DB=hearings
