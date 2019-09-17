@@ -13,26 +13,26 @@
 }
 
 body {
-  background: var(--lightest-blue-color);
+  background-color: var(--lightest-blue-color) !important;
   padding: 75px 0px 50px 0px;
   font-size: .9rem;
 }
 
 .btn-success {
-  background-color: var(--green-color);
+  background-color: var(--green-color) !important;
 }
 
 .btn-edit {
   color: white;
-  background-color: var(--yellow-color);
+  background-color: var(--yellow-color) !important;
 }
 
 .btn-danger {
-  background-color: var(--red-color);
+  background-color: var(--red-color) !important;
 }
 
 .btn-back {
-  color: var(--darkest-blue-color);
+  color: var(--darkest-blue-color) !important;
   font-size: 14px;
 }
 
@@ -161,26 +161,22 @@ input[type='checkbox'] {
 }
 
 .navbar {
-    background: var(--dark-blue-color);
+  background-color: var(--lightest-blue-color);
+  padding: 1rem 3rem !important;
 }
 
 .navbar div li {
-  color: var(--lightest-blue-color);
+  color: var(--dark-gray-color);
   padding: 10px 20px;
   font-size: .95rem;
 }
 
 .navbar div a {
-  color: var(--lightest-blue-color);
+  color: var(--dark-gray-color);
 }
 
 .navbar-brand {
   padding-left: 10px;
-}
-
-.nav-item:hover {
-  background-color: var(--darkest-blue-color);
-  border-radius: .25rem;
 }
 
 .wagtail-userbar-trigger.wagtail-icon-wagtail::before {

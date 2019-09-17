@@ -13,7 +13,7 @@
  <form method="POST" class="form">
    {% csrf_token %}
    <div class="float-right">
-     <a href="/list" class="btn btn-back">
+     <a href="{% url 'list-event' %}" class="btn btn-back">
        <i class="fas fa-arrow-circle-left"></i>&nbsp;
        Back to list view
      </a>
