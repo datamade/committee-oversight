@@ -41,15 +41,6 @@ class WitnessDetails(models.Model):
 
 
 class Congress(models.Model):
-    '''
-    TO-DO:
-    1. Is this necessary, e.g., do we want to query ratings data by
-    Congress, or only by committee?
-    2. Consider using the LegislativeSession model from OCD. That makes this
-    a bit more complex, because we'll need to source start and end dates, and
-    they aren't always the same.
-    https://github.com/opencivicdata/python-opencivicdata/blob/master/opencivicdata/legislative/models/session.py
-    '''
     identifier = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=200)
 
