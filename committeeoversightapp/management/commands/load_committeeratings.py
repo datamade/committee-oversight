@@ -1,7 +1,9 @@
-from django.contrib.humanize.templatetags.humanize import ordinal
 from django.core.management.base import BaseCommand
 
-from committeeoversightapp.models import Congress, Committee, CommitteeRating
+from opencivicdata.core.models import Organization
+
+from committeeoversightapp.models import CommitteeRating
+
 
 class Command(BaseCommand):
     RATINGS_FIXTURE = {
@@ -32,7 +34,6 @@ class Command(BaseCommand):
     }
 
     def handle(self, **options):
-        congress_cache = {}
         committee_ratings = []
 
         # N.b., if we need to handle a large number of ratings in the future,
@@ -48,22 +49,17 @@ class Command(BaseCommand):
         # CSV reader grouped by the committee identifier, rather than the
         # fixture dictionary.
         for committee, ratings in self.RATINGS_FIXTURE.items():
-            committee = Committee.objects.get(lugar_name=committee)
+            committee = Organization.objects.get(name=committee)
 
             for congress_id, rating in ratings.items():
-                congress = congress_cache.get(congress_id)
+                rating = CommitteeRating(committee=committee,
+                                         congress=congress_id,
+                                         rating=rating)
 
-                if not congress:
-                    name = '{} Congress'.format(ordinal(congress_id))
-                    congress, created = Congress.objects.get_or_create(identifier=congress_id, name=name)
-                    if created:
-                        self.stdout.write('Created {}'.format(congress.name))
-                    congress_cache[congress_id] = congress
+                committee_ratings.append(rating)
 
-                committee_ratings.append(CommitteeRating(committee=committee,
-                                                         congress=congress,
-                                                         rating=rating))
-
-                self.stdout.write('Added rating for {} in {}'.format(committee.lugar_name, congress.name))
+                self.stdout.write('Added {} rating for {} in {}'.format(rating.rating,
+                                                                        committee.name,
+                                                                        rating.congress_label))
 
         CommitteeRating.objects.bulk_create(committee_ratings)

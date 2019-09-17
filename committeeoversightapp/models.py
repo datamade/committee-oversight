@@ -1,3 +1,4 @@
+from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
 
 from wagtail.core.models import Page
@@ -40,11 +41,6 @@ class WitnessDetails(models.Model):
     retired = models.BooleanField(default=False)
 
 
-class Congress(models.Model):
-    identifier = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=200)
-
-
 class Committee(models.Model):
     lugar_id = models.IntegerField(null=True, blank=True, primary_key=False)
     lugar_name = models.CharField(max_length=200,
@@ -58,9 +54,16 @@ class Committee(models.Model):
 
 
 class CommitteeRating(models.Model):
-    committee = models.ForeignKey(Committee, on_delete=models.CASCADE)
-    congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
+    committee = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    congress = models.IntegerField()
     rating = models.CharField(max_length=100)
+
+    @property
+    def congress_label(self):
+        '''
+        116 => '116th Congress'
+        '''
+        return '{} Congress'.format(ordinal(self.congress))
 
 
 class StaticPage(Page):
