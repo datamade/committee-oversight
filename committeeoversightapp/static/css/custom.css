@@ -13,26 +13,31 @@
 }
 
 body {
-  background-color: var(--lightest-blue-color) !important;
+  background-color: var(--lightest-blue-color);
   padding: 75px 0px 50px 0px;
   font-size: .9rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-family: 'Roboto Slab', serif;
 }
 
 .btn-success {
-  background-color: var(--green-color) !important;
+  background-color: var(--green-color);
 }
 
 .btn-edit {
   color: white;
-  background-color: var(--yellow-color) !important;
+  background-color: var(--yellow-color);
 }
 
 .btn-danger {
-  background-color: var(--red-color) !important;
+  background-color: var(--red-color);
 }
 
 .btn-back {
-  color: var(--darkest-blue-color) !important;
+  color: var(--darkest-blue-color);
   font-size: 14px;
 }
 
@@ -162,13 +167,15 @@ input[type='checkbox'] {
 
 .navbar {
   background-color: var(--lightest-blue-color);
-  padding: 1rem 3rem !important;
+  padding: .5rem 3rem 0rem 3rem;
 }
 
 .navbar div li {
-  color: var(--dark-gray-color);
-  padding: 10px 20px;
+  color: var(--darkest-blue-color);
+  padding: 20px 20px;
   font-size: .95rem;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
 .navbar div a {
@@ -177,6 +184,10 @@ input[type='checkbox'] {
 
 .navbar-brand {
   padding-left: 10px;
+}
+
+.landing-description {
+  position: fixed;
 }
 
 .wagtail-userbar-trigger.wagtail-icon-wagtail::before {
@@ -190,5 +201,11 @@ input[type='checkbox'] {
 @media (max-width: 767px) {
   .pagination {
     display: block;
+  }
+}
+
+@media (max-width: 991px) {
+  .landing-description {
+    position: static;
   }
 }

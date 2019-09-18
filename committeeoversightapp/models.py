@@ -1,7 +1,7 @@
 from django.db import models
 
 from wagtail.core.models import Page
-from wagtail.core.fields import StreamField
+from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core import blocks
 from wagtail.admin.edit_handlers import StreamFieldPanel, MultiFieldPanel, \
                                         FieldPanel
@@ -72,22 +72,26 @@ class StaticPage(Page):
 
 
 class LandingPage(Page):
-    body = StreamField([
-        ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
-        ('paragraph', blocks.RichTextBlock()),
-        ('image', ImageChooserBlock()),
-        ('button',
-         blocks.StructBlock([
-            ('button_text', blocks.CharBlock()),
-            ('button_link', blocks.URLBlock())
-            ],
-         icon='site'))
-    ])
+    body = RichTextField()
 
     # Editor configuration
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
+
+    def get_context(self, request):
+        context = super(LandingPage, self).get_context(request)
+        context['house_committees'] = Organization.objects.all().filter(
+                                    classification='committee'
+                                ).filter(
+                                    parent_id__name__in=['United States House of Representatives']
+                                )
+        context['senate_committees'] = Organization.objects.all().filter(
+                                    classification='committee'
+                                ).filter(
+                                    parent_id__name__in=['United States Senate']
+                                )
+        return context
 
 
 
