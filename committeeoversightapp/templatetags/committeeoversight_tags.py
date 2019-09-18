@@ -21,7 +21,9 @@ rating_colors = {
     'D+': 'f-plus-rating',
     'D': 'f-rating',
     'D-': 'f-minus-rating',
-    'F': 'f-rating'
+    'F+': 'f-rating',
+    'F': 'f-rating',
+    'F-': 'f-rating'
 }
 
 
