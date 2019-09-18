@@ -5,15 +5,83 @@
   --darkest-blue-color: #001f43;
   --light-gray-color: #ced4da;
   --dark-gray-color: #495057;
-  --green-color: #5e9167;
+
   --dark-green-color: #218838;
+  --green-color: #5e9167;
+  --light-green-color: #6ca878;
+
+  --yellow-green-color: #a6ad64;
+  --yellow-color: #d0b32d;
+  --light-yellow-color: #d5be54;
+
+  --orange-yellow-color: #d5b054;
+  --orange-color: #de8d00;
+  --dark-orange-color: #c77e00;
+
+  --red-orange-color: #c2682a;
+  --red-red-orange-color: #c24e2a;
   --red-color: #b80026;
+
   --dark-red-color: #6f0017;
-  --yellow-color: #de8d00;
 }
+
+/* Committee rating colors */
+.a-plus-rating {
+  color: var(--dark-green-color);
+}
+
+.a-rating {
+  color: var(--green-color);
+}
+
+.a-minus-rating {
+  color: var(--light-green-color);
+}
+
+.b-plus-rating {
+  color: var(--yellow-green-color);
+}
+
+.b-rating {
+  color: var(--yellow-color);
+}
+
+.b-minus-rating {
+  color: var(--light-yellow-color);
+}
+
+.c-plus-rating {
+  color: var(--orange-yellow-color);
+}
+
+.c-rating {
+  color: var(--orange-color);
+}
+
+.c-minus-rating {
+  color: var(--dark-orange-color);
+}
+
+.d-plus-rating {
+  color: var(--red-orange-color);
+}
+
+.d-rating {
+  color: var(--red-red-orange-color);
+}
+
+.d-minus-rating {
+  color: var(--red-color);
+}
+
+.f-rating {
+  color: var(--dark-red-color);
+}
+
 
 body {
   background-color: var(--lightest-blue-color);
+  color: var(--dark-gray-color);
   padding: 75px 0px 50px 0px;
   font-size: .9rem;
   font-family: 'Roboto', sans-serif;
@@ -21,6 +89,18 @@ body {
 
 h1 {
   font-family: 'Roboto Slab', serif;
+  font-size: 1.9rem;
+  font-weight: 500;
+  color: black;
+}
+
+h3 {
+  color: black;
+}
+
+h4 {
+  font-family: 'Roboto Slab', serif;
+  color: black;
 }
 
 .btn-success {
@@ -29,7 +109,7 @@ h1 {
 
 .btn-edit {
   color: white;
-  background-color: var(--yellow-color);
+  background-color: var(--orange-color);
 }
 
 .btn-danger {
@@ -145,7 +225,7 @@ input[type='checkbox'] {
 }
 
 #edit-icon {
-  color: var(--yellow-color);
+  color: var(--orange-color);
 }
 
 #hearing-table_paginate {
@@ -190,6 +270,22 @@ input[type='checkbox'] {
   position: fixed;
 }
 
+.rating {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.list-item a {
+  color: var(--dark-gray-color);
+  font-weight: 600;
+}
+
+.list-item a:hover {
+  color: white;
+  background-color: black;
+  text-decoration: none;
+}
+
 .wagtail-userbar-trigger.wagtail-icon-wagtail::before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
@@ -202,10 +298,19 @@ input[type='checkbox'] {
   .pagination {
     display: block;
   }
+  .navbar {
+    padding: 1rem;
+}
 }
 
-@media (max-width: 991px) {
+@media (max-width: 992px) {
   .landing-description {
     position: static;
   }
+}
+
+@media (min-width: 1400px) {
+.container {
+    max-width: 1280px;
+}
 }
