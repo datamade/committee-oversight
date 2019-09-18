@@ -1,30 +1,82 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
+{% load committeeoversight_tags %}
 
 {% block content %}
 
   <div class="row">
-    <div class="col-12 col-lg-5 col-xl-4 landing-description">
-        <h1 class="mb-4 ml-3 text-left">{{page.title}}</h1>
+    <div class="col-12 col-lg-4 col-xl-4 landing-description">
+        <h1 class="mb-4 ml-3 d-minus-rating">{{page.title}}</h1>
         <div class="m-3">{{page.body|richtext}}</div>
-        <!-- committee search bar goes here -->
+        <label class="m-3">
+          <h4 class="mb-3">Search by committee:</h4>
+          <select id="committee-select" class="form-control select2-single">
+            {% for committee in committees %}
+              <option value="{{committee.extras|lookup:"cleaned_id"}}">{{committee.name}}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <button
+          class="btn btn-success float-right mr-3"
+          type="submit"
+          onclick="javascript:goToCommittee();"
+        >
+          Go
+        </button>
+
     </div>
 
-    <div class="col-12 col-lg-3 offset-lg-6">
-      <h3 class="mb-4 text-left">The House</h3>
-      <!-- committee ratings table goes here -->
+    <div class="col-12 col-lg-3 p-3 offset-lg-5">
+      <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-10">
+          <h3 class="mb-4 text-left">The House</h3>
+        </div>
+      </div>
+
       {% for committee in house_committees %}
-        <p>{{committee}}</p>
+        <div class="row">
+          <div class="col-2 text-right rating a-plus-rating">A+</div>
+          <div class="col-10 align-bottom">
+            <p class="list-item"><a href="{{committee.extras|lookup:"cleaned_id"}}">{{committee}}</a></p>
+            <hr>
+          </div>
+        </div>
       {% endfor %}
     </div>
 
-    <div class="col-12 col-lg-3">
-      <h3 class="mb-4 text-left">The Senate</h3>
-      <!-- committee ratings table goes here -->
+    <div class="col-12 col-lg-3 p-3">
+      <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-10">
+          <h3 class="mb-4 text-left">The Senate</h3>
+        </div>
+      </div>
+
       {% for committee in senate_committees %}
-        <p>{{committee}}</p>
+        <div class="row">
+          <div class="col-2 text-right rating b-minus-rating">B-</div>
+          <div class="col-10 align-bottom">
+            <p class="list-item"><a href="{{committee.extras|lookup:"cleaned_id"}}">{{committee}}</a></p>
+            <hr>
+          </div>
+        </div>
       {% endfor %}
     </div>
   </div>
+
+  <script>
+    $(document).ready(function() {
+      $('.select2-single').select2();
+    });
+
+    function goToCommittee() {
+        var select = document.getElementById("committee-select")
+        var url = select.options[select.selectedIndex].value;
+        window.location.href=url;
+    }
+  </script>
 
 {% endblock %}

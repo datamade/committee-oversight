@@ -105,6 +105,19 @@ class LandingPage(Page):
                                 ).filter(
                                     parent_id__name__in=['United States Senate']
                                 )
+
+        committees = context['house_committees'] | context['senate_committees']
+
+        # Since Wagtail strips slashes out of urls but OCD prefixes their orgs
+        # with 'ocd-organization/', we need to do some cleaning. The cleaned_id
+        # of each committee should be of the form 'committee-<committee #>'
+        for committee in committees:
+            if not committee.extras.get('cleaned_id'):
+                committee.extras['cleaned_id'] = 'committee-' + committee.id.split('ocd-organization/').pop()
+                committee.save()
+
+        context['committees'] = committees.order_by('name')
+
         return context
 
 
