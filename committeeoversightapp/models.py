@@ -1,3 +1,4 @@
+from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
 
 from wagtail.core.models import Page
@@ -50,6 +51,19 @@ class Committee(models.Model):
                                      null=True,
                                      blank=True,
                                      on_delete=models.CASCADE)
+
+
+class CommitteeRating(models.Model):
+    committee = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    congress = models.IntegerField()
+    rating = models.CharField(max_length=100)
+
+    @property
+    def congress_label(self):
+        '''
+        116 => '116th Congress'
+        '''
+        return '{} Congress'.format(ordinal(self.congress))
 
 
 class StaticPage(Page):
