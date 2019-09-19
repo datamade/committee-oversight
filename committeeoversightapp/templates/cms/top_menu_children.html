@@ -2,9 +2,9 @@
 
 <ul class="dropdown-menu">
     {# Include link to parent because the parent link is a drop down #}
-    <li class="nav-item ml-3"><a href="{% pageurl parent %}">{{ parent.title }}</a></li>
+    <li class="ml-3 p-0"><a href="{% pageurl parent %}">{{ parent.title }}</a></li>
     {% for child in menuitems_children %}
-        <hr>
-        <li class="nav-item ml-3"><a href="{% pageurl child %}">{{ child.title }}</a></li>
+        <hr class="m-2">
+        <li class="ml-3 p-0"><a href="{% pageurl child %}">{{ child.title }}</a></li>
     {% endfor %}
 </ul>

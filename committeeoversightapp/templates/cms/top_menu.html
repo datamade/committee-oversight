@@ -15,10 +15,10 @@
       {% for menuitem in menuitems %}
         <li class="nav-item {% if menuitem.show_dropdown %}dropdown{% endif %}{% if calling_page.url == menuitem.url %} active{% endif %}">
             {% if menuitem.show_dropdown %}
-              <a class="nav-link" data-toggle="dropdown" class="dropdown-toggle" href="#"><strong>{{ menuitem.title }}</strong> <b class="caret"></b></a>
+              <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ menuitem.title }} <b class="caret"></b></a>
               {% top_menu_children parent=menuitem %}
             {% else %}
-              <a class="nav-link" href="{% pageurl menuitem %}"><strong>{{ menuitem.title }}</strong></a>
+              <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
             {% endif %}
         </li>
       {% endfor %}
