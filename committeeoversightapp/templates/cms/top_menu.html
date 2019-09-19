@@ -5,12 +5,12 @@
     <span class="navbar-toggler-icon"></i></span>
   </button>
   <a class="navbar-brand" href="/">
-    <img src="{% static 'images/logo.png' %}" height="40" alt="The Lugar Center"/>
+    <img src="{% static 'images/lugarcenter.svg' %}" height="40" alt="The Lugar Center"/>
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <i class="fas fa-home"></i>&nbsp; <a href="#">Home</a>
+        <a href="#">Home</a>
       </li>
       {% for menuitem in menuitems %}
         <li class="nav-item {% if menuitem.show_dropdown %}dropdown{% endif %}{% if calling_page.url == menuitem.url %} active{% endif %}">
@@ -24,19 +24,18 @@
       {% endfor %}
       {% if request.user.is_authenticated %}
       <li class="nav-item">
-        <i class="fas fa-save"></i>&nbsp; <a href="{% url 'create-event'%}">Add Hearing</a>
+        <a href="{% url 'create-event'%}">Add Hearing</a>
       </li>
       <li class="nav-item">
-        <i class="fas fa-list"></i>&nbsp; <a href="{% url 'list-event'%}">View Hearings</a>
+        <a href="{% url 'list-event'%}">View Hearings</a>
       </li>
       <li class="nav-item">
-        <i class="fas fa-user-circle"></i>&nbsp;
-        Logged in as <b>{{ request.user.get_username }}</b>
-        (<a href="{% url 'logout'%}">Logout</a>)
+        <!-- Logged in as <b>{{ user.get_username }}</b> -->
+        <a href="{% url 'logout'%}">Logout</a>
       </li>
-      {% else %}
+     {% else %}
       <li class="nav-item">
-        <i class="fas fa-sign-in-alt"></i>&nbsp; <a href="{% url 'login'%}">Login</a>
+        <a href="{% url 'login'%}">Login</a>
       </li>
       {% endif %}
     </ul>
