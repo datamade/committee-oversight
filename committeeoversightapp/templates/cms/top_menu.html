@@ -10,7 +10,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a href="#">Home</a>
+        <a href="/">Home</a>
       </li>
       {% for menuitem in menuitems %}
         <li class="nav-item {% if menuitem.show_dropdown %}dropdown{% endif %}{% if calling_page.url == menuitem.url %} active{% endif %}">
@@ -30,7 +30,7 @@
         <a href="{% url 'list-event'%}">View Hearings</a>
       </li>
       <li class="nav-item">
-        <!-- Logged in as <b>{{ user.get_username }}</b> -->
+        <span class="mr-4">Logged in as <b>{{ request.user.get_username }}</b></span>
         <a href="{% url 'logout'%}">Logout</a>
       </li>
      {% else %}
