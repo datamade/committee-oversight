@@ -12,6 +12,20 @@ from opencivicdata.legislative.models import Event, EventParticipant, \
                                              EventDocument
 
 
+class CommitteeOrganization(Organization):
+    class Meta:
+        proxy = True
+
+    def url_id(self):
+        """
+        Since Wagtail strips slashes out of urls but OCD prefixes their orgs
+        with 'ocd-organization/', we need to do some cleaning. The url_id
+        of each committee should be of the form 'committee-<committee #>'
+        """
+        url_id = 'committee-' + self.id.split('ocd-organization/').pop()
+        return url_id
+
+
 class HearingCategoryType(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
     name = models.CharField(max_length=100, primary_key=False)
@@ -41,6 +55,10 @@ class WitnessDetails(models.Model):
 
 
 class Committee(models.Model):
+    """
+    Used in the import_data management command, not the frontend app.
+    """
+
     lugar_id = models.IntegerField(null=True, blank=True, primary_key=False)
     lugar_name = models.CharField(max_length=200,
                                   null=True,
@@ -81,27 +99,17 @@ class LandingPage(Page):
 
     def get_context(self, request):
         context = super(LandingPage, self).get_context(request)
-        context['house_committees'] = Organization.objects.all().filter(
+        context['house_committees'] = CommitteeOrganization.objects.all().filter(
                                     classification='committee'
                                 ).filter(
                                     parent_id__name__in=['United States House of Representatives']
                                 )
-        context['senate_committees'] = Organization.objects.all().filter(
-                                    classification='committee'
-                                ).filter(
+        context['senate_committees'] = CommitteeOrganization.objects.all().filter(
+                                    classification='committee',
                                     parent_id__name__in=['United States Senate']
                                 )
 
         committees = context['house_committees'] | context['senate_committees']
-
-        # Since Wagtail strips slashes out of urls but OCD prefixes their orgs
-        # with 'ocd-organization/', we need to do some cleaning. The cleaned_id
-        # of each committee should be of the form 'committee-<committee #>'
-        for committee in committees:
-            if not committee.extras.get('cleaned_id'):
-                committee.extras['cleaned_id'] = 'committee-' + committee.id.split('ocd-organization/').pop()
-                committee.save()
-
         context['committees'] = committees.order_by('name')
 
         return context

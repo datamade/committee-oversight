@@ -1,5 +1,328 @@
-
-[31;1mCommandError: Unable to serialize database: could not connect to server: Connection refused
-	Is the server running on host "postgres" (172.30.0.2) and accepting
-	TCP/IP connections on port 5432?
-[0m[
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Moderators",
+    "permissions": [
+      [
+        "access_admin",
+        "wagtailadmin",
+        "admin"
+      ],
+      [
+        "add_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "change_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "delete_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "add_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "change_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "delete_image",
+        "wagtailimages",
+        "image"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Editors",
+    "permissions": [
+      [
+        "access_admin",
+        "wagtailadmin",
+        "admin"
+      ],
+      [
+        "add_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "change_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "delete_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "add_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "change_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "delete_image",
+        "wagtailimages",
+        "image"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$ZtsSVLlnNJsq$zr6qDt2S+33+fhtHbkzk/FMaz1TLh/m9CZdWdLyGAGg=",
+    "last_login": "2019-02-26T21:58:30.671Z",
+    "is_superuser": true,
+    "username": "lugarcenter",
+    "first_name": "",
+    "last_name": "",
+    "email": "beamalsky@datamade.us",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2019-02-26T21:53:02.576Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$sXnhQsPOX3xH$p9zCsIxzrHeoNDYMd5opN0wepivXUckwG5FI42jMEqo=",
+    "last_login": "2019-09-18T22:31:52.902Z",
+    "is_superuser": true,
+    "username": "testuser",
+    "first_name": "",
+    "last_name": "",
+    "email": "beamalsky@datamade.us",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2019-09-18T22:02:23.382Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 1,
+  "fields": {
+    "collection": 1,
+    "title": "flowercow.jpg",
+    "file": "original_images/flowercow_daok6qm.jpg",
+    "width": 700,
+    "height": 502,
+    "created_at": "2019-09-18T22:04:35.567Z",
+    "uploaded_by_user": [
+      "testuser"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 109434,
+    "file_hash": "0be7929eb57ed5b47ad42297c1094d37a2af311d"
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 2,
+  "fields": {
+    "collection": 1,
+    "title": "tree-cow.jpg",
+    "file": "original_images/tree-cow_MlgEEpn.jpg",
+    "width": 860,
+    "height": 484,
+    "created_at": "2019-09-18T22:04:35.852Z",
+    "uploaded_by_user": [
+      "testuser"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 102154,
+    "file_hash": "9b6bea9d58e108ff7c43cc2d91d9132229b3894c"
+  }
+},
+{
+  "model": "wagtailcore.site",
+  "pk": 2,
+  "fields": {
+    "hostname": "localhost",
+    "port": 80,
+    "site_name": "Committee Oversight Data Project",
+    "root_page": 3,
+    "is_default_site": true
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 1,
+  "fields": {
+    "path": "0001",
+    "depth": 1,
+    "numchild": 1,
+    "title": "Root",
+    "draft_title": "Root",
+    "slug": "root",
+    "content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/",
+    "owner": null,
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "first_published_at": null,
+    "last_published_at": null,
+    "latest_revision_created_at": null,
+    "live_revision": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 3,
+  "fields": {
+    "path": "00010001",
+    "depth": 2,
+    "numchild": 1,
+    "title": "The Committee Oversight Data Project",
+    "draft_title": "The Committee Oversight Data Project",
+    "slug": "committee-oversight-data-project",
+    "content_type": [
+      "committeeoversightapp",
+      "landingpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/committee-oversight-data-project/",
+    "owner": [
+      "testuser"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "first_published_at": "2019-09-18T22:03:25.163Z",
+    "last_published_at": "2019-09-18T22:03:32.908Z",
+    "latest_revision_created_at": "2019-09-18T22:03:32.882Z",
+    "live_revision": 2
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 4,
+  "fields": {
+    "path": "000100010001",
+    "depth": 3,
+    "numchild": 0,
+    "title": "Sample Committee Page",
+    "draft_title": "Sample Committee Page",
+    "slug": "committee-2c6395b2-dc9d-45f6-a4db-481b1b750431",
+    "content_type": [
+      "committeeoversightapp",
+      "staticpage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/committee-oversight-data-project/committee-2c6395b2-dc9d-45f6-a4db-481b1b750431/",
+    "owner": [
+      "testuser"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "first_published_at": "2019-09-18T22:04:26.853Z",
+    "last_published_at": "2019-09-18T22:04:26.853Z",
+    "latest_revision_created_at": "2019-09-18T22:04:26.834Z",
+    "live_revision": 3
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 1,
+  "fields": {
+    "page": 3,
+    "submitted_for_moderation": false,
+    "created_at": "2019-09-18T22:03:25.141Z",
+    "user": [
+      "testuser"
+    ],
+    "content_json": "{\"pk\": 3, \"path\": \"00010001\", \"depth\": 2, \"numchild\": 0, \"title\": \"The Committee Oversight Data Project\", \"draft_title\": \"The Committee Oversight Data Project\", \"slug\": \"committee-oversight-data-project\", \"content_type\": 73, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Lorem ipsum dolor sit amet, <b>consectetur adipiscing elit</b>. Cras ac nibh tristique, cursus enim eu, ullamcorper libero. Mauris laoreet leo sapien. <b>In ultricies sapien sed pellentesque finibus</b>. Nulla ac libero enim. Vestibulum ante ipsum primis in faucibus orci luctus, <b>et ultrices posuere cubil.</b></p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 2,
+  "fields": {
+    "page": 3,
+    "submitted_for_moderation": false,
+    "created_at": "2019-09-18T22:03:32.882Z",
+    "user": [
+      "testuser"
+    ],
+    "content_json": "{\"pk\": 3, \"path\": \"00010001\", \"depth\": 2, \"numchild\": 0, \"title\": \"The Committee Oversight Data Project\", \"draft_title\": \"The Committee Oversight Data Project\", \"slug\": \"committee-oversight-data-project\", \"content_type\": 73, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": \"2019-09-18T22:03:25.163Z\", \"last_published_at\": \"2019-09-18T22:03:25.163Z\", \"latest_revision_created_at\": \"2019-09-18T22:03:25.141Z\", \"live_revision\": 1, \"body\": \"<p>Lorem ipsum dolor sit amet, <b>consectetur adipiscing elit</b>. Cras ac nibh tristique, cursus enim eu, ullamcorper libero. Mauris laoreet leo sapien. <b>In ultricies sapien sed pellentesque finibus</b>. Nulla ac libero enim. Vestibulum ante ipsum primis in faucibus orci luctus, <b>et ultrices posuere cubil.</b></p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 3,
+  "fields": {
+    "page": 4,
+    "submitted_for_moderation": false,
+    "created_at": "2019-09-18T22:04:26.834Z",
+    "user": [
+      "testuser"
+    ],
+    "content_json": "{\"pk\": 4, \"path\": \"000100010001\", \"depth\": 3, \"numchild\": 0, \"title\": \"Sample Committee Page\", \"draft_title\": \"Sample Committee Page\", \"slug\": \"committee-2c6395b2-dc9d-45f6-a4db-481b1b750431\", \"content_type\": 72, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/committee-2c6395b2-dc9d-45f6-a4db-481b1b750431/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"[{\\\"type\\\": \\\"paragraph\\\", \\\"value\\\": \\\"<p>For the House Committee on Science, Space, and Technology</p>\\\", \\\"id\\\": \\\"8ff373de-7271-4939-abca-25de2c2157fd\\\"}]\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.collection",
+  "pk": 1,
+  "fields": {
+    "path": "0001",
+    "depth": 1,
+    "numchild": 0,
+    "name": "Root"
+  }
+}
+]
