@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
-{% load committeeoversight_tags %}
 
 {% block content %}
 
@@ -36,12 +35,12 @@
       </div>
 
       {% for committee in house_committees %}
-        <div class="row">
-          <div class="col-2 text-right rating a-plus-rating">A+</div>
+        <div class="row pl-3">
           <div class="col-10 align-bottom">
-            <p class="list-item"><a href="{{committee.url_id}}">{{committee}}</a></p>
+            <p class="list-item text-right"><a href="{{committee.url_id}}">{{committee}}</a></p>
             <hr>
           </div>
+          <div class="col-2 rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</div>
         </div>
       {% endfor %}
     </div>
@@ -56,13 +55,13 @@
       </div>
 
       {% for committee in senate_committees %}
-        <div class="row">
-          <div class="col-2 text-right rating b-minus-rating">B-</div>
-          <div class="col-10 align-bottom">
-            <p class="list-item"><a href="{{committee.url_id}}">{{committee}}</a></p>
-            <hr>
-          </div>
+      <div class="row pl-3">
+        <div class="col-10 align-bottom">
+          <p class="list-item text-right"><a href="{{committee.url_id}}">{{committee}}</a></p>
+          <hr>
         </div>
+        <div class="col-2 rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</div>
+      </div>
       {% endfor %}
     </div>
   </div>

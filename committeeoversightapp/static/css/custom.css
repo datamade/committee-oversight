@@ -21,8 +21,7 @@
   --red-orange-color: #c2682a;
   --red-red-orange-color: #c24e2a;
   --red-color: #b80026;
-
-  --dark-red-color: #6f0017;
+  --bright-red-color: #f70026;
 }
 
 /* Committee rating colors */
@@ -75,7 +74,7 @@
 }
 
 .f-rating {
-  color: var(--dark-red-color);
+  color: var(--bright-red-color);
 }
 
 
@@ -198,7 +197,7 @@ input[type='checkbox'] {
 }
 
 .delete-row:hover {
-  color: var(--dark-red-color);
+  color: var(--red-color);
 }
 
 .add-row {

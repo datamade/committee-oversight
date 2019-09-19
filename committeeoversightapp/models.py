@@ -26,6 +26,13 @@ class CommitteeOrganization(Organization):
         url_id = 'committee-' + self.id.split('ocd-organization/').pop()
         return url_id
 
+    def latest_rating(self):
+        """
+        Return the committee's rating for the most recent Congress.
+        """
+        rating_set = self.committeerating_set.order_by('-congress')
+        return rating_set[0]
+
 
 class HearingCategoryType(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
@@ -83,6 +90,35 @@ class CommitteeRating(models.Model):
         '''
         return '{} Congress'.format(ordinal(self.congress))
 
+    @property
+    def css_class(self):
+        '''
+        A+ => 'a-plus-rating'
+        '''
+
+        rating_colors = {
+            'A+': 'a-plus-rating',
+            'A': 'a-rating',
+            'A-': 'a-minus-rating',
+            'B+': 'b-plus-rating',
+            'B': 'b-rating',
+            'B-': 'b-minus-rating',
+            'C+': 'c-plus-rating',
+            'C': 'c-rating',
+            'C-': 'c-minus-rating',
+            'D+': 'd-plus-rating',
+            'D': 'd-rating',
+            'D-': 'd-minus-rating',
+            'F+': 'f-rating',
+            'F': 'f-rating',
+            'F-': 'f-rating'
+        }
+
+        return rating_colors[self.rating]
+
+    def __str__(self):
+        return self.rating
+
 
 class StaticPage(Page):
     body = StreamField([
@@ -125,6 +161,9 @@ class LandingPage(Page):
 
         committees = context['house_committees'] | context['senate_committees']
         context['committees'] = committees.order_by('name')
+
+        print("helskdjlfksgj")
+        print(dir(context['committees'].first()))
 
         return context
 
