@@ -6,13 +6,13 @@
 
   <div class="row">
     <div class="col-12 col-lg-4 col-xl-4 landing-description">
-        <h1 class="mb-4 ml-3 d-minus-rating">{{page.title}}</h1>
+        <h1 class="mb-4 ml-3 red-color">{{page.title}}</h1>
         <div class="m-3">{{page.body|richtext}}</div>
         <label class="m-3">
           <h4 class="mb-3">Search by committee:</h4>
           <select id="committee-select" class="form-control select2-single">
             {% for committee in committees %}
-              <option value="{{committee.extras|lookup:"cleaned_id"}}">{{committee.name}}</option>
+              <option value="{{committee.url_id}}">{{committee.name}}</option>
             {% endfor %}
           </select>
         </label>
@@ -39,7 +39,7 @@
         <div class="row">
           <div class="col-2 text-right rating a-plus-rating">A+</div>
           <div class="col-10 align-bottom">
-            <p class="list-item"><a href="{{committee.extras|lookup:"cleaned_id"}}">{{committee}}</a></p>
+            <p class="list-item"><a href="{{committee.url_id}}">{{committee}}</a></p>
             <hr>
           </div>
         </div>
@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col-2 text-right rating b-minus-rating">B-</div>
           <div class="col-10 align-bottom">
-            <p class="list-item"><a href="{{committee.extras|lookup:"cleaned_id"}}">{{committee}}</a></p>
+            <p class="list-item"><a href="{{committee.url_id}}">{{committee}}</a></p>
             <hr>
           </div>
         </div>
