@@ -26,11 +26,7 @@ from wagtail.core import urls as wagtail_urls
 
 from committeeoversightapp.views import pong
 
-def trigger_error(request):
-    division_by_zero = 1 / 0
-
 urlpatterns = [
-    path('sentry-debug/', trigger_error),
     url(r'^admin/', admin.site.urls),
     url(r'^pong/$', pong,),
     url(r'', include('committeeoversightapp.urls')),
