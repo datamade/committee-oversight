@@ -21,42 +21,19 @@
 
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400|Roboto:400,400i,500,700,700i&display=swap" rel="stylesheet">
 
     <title>Committee Oversight Data Tool</title>
   </head>
 
   <body>
 
-    <nav class="navbar navbar-dark fixed-top footer navbar-expand-md">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></i></span>
-      </button>
-      <a class="navbar-brand" href="/">
-        <img src="{% static 'images/logo.png' %}" height="40" alt="The Lugar Center"/>
-      </a>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <i class="fas fa-save"></i>&nbsp; <a href="{% url 'create-event'%}">Add Hearing</a>
-          </li>
-          <li class="nav-item">
-            <i class="fas fa-list"></i>&nbsp; <a href="{% url 'list-event'%}">View Hearings</a>
-          </li>
-          <li class="nav-item">
-            <i class="fas fa-user-circle"></i>&nbsp;
-            Logged in as <b>{{ user.get_username }}</b>
-            (<a href="{% url 'logout'%}">Logout</a>)
-          </li>
-         {% endif %}
-        </ul>
-      </div>
-    </nav>
+    {% include 'partials/topnav.html'%}
 
     <div class="container">
       <div class="row justify-content-center">

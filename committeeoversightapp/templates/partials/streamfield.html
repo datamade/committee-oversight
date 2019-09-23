@@ -5,7 +5,7 @@
 {% for block in page.body %}
   {% if block.block_type == 'heading' %}
     <div class="col-12 col-md-7">
-      <h2>{{ block.value }}</h2>
+      <h2 class="text-center">{{ block.value }}</h2>
     </div>
   {% elif block.block_type == 'image' %}
     <div class="col-12 text-center p-3 mb-4">
