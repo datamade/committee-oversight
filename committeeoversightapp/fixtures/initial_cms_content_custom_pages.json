@@ -1,0 +1,16 @@
+[
+{
+  "model": "committeeoversightapp.landingpage",
+  "pk": 3,
+  "fields": {
+    "body": "<p>Lorem ipsum dolor sit amet, <b>consectetur adipiscing elit</b>. Cras ac nibh tristique, cursus enim eu, ullamcorper libero. Mauris laoreet leo sapien. <b>In ultricies sapien sed pellentesque finibus</b>. Nulla ac libero enim. Vestibulum ante ipsum primis in faucibus orci luctus, <b>et ultrices posuere cubil.</b></p>"
+  }
+},
+{
+  "model": "committeeoversightapp.staticpage",
+  "pk": 4,
+  "fields": {
+    "body": "[{\"type\": \"paragraph\", \"value\": \"<p>For the House Committee on Science, Space, and Technology</p>\", \"id\": \"8ff373de-7271-4939-abca-25de2c2157fd\"}]"
+  }
+}
+]
