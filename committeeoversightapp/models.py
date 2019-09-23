@@ -1,3 +1,5 @@
+from django.contrib import admin
+from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
 
@@ -33,6 +35,9 @@ class CommitteeOrganization(Organization):
         rating_set = self.committeerating_set.order_by('-congress')
         return rating_set[0]
 
+    def __str__(self):
+        return self.name
+
 
 class HearingCategoryType(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
@@ -47,6 +52,9 @@ class HearingCategory(models.Model):
     category = models.ForeignKey(HearingCategoryType,
                                  null=True,
                                  on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'Category {}: {}'.format(self.id, self.name)
 
 
 class WitnessDetails(models.Model):
@@ -164,16 +172,18 @@ class LandingPage(Page):
         return context
 
 
+class DetailPage(Page):
+    '''
+    Model page method adapted from
+    https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
+    '''
 
-class CategoryDetailPage(Page):
-    # model page method adapted from https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
-    category = models.ForeignKey(
-        HearingCategoryType,
-        blank=False,
-        null=True,
-        on_delete=models.SET_NULL,
-        help_text="Select a category for this page."
-    )
+    class Meta:
+        abstract = True
+
+    @property
+    def title_field(self):
+        raise NotImplementedError('title_field must be defined on child classes')
 
     body = StreamField([
         ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
@@ -187,14 +197,44 @@ class CategoryDetailPage(Page):
          icon='site'))
     ])
 
-    # Editor configuration
+    def save(self, *args, **kwargs):
+        title = str(self.title_field)
+        for attr in ('title', 'draft_title'):
+            setattr(self, attr, title)
+        super().save(*args, **kwargs)
+
+
+class CategoryDetailPage(DetailPage):
+
+    title_field = 'category'
+
+    category = models.ForeignKey(
+        HearingCategoryType,
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        help_text="Select a category for this page."
+    )
+
     content_panels = [
         FieldPanel('category'),
         StreamFieldPanel('body'),
     ]
 
-    def save(self, *args, **kwargs):
-        print("saving now...")
-        self.title = "Category " + self.category.id + ": " + self.category.name
-        self.draft_title = self.title
-        super().save(*args, **kwargs)
+
+class CommitteeDetailPage(DetailPage):
+
+    title_field = 'committee'
+
+    committee = models.ForeignKey(
+        CommitteeOrganization,
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        help_text="Select a committee for this page."
+    )
+
+    content_panels = [
+        FieldPanel('committee', widget=AutocompleteSelect(committee.remote_field, admin.site)),
+        StreamFieldPanel('body'),
+    ]

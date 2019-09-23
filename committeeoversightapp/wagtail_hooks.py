@@ -1,5 +1,7 @@
-from django.utils.html import format_html_join
 from django.conf import settings
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.utils.html import format_html_join, format_html
+
 from wagtail.core import hooks
 
 
@@ -13,3 +15,11 @@ def editor_js():
     )
 
     return js_includes
+
+@hooks.register("insert_global_admin_css", order=100)
+def global_admin_css():
+    """Add /static/css/custom.css to the admin."""
+    return format_html(
+        '<link rel="stylesheet" href="{}">',
+        static("css/wagtail-overrides.css")
+    )
