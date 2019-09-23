@@ -150,8 +150,7 @@ class LandingPage(Page):
     def get_context(self, request):
         context = super(LandingPage, self).get_context(request)
         context['house_committees'] = CommitteeOrganization.objects.all().filter(
-                                    classification='committee'
-                                ).filter(
+                                    classification='committee',
                                     parent_id__name__in=['United States House of Representatives']
                                 )
         context['senate_committees'] = CommitteeOrganization.objects.all().filter(
@@ -161,9 +160,6 @@ class LandingPage(Page):
 
         committees = context['house_committees'] | context['senate_committees']
         context['committees'] = committees.order_by('name')
-
-        print("helskdjlfksgj")
-        print(dir(context['committees'].first()))
 
         return context
 
