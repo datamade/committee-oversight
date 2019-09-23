@@ -16,3 +16,4 @@ wagtail==2.6.1
 
 jinja2==2.10.1
 gunicorn==19.9.0
+sentry-sdk==0.12.1
