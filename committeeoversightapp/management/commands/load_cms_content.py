@@ -15,6 +15,7 @@ class Command(BaseCommand):
         project_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
         fixtures_dir = os.path.join(project_dir, 'fixtures')
         initial_data_file = os.path.join(fixtures_dir, 'initial_cms_content.json')
+        initial_data_file_custom_pages = os.path.join(fixtures_dir, 'initial_cms_content_custom_pages.json')
 
         # Wagtail creates default Site and Page instances during install, but we already have
         # them in the data load. Remove the auto-generated ones.
@@ -24,6 +25,7 @@ class Command(BaseCommand):
             Page.objects.get(title='Welcome to your new Wagtail site!').delete()
 
         call_command('loaddata', initial_data_file, verbosity=0)
+        call_command('loaddata', initial_data_file_custom_pages, verbosity=0)
 
         print("Initial data loaded!")
 

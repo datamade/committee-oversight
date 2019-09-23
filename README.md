@@ -53,7 +53,7 @@ docker-compose run --rm app python manage.py load_cms_content
 1. Back up the CMS content (except for image files):
 
     ```bash
-    docker-compose run --rm app python manage.py dumpdata --natural-foreign --indent 2 -e core -e legislative -e committeeoversightapp -e contenttypes -e auth.permission -e wagtailcore.groupcollectionpermission -e wagtailcore.grouppagepermission -e wagtailimages.rendition -e sessions > committeeoversightapp/fixtures/initial_cms_content.json
+    docker-compose run --rm app python manage.py dumpdata --natural-foreign --indent 2 -e core -e legislative -e committeeoversightapp -e contenttypes -e auth.permission -e wagtailcore.groupcollectionpermission -e wagtailcore.grouppagepermission -e wagtailimages.rendition -e sessions > committeeoversightapp/fixtures/initial_cms_content.json && docker-compose run --rm app python manage.py dumpdata --natural-foreign --indent 2 committeeoversightapp.landingpage committeeoversightapp.staticpage committeeoversightapp.categorydetailpage > committeeoversightapp/fixtures/initial_cms_content_custom_pages.json
     ```
 
     This should update the `initial_cms_content.json` file in your `committeeoversightapp/fixtures`
