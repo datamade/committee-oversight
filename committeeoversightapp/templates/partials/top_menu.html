@@ -32,7 +32,8 @@
       {% endif %}
       {% if request.user.is_authenticated %}
       <li class="nav-item">
-        <span class="mr-4">Logged in as <b>{{ request.user.get_username }}</b></span>
+        <small class="mr-4 font-italic">Logged in as <b>{{ request.user.get_username }}</b></small>
+        
         <a href="{% url 'logout'%}">Logout</a>
       </li>
      {% else %}
