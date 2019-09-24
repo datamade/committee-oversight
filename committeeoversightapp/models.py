@@ -198,6 +198,10 @@ class DetailPage(Page):
     ])
 
     def get_url_parts(self, *args, **kwargs):
+        '''
+        Route detail pages by their slug.
+        https://docs.wagtail.io/en/v2.6.1/topics/pages.html#obtaining-urls-for-page-instances
+        '''
         return ('', '', '/' + self.slug)
 
     def save(self, *args, **kwargs):
