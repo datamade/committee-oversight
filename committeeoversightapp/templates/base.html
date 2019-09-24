@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load wagtailuserbar %}
+{% load cms_tags %}
 
 <!doctype html>
 <html lang="en">
@@ -33,7 +34,10 @@
 
   <body>
 
-    {% include 'partials/topnav.html'%}
+    {% block menu %}
+      {% get_site_root as site_root %}
+      {% top_menu parent=site_root calling_page=self %}
+    {% endblock %}
 
     <div class="container">
       <div class="row justify-content-center">
