@@ -1,0 +1,51 @@
+{% load static wagtailcore_tags cms_tags %}
+
+<nav class="navbar navbar-dark fixed-top footer navbar-expand-md">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></i></span>
+  </button>
+  <a class="navbar-brand" href="/">
+    <img src="{% static 'images/lugarcenter.svg' %}" height="40" alt="The Lugar Center"/>
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a href="/">Home</a>
+      </li>
+      {% for menuitem in menuitems %}
+      <li class="nav-item {% if menuitem.show_dropdown %}dropdown{% endif %}{% if calling_page.url == menuitem.url %} active{% endif %}">
+          {% if menuitem.show_dropdown %}
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ menuitem.title }} <b class="caret"></b></a>
+            {% top_menu_children parent=menuitem %}
+          {% else %}
+            <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+          {% endif %}
+      </li>
+      {% endfor %}
+      {% if request.user.is_superuser %}
+      <li class="nav-item dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Admin <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class="ml-3 p-0">
+            <a href="{% url 'create-event'%}">Add Hearing</a>
+          </li>
+          <hr class="m-2">
+          <li class="ml-3 p-0">
+            <a href="{% url 'list-event'%}">View Hearings</a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <small class="mr-4 font-italic">Logged in as <b>{{ request.user.get_username }}</b></small>
+        <a href="{% url 'logout'%}">Logout</a>
+      </li>
+     {% else %}
+      <li class="nav-item">
+        <a href="{% url 'login'%}">Login</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
