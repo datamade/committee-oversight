@@ -197,6 +197,9 @@ class DetailPage(Page):
          icon='site'))
     ])
 
+    def get_url_parts(self, *args, **kwargs):
+        return ('', '', '/' + self.slug)
+
     def save(self, *args, **kwargs):
         title = str(getattr(self, self.title_field))
         for attr in ('title', 'draft_title'):
