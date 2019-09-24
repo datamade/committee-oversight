@@ -14,7 +14,11 @@ try {
   (function($){
     $(document).ready(function () {
       $('#id_committee').on('select2:select', function(e) {
+        // Mimic the functionality of CommitteeOrganization.url_id
+        // ocd-organization/80b44839-0c06-4569-9337-4dda052f5cd5 => committee-80b44839-0c06-4569-9337-4dda052f5cd5
+        var slug = 'committee-' + e.params.data.id.split('/')[1];
         var title = e.params.data.text;
+        $('#id_slug').val(slug);
         $('#id_seo_title').val(title);
       });
     });

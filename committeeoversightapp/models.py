@@ -198,7 +198,7 @@ class DetailPage(Page):
     ])
 
     def save(self, *args, **kwargs):
-        title = str(self.title_field)
+        title = str(getattr(self, self.title_field))
         for attr in ('title', 'draft_title'):
             setattr(self, attr, title)
         super().save(*args, **kwargs)
