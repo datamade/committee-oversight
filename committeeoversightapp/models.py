@@ -8,6 +8,7 @@ from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core import blocks
 from wagtail.admin.edit_handlers import StreamFieldPanel, MultiFieldPanel, \
                                         FieldPanel
+from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.blocks import ImageChooserBlock
 
 from opencivicdata.core.models import Organization
@@ -129,6 +130,13 @@ class CommitteeRating(models.Model):
 
 
 class StaticPage(Page):
+    featured_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+
     body = StreamField([
         ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
         ('paragraph', blocks.RichTextBlock()),
@@ -143,6 +151,7 @@ class StaticPage(Page):
 
     # Editor configuration
     content_panels = Page.content_panels + [
+        ImageChooserPanel('featured_image'),
         StreamFieldPanel('body'),
     ]
 

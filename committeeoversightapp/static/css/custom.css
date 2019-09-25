@@ -88,6 +88,15 @@ body {
 
 h1 {
   font-family: 'Roboto Slab', serif;
+  font-weight: 500;
+  color: var(--lightest-blue-color);
+  background: var(--dark-blue-color);
+  padding: 1rem 2rem;
+  margin: -3rem;
+}
+
+h2 {
+  font-family: 'Roboto Slab', serif;
   font-size: 1.9rem;
   font-weight: 500;
   color: black;
@@ -100,6 +109,14 @@ h3 {
 h4 {
   font-family: 'Roboto Slab', serif;
   color: black;
+}
+
+.btn-primary {
+  background-color: var(--dark-blue-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--darkest-blue-color);
 }
 
 .btn-success {
@@ -299,7 +316,11 @@ input[type='checkbox'] {
   }
   .navbar {
     padding: 1rem;
-}
+  }
+  h1 {
+    margin: -3rem 0;
+    font-size: 1.3rem;
+  }
 }
 
 @media (max-width: 992px) {

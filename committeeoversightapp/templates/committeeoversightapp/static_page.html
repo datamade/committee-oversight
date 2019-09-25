@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+{% load wagtailimages_tags %}
 
 {% block content %}
-  <div class="col-12 col-lg-9 mx-auto">
+  <div class="text-center">
+    {% image page.featured_image fill-1300x450 class="featured-image img-fluid mb-4" %}
+  </div>
+
+  <div class="col-12 col-md-8 mx-auto">
     <h1 class="mb-4">{{page.title}}</h1>
   </div>
 
