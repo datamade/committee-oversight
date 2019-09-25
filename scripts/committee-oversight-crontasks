@@ -1,4 +1,4 @@
 # /etc/cron.d/committee-oversight-crontasks
 
 # Back up the hearings database at 4 PM GMT every day.
-0 16 * * * root (pg_dump -Fc -U postgres -d hearings | /usr/bin/aws s3 cp - s3://datamade-postgresql-backups/hearings/$(date -d "today" +"\%Y\%m\%d\%H\%M").dump) && echo "staging backup $(date -d "today" +"\%Y\%m\%d\%H\%M").dump complete" >> /tmp/committee-oversight-crontasks.log 2>&1
+0 16 * * * datamade (pg_dump -Fc -U postgres -d hearings | /usr/bin/aws s3 cp - s3://datamade-postgresql-backups/hearings/$(date -d "today" +"\%Y\%m\%d\%H\%M").dump) && echo "staging backup $(date -d "today" +"\%Y\%m\%d\%H\%M").dump complete" >> /tmp/committee-oversight-crontasks.log 2>&1
