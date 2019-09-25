@@ -27,6 +27,7 @@ We use Docker for local development. To get started, run the following from your
 
     ```bash
     docker-compose exec postgres pg_restore -C -j4 --no-owner -U postgres -d hearings /app/hearings.dump
+    docker-compose exec app python manage.py migrate
     ```
 
     Note: To accommodate the restoration of this hearings dump, migrations are not run automatically with `docker-compose up`. If you need to run them manually, you can run `docker-compose run --rm app python manage.py migrate`.
@@ -62,7 +63,8 @@ docker-compose run --rm app python manage.py load_cms_content
         -e wagtailcore.groupcollectionpermission \
         -e wagtailcore.grouppagepermission \
         -e wagtailimages.rendition \
-        -e sessions > committeeoversightapp/fixtures/initial_cms_content.json && \
+        -e sessions > committeeoversightapp/fixtures/initial_cms_content.json
+
     docker-compose run --rm app python manage.py dumpdata --natural-foreign --indent 2 \
         committeeoversightapp.landingpage \
         committeeoversightapp.staticpage \
