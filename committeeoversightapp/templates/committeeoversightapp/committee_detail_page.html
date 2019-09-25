@@ -1,10 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="col-12 col-lg-9 mx-auto">
-    <h1 class="mb-4 text-center">{{ page.title }}</h1>
+  <div class="col-12 text-center">
+    <h1 class="mb-4">{{ page.title }}</h1>
+    <p class="lead font-weight-light text-dark"><strong>Chairperson:</strong> John Smith</p>
   </div>
 
-  {% include 'partials/streamfield.html'%}
+  <div class="col-md-6 my-3 font-weight-light">
+    {% include 'partials/streamfield.html'%}
+  </div>
+  <div class="col-md-6 my-3">
+    <h4>Projected CHP Score for the 116th Congress:</h4>
+    <h3 class="rating b-plus-rating">B+</h3>
+    <small>Last updated: {% now "jS F Y H:i" %}</small>
+  </div>
+
+  <div class="col-12">
+    {% include 'partials/rating_table.html' %}
+  </div>
+
+  <div class="col-sm-9 justify-content-left pt-5">
+    <h4 style="margin-bottom: -25px;">
+      Hearings held by the<br />{{ page.committee.name }}
+    </h4>
+    {% include 'partials/hearing_table.html' %}
+  </div>
+
+  <script>
+    $(document).ready(function () {
+        var committeeID = '{{ page.committee.id }}';
+        function makeAjaxUrl(committeeID) {
+          var ajaxUrl = "{% url 'order_list_json' %}" +
+                 '?detail_type=committee' +
+                 '&id=' + committeeID;
+          return ajaxUrl;
+        }
+        $('#hearing-table').DataTable({
+          "dom": "Bfrtip",
+          "order": [[ 2, "desc" ]],
+          "columnDefs": [{ "orderable": false, "targets": [3, 4] }],
+          "processing": true,
+          "serverSide": true,
+          "ajax": makeAjaxUrl(committeeID)
+        });
+    });
+  </script>
 
 {% endblock %}

@@ -92,7 +92,7 @@ class EventListJson(BaseDatatableView):
         if detail_type == 'category':
             qs = qs.filter(hearingcategory__category_id=id)
         if detail_type == 'committee':
-            pass
+            qs = qs.filter(participants__organization_id=id)
 
         # based on search example at https://pypi.org/project/django-datatables-view/
         search = self.request.GET.get('search[value]', None)
