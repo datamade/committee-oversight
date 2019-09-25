@@ -15,9 +15,24 @@ from opencivicdata.legislative.models import Event, EventParticipant, \
                                              EventDocument
 
 
+
+class CommitteeManager(models.Manager):
+
+    def congressional_committees(self):
+        return self.get_queryset().filter(
+            classification='committee',
+            parent_id__name__in=(
+                'United States House of Representatives',
+                'United States Senate'
+            )
+        ).order_by('name')
+
+
 class CommitteeOrganization(Organization):
     class Meta:
         proxy = True
+
+    objects = CommitteeManager()
 
     def url_id(self):
         """
@@ -157,17 +172,17 @@ class LandingPage(Page):
 
     def get_context(self, request):
         context = super(LandingPage, self).get_context(request)
-        context['house_committees'] = CommitteeOrganization.objects.all().filter(
-                                    classification='committee',
-                                    parent_id__name__in=['United States House of Representatives']
-                                )
-        context['senate_committees'] = CommitteeOrganization.objects.all().filter(
-                                    classification='committee',
-                                    parent_id__name__in=['United States Senate']
-                                )
 
-        committees = context['house_committees'] | context['senate_committees']
-        context['committees'] = committees.order_by('name')
+        congressional_committees = CommitteeOrganization.objects.congressional_committees()
+
+        context['house_committees'] = congressional_committees.filter(
+            parent__name='United States House of Representatives'
+        )
+        context['senate_committees'] = congressional_committees.filter(
+            parent__name='United States Senate'
+        )
+
+        context['committees'] = congressional_committees
 
         return context
 
@@ -185,17 +200,7 @@ class DetailPage(Page):
     def title_field(self):
         raise NotImplementedError('title_field must be defined on child classes')
 
-    body = StreamField([
-        ('heading', blocks.CharBlock(classname='full title', icon='openquote')),
-        ('paragraph', blocks.RichTextBlock()),
-        ('image', ImageChooserBlock()),
-        ('button',
-         blocks.StructBlock([
-            ('button_text', blocks.CharBlock()),
-            ('button_link', blocks.URLBlock())
-            ],
-         icon='site'))
-    ])
+    body = RichTextField()
 
     def get_url_parts(self, *args, **kwargs):
         '''
@@ -225,7 +230,7 @@ class CategoryDetailPage(DetailPage):
 
     content_panels = [
         FieldPanel('category'),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]
 
 
@@ -243,5 +248,5 @@ class CommitteeDetailPage(DetailPage):
 
     content_panels = [
         FieldPanel('committee', widget=AutocompleteSelect(committee.remote_field, admin.site)),
-        StreamFieldPanel('body'),
+        FieldPanel('body'),
     ]

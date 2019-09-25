@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             name='CommitteeDetailPage',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.Page')),
-                ('body', wagtail.core.fields.StreamField([('heading', wagtail.core.blocks.CharBlock(classname='full title', icon='openquote')), ('paragraph', wagtail.core.blocks.RichTextBlock()), ('image', wagtail.images.blocks.ImageChooserBlock()), ('button', wagtail.core.blocks.StructBlock([('button_text', wagtail.core.blocks.CharBlock()), ('button_link', wagtail.core.blocks.URLBlock())], icon='site'))])),
+                ('body', wagtail.core.fields.RichTextField()),
                 ('committee', models.ForeignKey(help_text='Select a committee for this page.', null=True, on_delete=django.db.models.deletion.SET_NULL, to='committeeoversightapp.CommitteeOrganization')),
             ],
             options={

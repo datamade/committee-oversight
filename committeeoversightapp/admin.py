@@ -20,6 +20,9 @@ class CommitteeOrganizationAdmin(HiddenAdminMixin, admin.ModelAdmin):
     ordering = ('name',)
     search_fields = ('name',)
 
+    def get_queryset(self, request):
+        return CommitteeOrganization.objects.congressional_committees()
+
 
 class CommitteeDetailPageAdmin(HiddenAdminMixin, admin.ModelAdmin):
     '''
