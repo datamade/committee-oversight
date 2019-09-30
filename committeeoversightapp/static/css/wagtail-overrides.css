@@ -1,0 +1,3 @@
+.model_choice_field.autocomplete_select .input select~span::after {
+  display: none;
+}

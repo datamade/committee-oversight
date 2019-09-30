@@ -1,0 +1,34 @@
+{% extends "wagtailadmin/pages/edit.html" %}
+{% load i18n %}
+
+{% block extra_js %}
+    {% comment %}
+        Include widget media _before_ Wagtail JavaScript, in order to hook into
+        Django's version of jQuery and Select2.
+    {% endcomment %}
+    {{ edit_handler.form.media.js }}
+    {{ action_menu.media.js }}
+
+    {% include "wagtailadmin/pages/_editor_js.html" %}
+
+    {% comment %}
+        Additional HTML code that edit handlers define through 'html_declarations'. (Technically this isn't Javascript, but it will generally be data that exists for Javascript to work with...)
+    {% endcomment %}
+    {{ edit_handler.html_declarations }}
+
+    <script>
+        $(function() {
+            /* Make user confirm before leaving the editor if there are unsaved changes */
+            {% trans "This page has unsaved changes." as confirmation_message %}
+            enableDirtyFormCheck(
+                '#page-edit-form',
+                {
+                    confirmationMessage: '{{ confirmation_message|escapejs }}',
+                    {% if has_unsaved_changes %}
+                        alwaysDirty: true,
+                    {% endif %}
+                }
+            );
+        });
+    </script>
+{% endblock %}
