@@ -90,9 +90,9 @@ h1 {
   font-family: 'Roboto Slab', serif;
   font-weight: 500;
   color: var(--lightest-blue-color);
-  background: var(--dark-blue-color);
-  padding: 1rem 2rem;
   margin: -3rem;
+  background: var(--dark-blue-color);
+  padding: 1rem 1.5rem;
 }
 
 h2 {

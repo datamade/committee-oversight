@@ -12,8 +12,8 @@
       {% image block.value min-700x250 class="img-fluid" %}
     </div>
   {% elif block.block_type == 'button' %}
-    <div class="col-12 col-md-7">
-      <a class="btn btn-primary mt-4 mb-4" href="{{ block.value.button_link }}">
+    <div class="col-12 col-md-7 text-center">
+      <a class="btn btn-primary mt-2 mb-4" href="{{ block.value.button_link }}">
         {{ block.value.button_text }}
       </a>
     </div>
