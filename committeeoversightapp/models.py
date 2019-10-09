@@ -202,12 +202,13 @@ class DetailPage(Page):
 
     body = RichTextField()
 
-    def get_url_parts(self, *args, **kwargs):
-        '''
-        Route detail pages by their slug.
-        https://docs.wagtail.io/en/v2.6.1/topics/pages.html#obtaining-urls-for-page-instances
-        '''
-        return ('', '', '/' + self.slug)
+    # def get_url_parts(self, *args, **kwargs):
+    #     '''
+    #     Route detail pages by their slug.
+    #     https://docs.wagtail.io/en/v2.6.1/topics/pages.html#obtaining-urls-for-page-instances
+    #     '''
+    #     super().get_url_parts(*args, **kwargs)
+    #     return ('', '', '/' + self.slug)
 
     def save(self, *args, **kwargs):
         title = str(getattr(self, self.title_field))

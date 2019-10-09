@@ -6,12 +6,7 @@ from wagtail.core.models import Site
 
 @register.simple_tag(takes_context=True)
 def get_site_root(context):
-    # No site is returned in the request for local previews of custom models.
-    # To get around this bug, we use the first Site object, assuming there is only one
-    try:
-        return context['request'].site.root_page
-    except AttributeError:
-        return Site.objects.first().root_page
+    return context['request'].site.root_page
 
 
 def has_menu_children(page):
