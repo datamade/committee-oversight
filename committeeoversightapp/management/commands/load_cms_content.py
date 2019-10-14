@@ -7,7 +7,10 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 
-from wagtail.core.models import Site, Page
+from wagtail.core.models import Site, Page, PageRevision
+from wagtail.images.models import Image
+from committeeoversightapp.models import LandingPage, StaticPage, \
+    CategoryDetailPage, CommitteeDetailPage
 
 
 class Command(BaseCommand):
@@ -17,12 +20,15 @@ class Command(BaseCommand):
         initial_data_file = os.path.join(fixtures_dir, 'initial_cms_content.json')
         initial_data_file_custom_pages = os.path.join(fixtures_dir, 'initial_cms_content_custom_pages.json')
 
-        # Wagtail creates default Site and Page instances during install, but we already have
-        # them in the data load. Remove the auto-generated ones.
-        if Site.objects.filter(hostname='localhost').exists():
-            Site.objects.get(hostname='localhost').delete()
-        if Page.objects.filter(title='Welcome to your new Wagtail site!').exists():
-            Page.objects.get(title='Welcome to your new Wagtail site!').delete()
+        # Delete existing Wagtail models
+        Site.objects.all().delete()
+        Page.objects.all().delete()
+        PageRevision.objects.all().delete()
+        Image.objects.all().delete()
+        LandingPage.objects.all().delete()
+        StaticPage.objects.all().delete()
+        CategoryDetailPage.objects.all().delete()
+        CommitteeDetailPage.objects.all().delete()
 
         call_command('loaddata', initial_data_file, verbosity=0)
         call_command('loaddata', initial_data_file_custom_pages, verbosity=0)

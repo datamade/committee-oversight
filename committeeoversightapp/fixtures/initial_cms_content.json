@@ -110,7 +110,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$120000$sXnhQsPOX3xH$p9zCsIxzrHeoNDYMd5opN0wepivXUckwG5FI42jMEqo=",
-    "last_login": "2019-09-18T22:02:30.328Z",
+    "last_login": "2019-10-08T21:21:11.479Z",
     "is_superuser": true,
     "username": "testuser",
     "first_name": "",
@@ -125,14 +125,14 @@
 },
 {
   "model": "wagtailimages.image",
-  "pk": 1,
+  "pk": 3,
   "fields": {
     "collection": 1,
-    "title": "flowercow.jpg",
-    "file": "original_images/flowercow_daok6qm.jpg",
-    "width": 700,
-    "height": 502,
-    "created_at": "2019-09-18T22:04:35.567Z",
+    "title": "skyline-1.jpeg",
+    "file": "original_images/33.jpeg",
+    "width": 1599,
+    "height": 854,
+    "created_at": "2019-10-08T21:22:36.138Z",
     "uploaded_by_user": [
       "testuser"
     ],
@@ -140,20 +140,20 @@
     "focal_point_y": null,
     "focal_point_width": null,
     "focal_point_height": null,
-    "file_size": 109434,
-    "file_hash": "0be7929eb57ed5b47ad42297c1094d37a2af311d"
+    "file_size": 104758,
+    "file_hash": "c9d5819081d69a4520d5f69ee5a0c6996fd9f4bd"
   }
 },
 {
   "model": "wagtailimages.image",
-  "pk": 2,
+  "pk": 4,
   "fields": {
     "collection": 1,
-    "title": "tree-cow.jpg",
-    "file": "original_images/tree-cow_MlgEEpn.jpg",
-    "width": 860,
-    "height": 484,
-    "created_at": "2019-09-18T22:04:35.852Z",
+    "title": "senator-lugar.jpg",
+    "file": "original_images/senator-lugar.jpg",
+    "width": 769,
+    "height": 341,
+    "created_at": "2019-10-08T21:22:36.451Z",
     "uploaded_by_user": [
       "testuser"
     ],
@@ -161,13 +161,34 @@
     "focal_point_y": null,
     "focal_point_width": null,
     "focal_point_height": null,
-    "file_size": 102154,
-    "file_hash": "9b6bea9d58e108ff7c43cc2d91d9132229b3894c"
+    "file_size": 44365,
+    "file_hash": "e46a120d8f21babb9d38003da5648bfa0be49963"
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 5,
+  "fields": {
+    "collection": 1,
+    "title": "skyline-2.jpeg",
+    "file": "original_images/82.jpeg",
+    "width": 1600,
+    "height": 600,
+    "created_at": "2019-10-08T21:22:36.744Z",
+    "uploaded_by_user": [
+      "testuser"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 360311,
+    "file_hash": "05fcccb5378f7bdfe254993fcdbadb61a7d7b3e1"
   }
 },
 {
   "model": "wagtailcore.site",
-  "pk": 2,
+  "pk": 1,
   "fields": {
     "hostname": "localhost",
     "port": 80,
