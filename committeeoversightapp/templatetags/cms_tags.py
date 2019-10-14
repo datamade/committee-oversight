@@ -2,8 +2,6 @@ from django import template
 
 register = template.Library()
 
-from wagtail.core.models import Site
-
 @register.simple_tag(takes_context=True)
 def get_site_root(context):
     return context['request'].site.root_page
