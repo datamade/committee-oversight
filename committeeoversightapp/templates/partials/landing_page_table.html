@@ -1,0 +1,33 @@
+<div class="card mt-5">
+  <h2 class="text-center mt-4">{{title}}</h2>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="committee-table table table-borderless table-striped table-sm text-center"
+      >
+      <thead>
+        <tr class="landing-row">
+          <th class="align-top">Committee</th>
+          <th class="align-top">Chair</th>
+          <th class="align-top">Current Congress (projected)</th>
+          <th class="align-top">Investigative Oversight Hearings</th>
+          <th class="align-top">Policy/Legislative Hearings</th>
+          <th class="align-top">Total Hearings</th>
+        </tr>
+      </thead>
+
+      <tbody>
+          {% for committee in committees %}
+          <tr>
+            <td class="list-item text-right align-middle pr-2"><a href="{{committee.url_id}}">{{committee.sliced_name}}</a></td>
+            <td class="align-middle">Murkowski</td>
+            <td class="rating {{committee.latest_rating.css_class}} align-middle">{{committee.latest_rating}}</td>
+            <td class="align-middle">5</td>
+            <td class="align-middle">10</td>
+            <td class="align-middle">15</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
