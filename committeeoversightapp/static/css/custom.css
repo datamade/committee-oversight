@@ -284,10 +284,6 @@ input[type='checkbox'] {
   padding-left: 10px;
 }
 
-.landing-description {
-  position: fixed;
-}
-
 .rating {
   font-size: 1.5rem;
   font-weight: 600;
@@ -322,12 +318,6 @@ input[type='checkbox'] {
   h1 {
     margin: -3rem 0;
     font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .landing-description {
-    position: static;
   }
 }
 
