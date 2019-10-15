@@ -23,8 +23,26 @@
           Go
         </button>
 
+    <div class="col-12 col-lg-6 col-xl-4">
+      <label class="m-3">
+        <h4 class="mb-3">Search by committee:</h4>
+        <select id="committee-select" class="form-control select2-single">
+          {% for committee in committees %}
+            <option value="{{committee.url_id}}">{{committee.name}}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button
+        class="btn btn-success ml-3"
+        type="submit"
+        onclick="javascript:goToCommittee();"
+      >
+        Go
+      </button>
     </div>
+  </div>
 
+    <div class="row">
     <div class="col-12 col-lg-3 p-3 offset-lg-5">
       <div class="row">
         <div class="col-10">
