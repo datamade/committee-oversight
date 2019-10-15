@@ -51,6 +51,16 @@ class CommitteeOrganization(Organization):
         rating_set = self.committeerating_set.order_by('-congress')
         return rating_set[0]
 
+
+    def sliced_name(self):
+        prefix = ''
+        if self.parent.name == 'United States House of Representatives':
+            prefix = 'House Committee on '
+        elif self.parent.name == 'United States Senate':
+            prefix = 'Senate Committee on '
+
+        return self.name[len(prefix):]
+
     def __str__(self):
         return self.name
 

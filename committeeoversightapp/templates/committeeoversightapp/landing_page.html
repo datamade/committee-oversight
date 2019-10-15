@@ -3,27 +3,13 @@
 
 {% block content %}
 
-  <div class="row">
-    <div class="col-12 col-lg-4 col-xl-4 landing-description">
-        <h2 class="mb-4 ml-3 red-color">{{page.title}}</h2>
-        <div class="m-3">{{page.body|richtext}}</div>
-        <label class="m-3">
-          <h4 class="mb-3">Search by committee:</h4>
-          <select id="committee-select" class="form-control select2-single">
-            {% for committee in committees %}
-              <option value="{{committee.url_id}}">{{committee.name}}</option>
-            {% endfor %}
-          </select>
-        </label>
-        <button
-          class="btn btn-success float-right mr-3"
-          type="submit"
-          onclick="javascript:goToCommittee();"
-        >
-          Go
-        </button>
+  <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-lg-6 col-xl-5 text-lg-right">
+        <h2 class="mb-4 ml-3 dark-blue-color">{{page.title}}</h2>
+        <div class="m-3 m-lg-0 mt-lg-3">{{page.body|richtext}}</div>
+    </div>
 
-    <div class="col-12 col-lg-6 col-xl-4">
+    <div class="col-12 col-lg-6 col-xl-5">
       <label class="m-3">
         <h4 class="mb-3">Search by committee:</h4>
         <select id="committee-select" class="form-control select2-single">
@@ -33,7 +19,7 @@
         </select>
       </label>
       <button
-        class="btn btn-success ml-3"
+        class="btn btn-primary ml-3"
         type="submit"
         onclick="javascript:goToCommittee();"
       >
@@ -42,45 +28,9 @@
     </div>
   </div>
 
-    <div class="row">
-    <div class="col-12 col-lg-3 p-3 offset-lg-5">
-      <div class="row">
-        <div class="col-10">
-          <h3 class="mb-4 text-right">The House</h3>
-        </div>
-        <div class="col-2"></div>
-      </div>
+  {% include "partials/landing_page_table.html" with committees=senate_committees title="The Senate"%}
 
-      {% for committee in house_committees %}
-        <div class="row pl-3">
-          <div class="col-10 align-bottom">
-            <p class="list-item text-right"><a href="{{committee.url_id}}">{{committee}}</a></p>
-            <hr>
-          </div>
-          <div class="col-2 rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</div>
-        </div>
-      {% endfor %}
-    </div>
-
-    <div class="col-12 col-lg-3 p-3">
-      <div class="row">
-        <div class="col-10">
-          <h3 class="mb-4 text-right">The Senate</h3>
-        </div>
-        <div class="col-2"></div>
-      </div>
-
-      {% for committee in senate_committees %}
-      <div class="row pl-3">
-        <div class="col-10 align-bottom">
-          <p class="list-item text-right"><a href="{{committee.url_id}}">{{committee}}</a></p>
-          <hr>
-        </div>
-        <div class="col-2 rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+  {% include "partials/landing_page_table.html" with committees=house_committees title="The House of Representatives"%}
 
   <script>
     $(document).ready(function() {
@@ -92,6 +42,21 @@
         var url = select.options[select.selectedIndex].value;
         window.location.href=url;
     }
+
+    $(document).ready(function () {
+        $('.committee-table').DataTable({
+          "dom": "Bfrtip",
+          "paging": false,
+          "searching": false,
+          "info": false,
+          "order": [[ 0, "asc" ]],
+          "columnDefs": [
+            { "orderable": false, "targets": [3, 4, 5] },
+            { "width": "40%", "targets": 0 },
+            { "width": "10%", "targets": [2, 3, 4, 5] }
+          ],
+        });
+    });
   </script>
 
 {% endblock %}
