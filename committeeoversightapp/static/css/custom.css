@@ -84,7 +84,7 @@
 body {
   background-color: var(--lightest-blue-color);
   color: var(--dark-gray-color);
-  padding: 75px 0px 50px 0px;
+  padding: 75px 0px 0px 0px;
   font-size: .9rem;
   font-family: 'Roboto', sans-serif;
 }
@@ -311,6 +311,17 @@ input[type='checkbox'] {
   font-weight: 900;
   content: "\f303";
   font-size: 1.4rem !important;
+}
+
+footer {
+  color: white;
+  background-color: var(--dark-blue-color);
+  min-height: 200px;
+  padding: 1rem 0rem;
+}
+
+.datamade-logo-footer {
+  height: 20px;
 }
 
 /* Small devices (landscape phones, 576px and up) */
