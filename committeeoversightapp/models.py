@@ -54,7 +54,6 @@ class CommitteeOrganization(Organization):
         rating_set = self.committeerating_set.order_by('-congress')
         return rating_set[0]
 
-
     @property
     def short_name(self):
         if self.parent.name in ('United States House of Representatives', 'United States Senate'):
@@ -64,7 +63,6 @@ class CommitteeOrganization(Organization):
     @property
     def chair(self):
         return CommitteeDetailPage.objects.get(committee=self.id).chair
-
 
     @property
     def hide_rating(self):
