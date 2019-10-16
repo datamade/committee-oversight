@@ -114,6 +114,7 @@ h4 {
 
 .btn-primary {
   background-color: var(--dark-blue-color);
+  border-color: var(--dark-blue-color);
 }
 
 .btn-primary:hover {
