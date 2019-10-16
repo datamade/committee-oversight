@@ -1,3 +1,5 @@
+import re
+
 from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
@@ -50,6 +52,13 @@ class CommitteeOrganization(Organization):
         """
         rating_set = self.committeerating_set.order_by('-congress')
         return rating_set[0]
+
+
+    @property
+    def short_name(self):
+        if self.parent.name in ('United States House of Representatives', 'United States Senate'):
+            self.name = re.sub(r'(House|Senate) Committee on ', '', self.name)
+        return self.name
 
     def __str__(self):
         return self.name

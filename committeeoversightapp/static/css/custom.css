@@ -77,11 +77,14 @@
   color: var(--bright-red-color);
 }
 
+.dark-blue-color {
+  color: var(--dark-blue-color);
+}
 
 body {
   background-color: var(--lightest-blue-color);
   color: var(--dark-gray-color);
-  padding: 75px 0px 50px 0px;
+  padding: 75px 0px 0px 0px;
   font-size: .9rem;
   font-family: 'Roboto', sans-serif;
 }
@@ -100,11 +103,11 @@ h2 {
   font-family: 'Roboto Slab', serif;
   font-size: 1.9rem;
   font-weight: 500;
-  color: black;
+  color: var(--dark-blue-color);
 }
 
 h3 {
-  color: black;
+  color: var(--dark-blue-color);
 }
 
 h4 {
@@ -145,6 +148,14 @@ h4 {
 
 .container {
   padding-top: 40px;
+}
+
+.landing-row {
+  font-size: .85rem;
+}
+
+.card-shadow {
+  box-shadow: -2px 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .hearing-form {
@@ -284,12 +295,8 @@ input[type='checkbox'] {
   padding-left: 10px;
 }
 
-.landing-description {
-  position: fixed;
-}
-
 .rating {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 600;
 }
 
@@ -311,6 +318,25 @@ input[type='checkbox'] {
   font-size: 1.4rem !important;
 }
 
+footer {
+  color: white;
+  background-color: var(--dark-blue-color);
+  min-height: 200px;
+  padding: 1rem 0rem;
+}
+
+footer a {
+  color: var(--orange-color);
+}
+
+footer a:hover {
+  color: var(--red-orange-color);
+}
+
+.datamade-logo-footer {
+  height: 20px;
+}
+
 /* Small devices (landscape phones, 576px and up) */
 @media (max-width: 767px) {
   .pagination {
@@ -322,12 +348,6 @@ input[type='checkbox'] {
   h1 {
     margin: -3rem 0;
     font-size: 1.3rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .landing-description {
-    position: static;
   }
 }
 
