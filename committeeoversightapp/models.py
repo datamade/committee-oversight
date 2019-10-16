@@ -52,6 +52,7 @@ class CommitteeOrganization(Organization):
         return rating_set[0]
 
 
+    @property
     def sliced_name(self):
         chambers = {
             'United States House of Representatives': 'House Committee on ',
@@ -60,7 +61,7 @@ class CommitteeOrganization(Organization):
 
         for chamber, prefix in chambers.items():
             if self.parent.name == chamber:
-                return self.name.split(prefix)[-1]
+                return self.name.replace(prefix, '')
 
         return self.name
 
