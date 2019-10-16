@@ -321,6 +321,14 @@ footer {
   padding: 1rem 0rem;
 }
 
+footer a {
+  color: var(--orange-color);
+}
+
+footer a:hover {
+  color: var(--red-orange-color);
+}
+
 .datamade-logo-footer {
   height: 20px;
 }
