@@ -142,16 +142,20 @@ h4 {
   font-size: 14px;
 }
 
-.landing-row {
-  font-size: .85rem;
-}
-
 .edit-buttons {
   padding-top: 45px;
 }
 
 .container {
   padding-top: 40px;
+}
+
+.landing-row {
+  font-size: .85rem;
+}
+
+.card-shadow {
+  box-shadow: -2px 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .hearing-form {
