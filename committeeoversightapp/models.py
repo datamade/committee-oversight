@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
+from django.db.models.fields import TextField, BooleanField
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
@@ -59,6 +60,15 @@ class CommitteeOrganization(Organization):
         if self.parent.name in ('United States House of Representatives', 'United States Senate'):
             self.name = re.sub(r'(House|Senate) Committee on ', '', self.name)
         return self.name
+
+    @property
+    def chair(self):
+        return CommitteeDetailPage.objects.get(committee=self.id).chair
+
+
+    @property
+    def hide_rating(self):
+        return CommitteeDetailPage.objects.get(committee=self.id).hide_rating
 
     def __str__(self):
         return self.name
@@ -256,7 +266,13 @@ class CommitteeDetailPage(DetailPage):
         help_text="Select a committee for this page."
     )
 
+    chair = TextField(blank=True, null=True)
+
+    hide_rating = BooleanField(default=False)
+
     content_panels = [
         FieldPanel('committee', widget=AutocompleteSelect(committee.remote_field, admin.site)),
         FieldPanel('body'),
+        FieldPanel('chair'),
+        FieldPanel('hide_rating'),
     ]
