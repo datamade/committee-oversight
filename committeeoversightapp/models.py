@@ -53,13 +53,16 @@ class CommitteeOrganization(Organization):
 
 
     def sliced_name(self):
-        prefix = ''
-        if self.parent.name == 'United States House of Representatives':
-            prefix = 'House Committee on '
-        elif self.parent.name == 'United States Senate':
-            prefix = 'Senate Committee on '
+        chambers = {
+            'United States House of Representatives': 'House Committee on ',
+            'United States Senate': 'Senate Committee on '
+            }
 
-        return self.name[len(prefix):]
+        for chamber, prefix in chambers.items():
+            if self.parent.name == chamber:
+                return self.name.split(prefix)[-1]
+
+        return self.name
 
     def __str__(self):
         return self.name
