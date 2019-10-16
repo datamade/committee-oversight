@@ -1,3 +1,5 @@
+import re
+
 from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
@@ -53,16 +55,9 @@ class CommitteeOrganization(Organization):
 
 
     @property
-    def sliced_name(self):
-        chambers = {
-            'United States House of Representatives': 'House Committee on ',
-            'United States Senate': 'Senate Committee on '
-            }
-
-        for chamber, prefix in chambers.items():
-            if self.parent.name == chamber:
-                return self.name.replace(prefix, '')
-
+    def short_name(self):
+        if self.parent.name in ('United States House of Representatives', 'United States Senate'):
+            self.name = re.sub(r'(House|Senate) Committee on ', '', self.name)
         return self.name
 
     def __str__(self):
