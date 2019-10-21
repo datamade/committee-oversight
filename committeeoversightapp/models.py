@@ -57,7 +57,7 @@ class CommitteeOrganization(Organization):
     @property
     def short_name(self):
         if self.parent.name in ('United States House of Representatives', 'United States Senate'):
-            self.name = re.sub(r'(House|Senate) Committee on ', '', self.name)
+            return re.sub(r'(House|Senate) Committee on ', '', self.name)
         return self.name
 
     @property
