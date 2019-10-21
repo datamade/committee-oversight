@@ -18,7 +18,7 @@
       <tbody>
           {% for committee in committees %}
           <tr>
-            <td class="list-item text-right align-middle pr-2"><a href="{{committee.url_id}}">{{committee.sliced_name}}</a></td>
+            <td class="list-item text-right align-middle pr-2"><a href="{{committee.url_id}}">{{committee.short_name}}</a></td>
               {% if committee.hide_rating %}
               <td class="align-middle">
                 N/A
