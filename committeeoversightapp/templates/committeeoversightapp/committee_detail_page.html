@@ -1,18 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="col-12 text-center">
-    <h2 class="mb-4">{{ page.title }}</h2>
-    <p class="lead font-weight-light text-dark"><strong>Chairperson:</strong> John Smith</p>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 text-center">
+      <h2 class="my-2">{{ page.title }}</h2>
+      <p class="lead font-weight-light mb-2 mt-3"><strong>Chair: </strong> {{ page.chair }}</p>
+    </div>
   </div>
 
-  <div class="col-md-6 my-3 font-weight-light">
-    {{ page.body|safe }}
+  <div class="row justify-content-center align-items-center">
+    <div class="col-6 col-md-4 col-lg-3 col-xl-3 my-3 pr-4 text-right border-right">
+      <h3 class="rating-large b-plus-rating">B+</h3>
+      <p>
+        Projected CHP Score for the 116th Congress<br />
+        <small><i>Last updated: {% now "jS F Y H:i" %}</i></small>
+      </p>
+    </div>
+
+    <div class="col-6 col-md-5 col-lg-4 col-xl-3 my-3 pl-4 text-left">
+      <p class="font-weight-light my-2"><strong>3</strong> Investigative Oversight Hearings</p>
+      <p class="font-weight-light my-2"><strong>15</strong> Policy/Legislative Hearings</p>
+      <p class="font-weight-light my-2"><strong>43</strong> Total Hearings</p>
+    </div>
   </div>
-  <div class="col-md-6 my-3">
-    <h4>Projected CHP Score for the 116th Congress:</h4>
-    <h3 class="rating b-plus-rating">B+</h3>
-    <small>Last updated: {% now "jS F Y H:i" %}</small>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-6 my-2 font-weight-light">
+      {{ page.body|safe }}
+    </div>
   </div>
 
   <div class="col-12">

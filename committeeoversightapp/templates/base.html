@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400|Roboto:300,400,400i,500,700,700i&display=swap" rel="stylesheet">
 
-    <title>Committee Oversight Data Tool</title>
+    <title>{{page.title}}</title>
   </head>
 
   <body>
@@ -39,15 +39,14 @@
       {% top_menu parent=site_root calling_page=self %}
     {% endblock %}
 
-    <div class="container">
-      <div class="row justify-content-center">
-          {% wagtailuserbar %}
-          {% block content %}
-          {% endblock %}
-      </div>
+    {% wagtailuserbar %}
+
+    <div class="container justify-content-center">
+      {% block content %}
+      {% endblock %}
     </div>
 
   {% include "partials/footer.html" %}
-  
+
   </body>
 </html>

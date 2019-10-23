@@ -300,6 +300,11 @@ input[type='checkbox'] {
   font-weight: 600;
 }
 
+.rating-large {
+  font-size: 3rem;
+  font-weight: 900;
+}
+
 .list-item a {
   color: var(--dark-gray-color);
   font-weight: 600;
