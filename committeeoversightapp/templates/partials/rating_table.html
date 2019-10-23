@@ -25,18 +25,18 @@
             {% for rating in page.committee.committeerating_set.all %}
             <tr>
                 <td>Congress {{ rating.congress }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>TK</td>
+                <td>TK</td>
+                <td>TK</td>
+                <td>TK</td>
                 <td class="{{ rating.css_class }} font-weight-bold lead">{{ rating.rating }}</td>
             </tr>
             {% endfor %}
             <tr>
                 <td class="font-weight-bold">Historical average</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td class="font-weight-bold">TK</td>
+                <td class="font-weight-bold">TK</td>
+                <td class="font-weight-bold">TK</td>
                 <td></td>
                 <td></td>
             </tr>
