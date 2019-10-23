@@ -2,36 +2,38 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="col col-lg-8">
-<div class="hearing-form card">
-  {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
-
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-    {% else %}
-      <p>Please sign in to see this page.</p>
+<div class="row justify-content-center">
+  <div class="col col-lg-8">
+  <div class="hearing-form card">
+    {% if form.errors %}
+      <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
-  {% endif %}
 
-  <form method="post" action="{% url 'login' %}">
-  {% csrf_token %}
+    {% if next %}
+      {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+      {% else %}
+        <p>Please sign in to see this page.</p>
+      {% endif %}
+    {% endif %}
 
-  <div>
-    <td>{{ form.username | as_crispy_field }}</td>
-  </div>
-  <div>
-    <td>{{ form.password | as_crispy_field }}</td>
-  </div>
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
 
-  <div>
-    <input type="submit" class="btn btn-success float-right" value="Login" />
-    <input type="hidden" name="next" value="{{ next }}" />
+    <div>
+      <td>{{ form.username | as_crispy_field }}</td>
+    </div>
+    <div>
+      <td>{{ form.password | as_crispy_field }}</td>
+    </div>
+
+    <div>
+      <input type="submit" class="btn btn-success float-right" value="Login" />
+      <input type="hidden" name="next" value="{{ next }}" />
+    </div>
+    </form>
   </div>
-  </form>
-</div>
+  </div>
 </div>
 {% endblock %}

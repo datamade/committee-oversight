@@ -1,30 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="col col-lg-11">
-<div class="hearing-form card">
-  <h2>Delete Hearing Record</h2>
-  <div class="float-right confirm-delete">
-    <i>Are you sure you want to delete this hearing?</i>
-  </div><br />
+<div class="row justify-content-center">
+  <div class="col col-lg-11">
+  <div class="hearing-form card">
+    <h2>Delete Hearing Record</h2>
+    <div class="float-right confirm-delete">
+      <i>Are you sure you want to delete this hearing?</i>
+    </div><br />
 
-  {% include 'partials/detail.html' %}
+    {% include 'partials/detail.html' %}
 
- <form method="POST" class="form">
-   {% csrf_token %}
-   <div class="float-right">
-     <a href="{% url 'list-event' %}" class="btn btn-back">
-       <i class="fas fa-arrow-circle-left"></i>&nbsp;
-       Back to list view
-     </a>
-     <button type="submit" class="btn btn-danger">
-       <i class="fas fa-times-circle"></i>&nbsp;
-       Delete hearing
-     </button>
-   </div>
- </form>
+   <form method="POST" class="form">
+     {% csrf_token %}
+     <div class="float-right">
+       <a href="{% url 'list-event' %}" class="btn btn-back">
+         <i class="fas fa-arrow-circle-left"></i>&nbsp;
+         Back to list view
+       </a>
+       <button type="submit" class="btn btn-danger">
+         <i class="fas fa-times-circle"></i>&nbsp;
+         Delete hearing
+       </button>
+     </div>
+   </form>
 
-</div>
+  </div>
+  </div>
 </div>
 
 {% endblock %}
