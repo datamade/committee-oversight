@@ -330,6 +330,13 @@ input[type='checkbox'] {
     content: '- Read Less';
 }
 
+.progress {
+  background: var(--lightest-blue-color);
+  border: .5px solid var(--dark-gray-color);
+  border-radius: 17px;
+  height: 1.7rem;
+}
+
 .list-item a {
   color: var(--dark-gray-color);
   font-weight: 600;

@@ -36,13 +36,49 @@
    </div>
   </div>
 
+  <div class="card col-12 col-xl-10 mx-auto card-shadow">
+    <h4 class="text-center mt-4">
+      Current Committee
+    </h4>
+    <div class="card-body">
+      <!-- % of the way through current Congress -->
+        <div class="progress my-2">
+          <div class="progress-bar" role="progressbar" style="width: 92%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+      <!-- Investigative Oversight hearings -->
+      <div class="progress my-2">
+        <div class="progress-bar btn-danger" role="progressbar" style="width: 23%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+      <!-- Policy/Legislative hearings -->
+      <div class="progress my-2">
+        <div class="progress-bar btn-success" role="progressbar" style="width: 91%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+      <!-- Total hearings -->
+      <div class="progress my-2">
+        <div class="progress-bar btn-edit" role="progressbar" style="width: 60%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+    </div>
+  </div>
+
   <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
     <h4 class="text-center mt-4">
       Committee History
     </h4>
-    <div class="card-body">
+
+    <div class="card-body my-2">
       {% include 'partials/rating_table.html' %}
     </div>
+
+    <h4 class="text-center my-2">
+      Number of Hearings
+    </h4>
+
+    <!-- Bar charts go here -->
+    <div class="my-2"></div>
   </div>
 
   <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
