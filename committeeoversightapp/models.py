@@ -216,6 +216,8 @@ class DetailPage(Page):
     '''
     Model page method adapted from
     https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
+    User-entered and -editable data should live as attributes on a model's DetailPage;
+    scraped or OCD-sourced data should be attached to the corresponding base model
     '''
 
     class Meta:
@@ -253,7 +255,6 @@ class CategoryDetailPage(DetailPage):
 
 
 class CommitteeDetailPage(DetailPage):
-
     title_field = 'committee'
 
     committee = models.ForeignKey(
