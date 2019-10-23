@@ -1,37 +1,45 @@
 <div class="table-responsive">
-    <table class="table table-borderless table-striped text-center">
+    <table class="table table-borderless table-striped text-center table-sm">
         <thead>
             <tr>
                 <td></td>
-                <td colspan="2" class="font-weight-bold">
-                    Committee Performance
-                    <hr class="mb-0" />
-                </td>
                 <td colspan="3" class="font-weight-bold">
                     Number of Hearings
+                    <hr class="mb-0" />
+                </td>
+                <td colspan="2" class="font-weight-bold">
+                    Committee Hearing Performance
                     <hr class="mb-0" />
                 </td>
             </tr>
             <tr>
                 <td></td>
-                <td>CHP Score</td>
-                <td>Grade</td>
-                <td>Policy/Legislative</td>
                 <td>Investigative/Oversight</td>
+                <td>Policy/Legislative</td>
                 <td>Total Hearings</td>
+                <td>Score</td>
+                <td>Grade</td>
             </tr>
         </thead>
         <tbody>
             {% for rating in page.committee.committeerating_set.all %}
             <tr>
                 <td>Congress {{ rating.congress }}</td>
-                <td class="{{ rating.css_class }} font-weight-bold">{{ rating.rating }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="{{ rating.css_class }} font-weight-bold lead">{{ rating.rating }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td class="font-weight-bold">Historical average</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
 </div>

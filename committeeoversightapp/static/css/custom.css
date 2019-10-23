@@ -142,6 +142,11 @@ h4 {
   font-size: 14px;
 }
 
+.btn-center {
+  text-align:center;
+  display:block;
+}
+
 .edit-buttons {
   padding-top: 45px;
 }
@@ -303,6 +308,26 @@ input[type='checkbox'] {
 .rating-large {
   font-size: 3rem;
   font-weight: 900;
+}
+
+#summary div.collapse:not(.show) {
+    height: 14rem !important;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 11;
+    -webkit-box-orient: vertical;
+}
+
+#summary div.collapsing {
+    min-height: 220px !important;
+}
+
+#summary a.collapsed:after  {
+    content: '+ Read More';
+}
+
+#summary a:not(.collapsed):after {
+    content: '- Read Less';
 }
 
 .list-item a {

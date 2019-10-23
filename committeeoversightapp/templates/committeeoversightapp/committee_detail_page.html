@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-10 text-center">
+    <div class="col-12 col-md-10 text-center">
       <h2 class="my-2">{{ page.title }}</h2>
       <p class="lead font-weight-light mb-2 mt-3"><strong>Chair: </strong> {{ page.chair }}</p>
     </div>
@@ -18,27 +18,41 @@
     </div>
 
     <div class="col-6 col-md-5 col-lg-4 col-xl-3 my-3 pl-4 text-left">
-      <p class="font-weight-light my-2"><strong>3</strong> Investigative Oversight Hearings</p>
-      <p class="font-weight-light my-2"><strong>15</strong> Policy/Legislative Hearings</p>
-      <p class="font-weight-light my-2"><strong>43</strong> Total Hearings</p>
+      <p class="font-weight-light my-2"><strong>TK</strong> Investigative Oversight Hearings</p>
+      <p class="font-weight-light my-2"><strong>TK</strong> Policy/Legislative Hearings</p>
+      <p class="font-weight-light my-2"><strong>TK</strong> Total Hearings</p>
     </div>
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-10 col-xl-6 my-2 font-weight-light">
-      {{ page.body|safe }}
+   <div class="col-12 col-lg-10 col-xl-6 my-2 font-weight-light">
+     <div id="summary">
+       <div class="collapse" id="collapseSummary">
+         {{ page.body|safe }}
+       </div>
+       <a class="collapsed btn btn-back btn-center my-3" data-toggle="collapse" href="#collapseSummary" aria-expanded="false" aria-controls="collapseSummary"></a>
+     </div>
+     <hr />
+   </div>
+  </div>
+
+  <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
+    <h4 class="text-center mt-4">
+      Committee History
+    </h4>
+    <div class="card-body">
+      {% include 'partials/rating_table.html' %}
     </div>
   </div>
 
-  <div class="col-12">
-    {% include 'partials/rating_table.html' %}
-  </div>
-
-  <div class="col-sm-9 justify-content-left pt-5">
-    <h4 style="margin-bottom: -25px;">
-      Hearings held by the<br />{{ page.committee.name }}
+  <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
+    <h4 class="text-center mt-4">
+      Hearings held by the <br />
+      {{ page.title }}
     </h4>
-    {% include 'partials/hearing_table.html' %}
+    <div class="card-body">
+      {% include 'partials/hearing_table.html' %}
+    </div>
   </div>
 
   <script>
