@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
+from django.db.models.fields import TextField, BooleanField
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
@@ -53,12 +54,19 @@ class CommitteeOrganization(Organization):
         rating_set = self.committeerating_set.order_by('-congress')
         return rating_set[0]
 
-
     @property
     def short_name(self):
         if self.parent.name in ('United States House of Representatives', 'United States Senate'):
-            self.name = re.sub(r'(House|Senate) Committee on ', '', self.name)
+            return re.sub(r'(House|Senate) Committee on ', '', self.name)
         return self.name
+
+    @property
+    def chair(self):
+        return CommitteeDetailPage.objects.get(committee=self.id).chair
+
+    @property
+    def hide_rating(self):
+        return CommitteeDetailPage.objects.get(committee=self.id).hide_rating
 
     def __str__(self):
         return self.name
@@ -208,6 +216,8 @@ class DetailPage(Page):
     '''
     Model page method adapted from
     https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
+    User-entered and -editable data should live as attributes on a model's DetailPage;
+    scraped or OCD-sourced data should be attached to the corresponding base model
     '''
 
     class Meta:
@@ -245,7 +255,6 @@ class CategoryDetailPage(DetailPage):
 
 
 class CommitteeDetailPage(DetailPage):
-
     title_field = 'committee'
 
     committee = models.ForeignKey(
@@ -256,7 +265,13 @@ class CommitteeDetailPage(DetailPage):
         help_text="Select a committee for this page."
     )
 
+    chair = TextField(blank=True, null=True)
+
+    hide_rating = BooleanField(default=False)
+
     content_panels = [
         FieldPanel('committee', widget=AutocompleteSelect(committee.remote_field, admin.site)),
         FieldPanel('body'),
+        FieldPanel('chair'),
+        FieldPanel('hide_rating'),
     ]
