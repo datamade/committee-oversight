@@ -28,9 +28,9 @@
     </div>
   </div>
 
-  {% include "partials/landing_page_table.html" with committees=senate_committees title="The Senate"%}
+  {% include "partials/landing_page_table.html" with committees=house_committees title="House of Representatives"%}
 
-  {% include "partials/landing_page_table.html" with committees=house_committees title="The House of Representatives"%}
+  {% include "partials/landing_page_table.html" with committees=senate_committees title="Senate"%}
 
   <script>
     $(document).ready(function() {
