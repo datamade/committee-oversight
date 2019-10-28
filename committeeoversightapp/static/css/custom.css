@@ -1,6 +1,7 @@
 :root {
   --lightest-blue-color: #fafcff;
   --light-blue-color: #e8eef9;
+  --blue-color: #3774bb;
   --dark-blue-color: #002f67;
   --darkest-blue-color: #001f43;
   --light-gray-color: #ced4da;
@@ -333,7 +334,7 @@ input[type='checkbox'] {
 .progress {
   background: var(--lightest-blue-color);
   border-radius: 17px;
-  height: 1.7rem;
+  height: 1.5rem;
   box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
 }
 
