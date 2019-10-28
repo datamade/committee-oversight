@@ -1,32 +1,167 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="{% static 'js/chart_helper.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-  <div class="col-12 text-center">
-    <h2 class="mb-4">{{ page.title }}</h2>
-    <p class="lead font-weight-light text-dark"><strong>Chairperson:</strong> John Smith</p>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 text-center">
+      <h2 class="my-2">{{ page.title }}</h2>
+      <p class="lead font-weight-light mb-2 mt-3"><strong>Chair: </strong> {{ page.chair }}</p>
+    </div>
   </div>
 
-  <div class="col-md-6 my-3 font-weight-light">
-    {{ page.body|safe }}
-  </div>
-  <div class="col-md-6 my-3">
-    <h4>Projected CHP Score for the 116th Congress:</h4>
-    <h3 class="rating b-plus-rating">B+</h3>
-    <small>Last updated: {% now "jS F Y H:i" %}</small>
+  <div class="row justify-content-center align-items-center">
+    <div class="col-6 col-md-4 col-lg-3 col-xl-3 my-3 pr-4 text-right border-right">
+      <h3 class="rating-large b-plus-rating">B+</h3>
+      <p>
+        Projected CHP Score for the 116th Congress<br />
+        <small><i>Last updated: {% now "jS F Y H:i" %}</i></small>
+      </p>
+    </div>
+
+    <div class="col-6 col-md-5 col-lg-4 col-xl-3 my-3 pl-4 text-left">
+      <p class="font-weight-light my-2"><strong>TK</strong> Investigative Oversight Hearings</p>
+      <p class="font-weight-light my-2"><strong>TK</strong> Policy/Legislative Hearings</p>
+      <p class="font-weight-light my-2"><strong>TK</strong> Total Hearings</p>
+    </div>
   </div>
 
-  <div class="col-12">
-    {% include 'partials/rating_table.html' %}
+  <div class="row justify-content-center">
+   <div class="col-12 col-lg-10 col-xl-7 my-2 font-weight-light">
+     <div id="summary">
+       <div class="collapse" id="collapseSummary">
+         {{ page.body|safe }}
+       </div>
+       <a class="collapsed btn btn-back btn-center my-3" data-toggle="collapse" href="#collapseSummary" aria-expanded="false" aria-controls="collapseSummary"></a>
+     </div>
+     <hr />
+   </div>
   </div>
 
-  <div class="col-sm-9 justify-content-left pt-5">
-    <h4 style="margin-bottom: -25px;">
-      Hearings held by the<br />{{ page.committee.name }}
+  <div class="card col-12 col-xl-10 mx-auto card-shadow">
+    <h4 class="text-center mt-4">
+      Current Congress
     </h4>
-    {% include 'partials/hearing_table.html' %}
+    <div class="card-body">
+      <!-- % of the way through current Congress -->
+        <p class="pl-2 text-center">
+          We are <span class="font-weight-bold">TK%</span> of the way through the 116th Congress
+        </p>
+        <div class="progress my-2">
+          <div class="progress-bar progress-bar-striped progress-bar-neutral" role="progressbar" style="width: 92%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+
+      <p class="pl-2 pt-2 text-center font-weight-bold">
+        {{ page.title }}
+      </p>
+
+      <!-- Investigative Oversight hearings -->
+      <small class="pl-2">
+        <span class="font-weight-bold">TK</span> Oversight Hearings; <span class="font-weight-bold">TK%</span> historical maximum
+      </small>
+      <div class="progress my-2">
+        <div class="progress-bar progress-bar-striped progress-bar-red" role="progressbar" style="width: 23%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+      <!-- Policy/Legislative hearings -->
+      <small class="pl-2">
+        <span class="font-weight-bold">TK</span> Policy/Legislative Hearings; <span class="font-weight-bold">TK%</span> historical maximum
+      </small>
+      <div class="progress my-2">
+        <div class="progress-bar progress-bar-striped progress-bar-green" role="progressbar" style="width: 91%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+      <!-- Total hearings -->
+      <small class="pl-2">
+        <span class="font-weight-bold">TK</span> Total Hearings; <span class="font-weight-bold">TK%</span> historical maximum
+      </small>
+      <div class="progress my-2">
+        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: 60%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
+    <h4 class="text-center mt-4">
+      Committee History
+    </h4>
+
+    <div class="card-body my-2">
+      {% include 'partials/rating_table.html' %}
+    </div>
+
+    <h4 class="text-center my-3">
+      Number of Hearings
+    </h4>
+
+    <!-- Hearing count bar charts -->
+    <small class="text-center">
+      <span style="color:#c2682a;" class="font-weight-bold">---</span> Historical Average
+    </small>
+
+    <div class="my-4 row">
+
+      <div class="col-md-4">
+        <div id="chart_investigative_oversight" style='height: 20rem'></div>
+      </div>
+
+      <div class="col-md-4">
+        <div id="chart_policy" style='height: 20rem'></div>
+      </div>
+
+      <div class="col-md-4">
+        <div id="chart_total" style='height: 20rem'></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
+    <h4 class="text-center mt-4">
+      Hearings held by the <br />
+      {{ page.title }}
+    </h4>
+    <div class="card-body">
+      {% include 'partials/hearing_table.html' %}
+    </div>
   </div>
 
   <script>
+    $(function () {
+      var chart_id = '#chart_investigative_oversight'
+      var categories = ['111', '112', '113', '114', '115']
+      var series_data = [5, 6, 7, 8, 9]
+      var title_text = 'Investigative Oversight'
+      var historical_average = 7
+      var bar_color = '#3774bb'
+      ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
+    });
+
+    $(function () {
+      var chart_id = '#chart_policy'
+      var categories = ['111', '112', '113', '114', '115']
+      var series_data = [5, 6, 7, 8, 9]
+      var title_text = 'Policy/Legislative'
+      var historical_average = 7
+      var bar_color = '#002f67'
+      ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
+    });
+
+    $(function () {
+      var chart_id = '#chart_total'
+      var categories = ['111', '112', '113', '114', '115']
+      var series_data = [35, 26, 17, 28, 25]
+      var title_text = 'Total'
+      var historical_average = 26
+      var bar_color = '#001f43'
+      ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
+    });
+
     $(document).ready(function () {
         var committeeID = '{{ page.committee.id }}';
         function makeAjaxUrl(committeeID) {

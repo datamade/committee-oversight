@@ -107,14 +107,25 @@ class EventListJson(BaseDatatableView):
         edit_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
         delete_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
-        for item in qs:
-            json_data.append([
-                item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                item.name,
-                item.start_date,
-                edit_string.format(escape(item.pk)),
-                delete_string.format(escape(item.pk)),
-            ])
+        if self.request.user.is_authenticated:
+            for item in qs:
+                json_data.append([
+                    item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
+                    item.name,
+                    item.start_date,
+                    edit_string.format(escape(item.pk)),
+                    delete_string.format(escape(item.pk)),
+                ])
+        else:
+            for item in qs:
+                json_data.append([
+                    item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
+                    item.name,
+                    item.start_date,
+                    '',
+                    '',
+                ])
+
         return json_data
 
 

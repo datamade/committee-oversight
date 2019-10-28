@@ -2,30 +2,32 @@
 {% load static %}
 
 {% block content %}
-<div class="col col-lg-9">
-<script type="text/javascript">
-    $(document).ready(function() {
-      $('.basic-multiple').select2();
-    });
+<div class="row justify-content-center">
+  <div class="col col-lg-9">
+  <script type="text/javascript">
+      $(document).ready(function() {
+        $('.basic-multiple').select2();
+      });
 
-    $(function() {
-        $('#WitnessForm').formset();
-    })
-</script>
+      $(function() {
+          $('#WitnessForm').formset();
+      })
+  </script>
 
-<div class="hearing-form card">
-  <h2>Create New Hearing Record</h2>
-  <br />
-  <form method="POST" class="form">
+  <div class="hearing-form card">
+    <h2>Create New Hearing Record</h2>
+    <br />
+    <form method="POST" class="form">
 
-    {% include 'partials/hearing_form.html' %}
+      {% include 'partials/hearing_form.html' %}
 
-    <button type="submit" class="btn-lg btn-success float-right" id="save-hearing-button">
-      <i class="far fa-save"></i>&nbsp;
-      Save hearing
-    </button>
+      <button type="submit" class="btn-lg btn-success float-right" id="save-hearing-button">
+        <i class="far fa-save"></i>&nbsp;
+        Save hearing
+      </button>
 
-  </form>
-</div>
+    </form>
+  </div>
+  </div>
 </div>
 {% endblock %}

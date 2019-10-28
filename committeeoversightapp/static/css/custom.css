@@ -1,6 +1,7 @@
 :root {
   --lightest-blue-color: #fafcff;
   --light-blue-color: #e8eef9;
+  --blue-color: #3774bb;
   --dark-blue-color: #002f67;
   --darkest-blue-color: #001f43;
   --light-gray-color: #ced4da;
@@ -115,6 +116,10 @@ h4 {
   color: black;
 }
 
+td {
+  vertical-align: middle!important;
+}
+
 .btn-primary {
   background-color: var(--dark-blue-color);
   border-color: var(--dark-blue-color);
@@ -140,6 +145,11 @@ h4 {
 .btn-back {
   color: var(--darkest-blue-color);
   font-size: 14px;
+}
+
+.btn-center {
+  text-align:center;
+  display:block;
 }
 
 .edit-buttons {
@@ -298,6 +308,59 @@ input[type='checkbox'] {
 .rating {
   font-size: 1.4rem;
   font-weight: 600;
+}
+
+.rating-large {
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+#summary div.collapse:not(.show) {
+    height: 14rem !important;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 11;
+    -webkit-box-orient: vertical;
+}
+
+#summary div.collapsing {
+    min-height: 220px !important;
+}
+
+#summary a.collapsed:after  {
+    content: '+ Read More';
+}
+
+#summary a:not(.collapsed):after {
+    content: '- Read Less';
+}
+
+.progress {
+  background: var(--lightest-blue-color);
+  border-radius: 17px;
+  height: 1.5rem;
+  box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  background-size: 6px 6px;
+  opacity: 0.9;
+}
+
+.progress-bar-neutral {
+  background-color: var(--dark-blue-color);
+}
+
+.progress-bar-green {
+  background-color: var(--green-color);
+}
+
+.progress-bar-orange {
+  background-color: var(--orange-color);
+}
+
+.progress-bar-red {
+  background-color: var(--red-color);
 }
 
 .list-item a {
