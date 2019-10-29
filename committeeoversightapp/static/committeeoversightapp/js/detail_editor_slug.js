@@ -1,8 +1,11 @@
 $(function() {
   $('#id_category').on('change', function() {
       var value = this.value;
+      var text = this.options[this.selectedIndex].text;
+      
       var newSlug = "category-" + value;
-      var newSeoTitle = "Category " + value;
+      var newSeoTitle = "Category: " + text;
+
       $('#id_slug').val(newSlug);
       $('#id_seo_title').val(newSeoTitle);
   });

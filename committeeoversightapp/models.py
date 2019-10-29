@@ -77,7 +77,7 @@ class HearingCategoryType(models.Model):
     name = models.CharField(max_length=100, primary_key=False)
 
     def __str__(self):
-        return u'({0}) {1}'.format(self.id, self.name)
+        return self.name
 
 
 class HearingCategory(models.Model):
@@ -85,9 +85,6 @@ class HearingCategory(models.Model):
     category = models.ForeignKey(HearingCategoryType,
                                  null=True,
                                  on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'Category {}: {}'.format(self.id, self.name)
 
 
 class WitnessDetails(models.Model):
