@@ -5,14 +5,19 @@ services:
     container_name: committeeoversight-dbload
     image: committeeoversight:latest
     depends_on:
-      - app
+      postgres:
+        condition: service_healthy
+      app:
+        condition: service_healthy
     volumes:
       - .:/app
       - ${PWD}/committeeoversight/local_settings.example.py:/app/committeeoversight/local_settings.py
-    # For some reason, Python logs are buffered if they don't come through
-    # logging. For instant reporting of non-logging output, i.e., print state-
-    # ments or writing to STDOUT directly, run python commands with the -u flag.
-    # https://github.com/moby/moby/issues/12447#issuecomment-263846539
+    command: 'true'
+
+  postgres:
+      command: pg_restore -C -j4 --no-owner -U postgres -d hearings /app/hearings.dump
+
+  app:
     command: >
       bash -c "python manage.py migrate &&
       python manage.py load_cms_content &&
