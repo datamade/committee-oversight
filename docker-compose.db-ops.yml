@@ -1,23 +1,25 @@
 version: '2.4'
 
 services:
-  dbload:
-    container_name: committeeoversight-dbload
-    image: committeeoversight:latest
+  dbload-dump:
+    container_name: committeeoversight-dbload-dump
+    image: mdillon/postgis:10
     depends_on:
-      postgres:
-        condition: service_healthy
-      app:
-        condition: service_healthy
+      - app
+      - postgres
     volumes:
       - .:/app
       - ${PWD}/committeeoversight/local_settings.example.py:/app/committeeoversight/local_settings.py
-    command: 'true'
+    command: pg_restore -C -j4 --no-owner -U postgres -d hearings -h postgres -p 5432 /app/hearings.dump
 
-  postgres:
-      command: pg_restore -C -j4 --no-owner -U postgres -d hearings /app/hearings.dump
-
-  app:
+  dbload-fixtures:
+    container_name: committeeoversight-dbload-fixtures
+    image: committeeoversight:latest
+    depends_on:
+      - dbload-dump
+    volumes:
+      - .:/app
+      - ${PWD}/committeeoversight/local_settings.example.py:/app/committeeoversight/local_settings.py
     command: >
       bash -c "python manage.py migrate &&
       python manage.py load_cms_content &&
