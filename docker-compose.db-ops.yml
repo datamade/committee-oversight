@@ -15,8 +15,6 @@ services:
   dbload-fixtures:
     container_name: committeeoversight-dbload-fixtures
     image: committeeoversight:latest
-    depends_on:
-      - dbload-dump
     volumes:
       - .:/app
       - ${PWD}/committeeoversight/local_settings.example.py:/app/committeeoversight/local_settings.py

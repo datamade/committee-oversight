@@ -1,9 +1,9 @@
 $(function() {
   $('#id_category').on('change', function() {
-      var value = this.value;
       var text = this.options[this.selectedIndex].text;
-      
-      var newSlug = "category-" + value;
+      var text_slug = slugify(text)
+
+      var newSlug = "category-" + text_slug;
       var newSeoTitle = "Category: " + text;
 
       $('#id_slug').val(newSlug);
@@ -32,4 +32,20 @@ try {
   } else {
     console.log('Did not find django.jQuery, skipping autocomplete listener')
   }
+}
+
+  // taken from https://gist.github.com/hagemann/382adfc57adbd5af078dc93feef01fe1#file-slugify-js
+function slugify(string) {
+  const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+  const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+  const p = new RegExp(a.split('').join('|'), 'g')
+
+  return string.toString().toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+    .replace(/&/g, '-and-') // Replace & with 'and'
+    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, '') // Trim - from end of text
 }
