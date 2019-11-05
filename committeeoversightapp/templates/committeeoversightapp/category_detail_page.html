@@ -1,15 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-12 col-lg-9 mx-auto">
-    <h2 class="mb-4 text-center">Category {{page.category.id}}: {{page.category.name}}</h2>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-9 mx-auto text-center">
+      <h2 class="mb-4 text-center">Category: {{page.category}}</h2>
+    </div>
   </div>
 
-  {% include 'partials/streamfield.html'%}
+  <div class="row justify-content-center">
+   <div class="col-12 col-lg-10 col-xl-7 my-2 font-weight-light">
+     <div id="summary">
+       <div class="collapse" id="collapseSummary">
+         {{ page.body|safe }}
+       </div>
+       <a class="collapsed btn btn-back btn-center my-3" data-toggle="collapse" href="#collapseSummary" aria-expanded="false" aria-controls="collapseSummary"></a>
+     </div>
+     <hr />
+   </div>
+  </div>
 
-  {% include 'partials/hearing_table.html' %}
-</div>
+  <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
+    <div class="card-body">
+      {% include 'partials/hearing_table.html' %}
+    </div>
+  </div>
 
   <script>
   $(document).ready(function () {
