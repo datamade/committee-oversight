@@ -16,7 +16,7 @@
      <td>
        {% for committee in committees %}
        {% if committee.organization.parent %}
-       {{committee.organization.parent}},
+       {{committee.organization.parent}}
        {% endif %}
        {{committee.name}}
        <br />

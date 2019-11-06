@@ -272,3 +272,16 @@ class CommitteeDetailPage(DetailPage):
         FieldPanel('chair'),
         FieldPanel('hide_rating'),
     ]
+
+class HearingListPage(Page):
+    body = RichTextField()
+
+    # Editor configuration
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+    ]
+
+    def get_context(self, request):
+        context = super(HearingListPage, self).get_context(request)
+        context['categories'] = HearingCategoryType.objects.all()
+        return context

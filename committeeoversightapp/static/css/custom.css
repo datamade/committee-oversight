@@ -90,6 +90,15 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+a {
+  color: var(--red-red-orange-color);
+  font-weight: 900;
+}
+
+a:hover {
+  color: var(--red-color);
+}
+
 h1 {
   font-family: 'Roboto Slab', serif;
   font-weight: 400;

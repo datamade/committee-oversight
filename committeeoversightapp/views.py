@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.detail import DetailView
 from django.views.generic import ListView, TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -27,7 +28,7 @@ import datetime
 
 
 class EventCreate(LoginRequiredMixin, TemplateView):
-    template_name = "create.html"
+    template_name = "hearing_create.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,10 +69,10 @@ class EventCreate(LoginRequiredMixin, TemplateView):
             source = EventSource(event=event, note="web form")
             source.save()
 
-        return redirect('list-event')
+        return redirect('/hearings')
 
 class EventList(LoginRequiredMixin, TemplateView):
-    template_name = 'list.html'
+    template_name = 'hearing_list.html'
 
 class EventListJson(BaseDatatableView):
     """ Uses django-datatables-view for server-side DataTable processing."""
@@ -104,6 +105,7 @@ class EventListJson(BaseDatatableView):
 
     def prepare_results(self, qs):
         json_data = []
+        detail_string = "<a href=\"/hearing/view/{0}\">{1}</a>"
         edit_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
         delete_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
@@ -111,7 +113,7 @@ class EventListJson(BaseDatatableView):
             for item in qs:
                 json_data.append([
                     item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    item.name,
+                    detail_string.format(escape(item.pk), escape(item.name.title())),
                     item.start_date,
                     edit_string.format(escape(item.pk)),
                     delete_string.format(escape(item.pk)),
@@ -120,7 +122,7 @@ class EventListJson(BaseDatatableView):
             for item in qs:
                 json_data.append([
                     item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    item.name,
+                    detail_string.format(escape(item.pk), escape(item.name.title())),
                     item.start_date,
                     '',
                     '',
@@ -128,10 +130,35 @@ class EventListJson(BaseDatatableView):
 
         return json_data
 
+class EventDetail(DetailView):
+    model = Event
+    template_name = "hearing_detail.html"
+    context_object_name = 'hearing'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        #get category context
+        try:
+            context['category'] = HearingCategory.objects.get(event=context['hearing']).category_id
+            context['category_name'] = HearingCategoryType.objects.get(pk=context['category'])
+        except ObjectDoesNotExist:
+            context['category_name'] = None
+
+        #get committee context
+        context['committees'] = context['hearing'].participants.filter(entity_type="organization")
+
+        #get context for documents
+        context = get_document_context(context)
+
+        #get context for witnesses
+        context['witnesses'] = context['hearing'].participants.filter(note="witness")
+
+        return context
 
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
-    template_name = "delete.html"
+    template_name = "hearing_delete.html"
     context_object_name = 'hearing'
     success_url = reverse_lazy('list-event')
 
@@ -157,7 +184,7 @@ class EventDelete(LoginRequiredMixin, DeleteView):
         return context
 
 class EventEdit(LoginRequiredMixin, TemplateView):
-    template_name = "edit.html"
+    template_name = "hearing_edit.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -249,7 +276,7 @@ class EventEdit(LoginRequiredMixin, TemplateView):
             save_documents(event, transcript_form.cleaned_data)
             save_witnesses(event, witness_formset.cleaned_data)
 
-        return redirect('list-event')
+        return redirect('/hearings')
 
 
 from django.http import HttpResponse
