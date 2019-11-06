@@ -47,7 +47,7 @@ create a new superuser:
 
 ## Initial CMS content
 
-**To restore an existing backup of the Wagtail CMS**, run:
+The `dbload-fixtures` command in step 3 above will load initial CMS data. If you'd like to do it separately, run:
 
 ```bash
 docker-compose run --rm app python manage.py load_cms_content
