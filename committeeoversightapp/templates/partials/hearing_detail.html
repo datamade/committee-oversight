@@ -1,3 +1,5 @@
+{% load committeeoversight_tags %}
+
 {% include 'partials/created_edited_dates.html' %}
 <table class="table table-striped table-bordered" id="hearing-table">
  <thead>
@@ -15,12 +17,14 @@
      <td><b>Committees</b></td>
      <td>
        {% for committee in committees %}
-       {% if committee.organization.parent %}
-       {{committee.organization.parent}}
-       {% endif %}
-       {{committee.name}}
-       <br />
-       {% endfor %}
+         {% if committee|is_subcommittee %}
+            <a href="{{ committee.parent|get_committee_url }}">
+              {{committee.parent}}</a>, {{committee}}
+          {% else %}
+            <a href="{{ committee|get_committee_url }}">{{committee}}</a>
+         {% endif %}
+         <br />
+        {% endfor %}
      </td>
    </tr>
    <tr>

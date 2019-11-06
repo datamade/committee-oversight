@@ -146,7 +146,10 @@ class EventDetail(DetailView):
             context['category_name'] = None
 
         #get committee context
-        context['committees'] = context['hearing'].participants.filter(entity_type="organization")
+        # context['committees'] = context['hearing'].participants.filter(entity_type="organization")
+        # print("hello")
+        # print(context['committees'])
+        context['committees'] = Organization.objects.filter(eventparticipant__event=context['hearing'].id)
 
         #get context for documents
         context = get_document_context(context)

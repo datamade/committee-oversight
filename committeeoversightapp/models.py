@@ -40,12 +40,13 @@ class CommitteeOrganization(Organization):
 
     def url_id(self):
         """
+        Get a committee's url slug.
+
         Since Wagtail strips slashes out of urls but OCD prefixes their orgs
         with 'ocd-organization/', we need to do some cleaning. The url_id
         of each committee should be of the form 'committee-<committee #>'
         """
-        url_id = 'committee-' + self.id.split('ocd-organization/').pop()
-        return url_id
+        return 'committee-' + self.id.split('ocd-organization/').pop()
 
     def latest_rating(self):
         """
