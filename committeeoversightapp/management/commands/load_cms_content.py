@@ -21,14 +21,18 @@ class Command(BaseCommand):
         initial_data_file_custom_pages = os.path.join(fixtures_dir, 'initial_cms_content_custom_pages.json')
 
         # Delete existing Wagtail models
-        Site.objects.all().delete()
-        Page.objects.all().delete()
-        PageRevision.objects.all().delete()
-        Image.objects.all().delete()
-        LandingPage.objects.all().delete()
-        StaticPage.objects.all().delete()
-        CategoryDetailPage.objects.all().delete()
-        CommitteeDetailPage.objects.all().delete()
+        try:
+            Site.objects.all().delete()
+            Page.objects.all().delete()
+            PageRevision.objects.all().delete()
+            Image.objects.all().delete()
+            LandingPage.objects.all().delete()
+            StaticPage.objects.all().delete()
+            CategoryDetailPage.objects.all().delete()
+            CommitteeDetailPage.objects.all().delete()
+        except ObjectDoesNotExist as e:
+            print(e)
+
 
         call_command('loaddata', initial_data_file, verbosity=0)
         call_command('loaddata', initial_data_file_custom_pages, verbosity=0)
