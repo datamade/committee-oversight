@@ -8,7 +8,10 @@ register = template.Library()
 
 @register.filter
 def get_category_url(category):
-    return '/category-' + slugify(category.name)
+    try:
+        return '/category-' + slugify(category.name)
+    except AttributeError:
+        return None
 
 
 @register.filter

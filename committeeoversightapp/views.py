@@ -140,10 +140,9 @@ class EventDetail(DetailView):
 
         #get category context
         try:
-            context['category'] = HearingCategory.objects.get(event=context['hearing']).category_id
-            context['category_name'] = HearingCategoryType.objects.get(pk=context['category'])
+            context['category'] = HearingCategory.objects.get(event=context['hearing']).category
         except ObjectDoesNotExist:
-            context['category_name'] = None
+            context['category'] = None
 
         #get committee context
         # context['committees'] = context['hearing'].participants.filter(entity_type="organization")
