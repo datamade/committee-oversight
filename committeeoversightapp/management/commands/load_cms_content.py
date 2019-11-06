@@ -10,7 +10,7 @@ from django.core.management import call_command
 from wagtail.core.models import Site, Page, PageRevision
 from wagtail.images.models import Image
 from committeeoversightapp.models import LandingPage, StaticPage, \
-    CategoryDetailPage, CommitteeDetailPage
+    CategoryDetailPage, CommitteeDetailPage, HearingListPage
 
 
 class Command(BaseCommand):
@@ -30,6 +30,7 @@ class Command(BaseCommand):
             StaticPage.objects.all().delete()
             CategoryDetailPage.objects.all().delete()
             CommitteeDetailPage.objects.all().delete()
+            HearingListPage.objects.all().delete()
         except ObjectDoesNotExist as e:
             print(e)
 
