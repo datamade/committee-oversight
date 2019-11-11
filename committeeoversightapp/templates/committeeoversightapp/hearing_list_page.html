@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-9 mx-auto text-center">
+      <h2 class="mb-4 text-center">{{page.title}}</h2>
+    </div>
+  </div>
+
+  <div class="row justify-content-center align-items-center">
+    <div class="col-12 col-md-3 col-xl-2 my-3 pr-4 text-center border-right">
+      <h3>Categories:</h3>
+      {% for category in categories %}
+        <div><a href="{{ category.url }}">{{category}}</a></div>
+      {% endfor %}
+    </div>
+
+    <div class="col-12 col-md-7 col-xl-7 my-3 pl-4 font-weight-light">
+      {{ page.body|safe }}
+    </div>
+  </div>
+
+  <br />
+
+  <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
+    <div class="card-body">
+      {% if user.is_authenticated %}
+      <p><a href="{% url 'create-event' %}" class="btn btn-success">Create new hearing</a></p>
+      {% endif %}
+
+      <p><i>The table below shows all scraped, imported, and manually entered hearings.</i></p>
+
+      {% include 'partials/hearing_table.html' %}
+    </div>
+  </div>
+
+  <script>
+  $(document).ready( function () {
+      $('#hearing-table').DataTable({
+        "dom": "Bfrtip",
+        "order": [[ 0, "desc" ]],
+        "columnDefs": [{ "orderable": false, "targets": [3, 4] }],
+        "processing": true,
+        "serverSide": true,
+        "ajax": "{% url 'order_list_json' %}"
+      });
+  } );
+  </script>
+
+{% endblock %}

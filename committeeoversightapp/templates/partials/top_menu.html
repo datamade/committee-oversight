@@ -31,7 +31,7 @@
           </li>
           <hr class="m-2">
           <li class="ml-3 p-0">
-            <a href="{% url 'list-event'%}">View Hearings</a>
+            <a href="{% url 'logout'%}">Log out</a>
           </li>
         </ul>
       </li>
@@ -39,7 +39,6 @@
       {% if request.user.is_authenticated %}
       <li class="nav-item">
         <small class="mr-4 font-italic">Logged in as <b>{{ request.user.get_username }}</b></small>
-        <a href="{% url 'logout'%}">Logout</a>
       </li>
      {% else %}
       <li class="nav-item">

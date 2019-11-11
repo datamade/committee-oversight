@@ -16,6 +16,7 @@
   --light-yellow-color: #d5be54;
 
   --orange-yellow-color: #d5b054;
+  --light-orange-color: #fbbd52;
   --orange-color: #de8d00;
   --dark-orange-color: #c77e00;
 
@@ -90,6 +91,15 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+a {
+  color: var(--red-red-orange-color);
+  font-weight: 900;
+}
+
+a:hover {
+  color: var(--red-color);
+}
+
 h1 {
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
@@ -136,6 +146,14 @@ td {
 .btn-edit {
   color: white;
   background-color: var(--orange-color);
+}
+
+.btn-edit:hover {
+  color: white;
+}
+
+.btn-edit.focus, .btn-edit:focus {
+    box-shadow: 0 0 0 0.2rem var(--light-orange-color);
 }
 
 .btn-danger {

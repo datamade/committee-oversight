@@ -1,5 +1,6 @@
 import re
 
+from django.utils.text import slugify
 from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
@@ -38,15 +39,27 @@ class CommitteeOrganization(Organization):
 
     objects = CommitteeManager()
 
-    def url_id(self):
+    CHAMBERS = [
+        'United States House of Representatives',
+        'United States Senate'
+        ]
+
+    @property
+    def url(self):
         """
+        Get a committee's url slug.
+
         Since Wagtail strips slashes out of urls but OCD prefixes their orgs
-        with 'ocd-organization/', we need to do some cleaning. The url_id
+        with 'ocd-organization/', we need to do some cleaning. The url
         of each committee should be of the form 'committee-<committee #>'
         """
-        url_id = 'committee-' + self.id.split('ocd-organization/').pop()
-        return url_id
+        return '/committee-' + self.id.split('ocd-organization/').pop()
 
+    @property
+    def parent_url(self):
+        return '/committee-' + self.parent.id.split('ocd-organization/').pop()
+
+    @property
     def latest_rating(self):
         """
         Return the committee's rating for the most recent Congress.
@@ -56,9 +69,16 @@ class CommitteeOrganization(Organization):
 
     @property
     def short_name(self):
-        if self.parent.name in ('United States House of Representatives', 'United States Senate'):
+        if self.parent.name in self.CHAMBERS:
             return re.sub(r'(House|Senate) Committee on ', '', self.name)
         return self.name
+
+    @property
+    def is_subcommittee(self):
+        if self.parent.parent.name in self.CHAMBERS:
+            return True
+        else:
+            return False
 
     @property
     def chair(self):
@@ -75,6 +95,13 @@ class CommitteeOrganization(Organization):
 class HearingCategoryType(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
     name = models.CharField(max_length=100, primary_key=False)
+
+    @property
+    def url(self):
+        try:
+            return '/category-' + slugify(self.name)
+        except AttributeError:
+            return None
 
     def __str__(self):
         return self.name
@@ -158,7 +185,12 @@ class CommitteeRating(models.Model):
         return self.rating
 
 
-class StaticPage(Page):
+class ResetMixin(object):
+    """Deletes and reloads this model in load_cms_content command."""
+    reset_on_load = True
+
+
+class StaticPage(ResetMixin, Page):
     featured_image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -184,7 +216,7 @@ class StaticPage(Page):
         StreamFieldPanel('body'),
     ]
 
-class LandingPage(Page):
+class LandingPage(ResetMixin, Page):
     body = RichTextField()
 
     # Editor configuration
@@ -209,7 +241,7 @@ class LandingPage(Page):
         return context
 
 
-class DetailPage(Page):
+class DetailPage(ResetMixin, Page):
     '''
     Model page method adapted from
     https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
@@ -272,3 +304,16 @@ class CommitteeDetailPage(DetailPage):
         FieldPanel('chair'),
         FieldPanel('hide_rating'),
     ]
+
+class HearingListPage(ResetMixin, Page):
+    body = RichTextField()
+
+    # Editor configuration
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+    ]
+
+    def get_context(self, request):
+        context = super(HearingListPage, self).get_context(request)
+        context['categories'] = HearingCategoryType.objects.all()
+        return context

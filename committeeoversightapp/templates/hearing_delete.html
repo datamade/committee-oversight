@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col col-lg-8">
+  <div class="hearing-form card">
+    <h56>
+      Are you sure you want to delete <b>{{hearing.name | title}}</b>?
+    </h6>
+
+    <br />
+    <br />
+
+    <form method="POST" class="form">
+     {% csrf_token %}
+     <div class="float-right">
+
+       {% include "partials/hearing_list_button.html" %}
+
+       <button type="submit" class="btn btn-danger">
+         <i class="fas fa-times-circle"></i>&nbsp;
+         Delete hearing
+       </button>
+     </div>
+    </form>
+
+  </div>
+  </div>
+</div>
+
+{% endblock %}
