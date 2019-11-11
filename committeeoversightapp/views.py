@@ -141,9 +141,12 @@ class EventListJson(BaseDatatableView):
                 json_data.append([
                     item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
                     detail_string.format(
-                        escape(item.pk),
-                        escape(item.name.title()
-                    )),
+                        escape(reverse_lazy(
+                            'detail-event',
+                            kwargs={'pk':item.pk}
+                        )),
+                        escape(item.name.title())
+                    ),
                     item.start_date,
                     '',
                     '',

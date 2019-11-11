@@ -185,7 +185,12 @@ class CommitteeRating(models.Model):
         return self.rating
 
 
-class StaticPage(Page):
+class ResetMixin(object):
+    """Deletes and reloads this model in load_cms_content command."""
+    reset_on_load = True
+
+
+class StaticPage(ResetMixin, Page):
     featured_image = models.ForeignKey(
         'wagtailimages.Image',
         null=True,
@@ -211,7 +216,7 @@ class StaticPage(Page):
         StreamFieldPanel('body'),
     ]
 
-class LandingPage(Page):
+class LandingPage(ResetMixin, Page):
     body = RichTextField()
 
     # Editor configuration
@@ -236,7 +241,7 @@ class LandingPage(Page):
         return context
 
 
-class DetailPage(Page):
+class DetailPage(ResetMixin, Page):
     '''
     Model page method adapted from
     https://timonweb.com/tutorials/how-to-hide-and-auto-populate-title-field-of-a-page-in-wagtail-cms/
@@ -300,7 +305,7 @@ class CommitteeDetailPage(DetailPage):
         FieldPanel('hide_rating'),
     ]
 
-class HearingListPage(Page):
+class HearingListPage(ResetMixin, Page):
     body = RichTextField()
 
     # Editor configuration

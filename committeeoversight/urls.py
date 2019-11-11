@@ -25,9 +25,9 @@ from wagtail.core import urls as wagtail_urls
 from committeeoversightapp.views import pong
 
 urlpatterns = [
-    path(r'^admin/', admin.site.urls),
-    path(r'^pong/$', pong,),
-    path(r'', include('committeeoversightapp.urls')),
+    path('admin/', admin.site.urls),
+    path('pong/', pong,),
+    path('', include('committeeoversightapp.urls')),
     re_path(r'^cms/', include(wagtailadmin_urls)),
     re_path(r'^documents/', include(wagtaildocs_urls)),
     re_path(r'', include(wagtail_urls)),
