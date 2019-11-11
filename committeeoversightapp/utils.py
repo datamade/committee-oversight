@@ -28,7 +28,7 @@ def archive_url(url):
         archive_url = '{0}{1}'.format(
             wayback_host,
             archived.headers['Content-Location']
-            )
+        )
         return archive_url
     except KeyError:
         return None
@@ -52,19 +52,19 @@ def save_document(url, note, event):
         media_type = extensions.get(ext.lower(), '')
 
         new_document_link = EventDocumentLink(
-                                url=url,
-                                document=new_document,
-                                media_type=media_type,
-                            )
+            url=url,
+            document=new_document,
+            media_type=media_type,
+        )
         new_document_link.save()
 
         if archived_url:
             new_archived_document_link = EventDocumentLink(
-                                    url=archived_url,
-                                    document=new_document,
-                                    media_type=media_type,
-                                    text="archived"
-                                )
+                url=archived_url,
+                document=new_document,
+                media_type=media_type,
+                text="archived"
+            )
             new_archived_document_link.save()
 
         return new_document
@@ -82,11 +82,11 @@ def get_document_context(context):
         'transcript': 'transcript',
         'opening_statement_chair': 'chair opening statement',
         'opening_statement_rm': 'ranking member opening statement',
-        }
+    }
 
     eventdocuments_qs = EventDocument.objects.filter(
         event_id=context['hearing']
-        )
+    )
 
     for key, value in document_types.items():
         try:
@@ -95,14 +95,15 @@ def get_document_context(context):
                 text='archived'
                 ).filter(
                 document_id=doc
-                )[0].url
+            )[0].url
         except (ObjectDoesNotExist):
             context[key] = None
 
         try:
             context[key + '_archived'] = EventDocumentLink.objects.get(
                 document_id=doc,
-                text='archived').url
+                text='archived'
+            ).url
         except (ObjectDoesNotExist, UnboundLocalError):
             pass
 
@@ -117,11 +118,11 @@ def save_witnesses(event, witnesses):
             entity_type = "person"
             note = "witness"
             new_witness = EventParticipant(
-                                name=name,
-                                event=event,
-                                entity_type=entity_type,
-                                note=note
-                          )
+                name=name,
+                event=event,
+                entity_type=entity_type,
+                note=note
+            )
             new_witness.save()
 
             # save witness statement urls TK
@@ -130,16 +131,16 @@ def save_witnesses(event, witnesses):
                 witness_url,
                 "witness statement",
                 event
-                )
+            )
 
             # save witness organizations and link to statement urls
             organization = witness.get('organization', None)
             retired = witness.get('retired', False)
             new_witness_details = WitnessDetails(
-                                witness=new_witness,
-                                document=witness_document,
-                                organization=organization,
-                                retired=retired
+                witness=new_witness,
+                document=witness_document,
+                organization=organization,
+                retired=retired
             )
             new_witness_details.save()
 
@@ -150,7 +151,7 @@ def save_documents(event, transcript_data):
         ('transcript_url', "transcript"),
         ('opening_statement_chair', "chair opening statement"),
         ('opening_statement_rm', "ranking member opening statement")
-        ]
+    ]
 
     for (field, note) in documents:
         url = transcript_data[field]
@@ -173,5 +174,6 @@ def save_committees(event, committees):
             name=name,
             event=event,
             organization=organization,
-            entity_type=entity_type)
+            entity_type=entity_type
+        )
         new_committee.save()

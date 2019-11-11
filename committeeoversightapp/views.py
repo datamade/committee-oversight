@@ -1,14 +1,11 @@
-import re
-
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import DeleteView
 from django.views.generic.detail import DetailView
-from django.views.generic import ListView, TemplateView, UpdateView
+from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import formset_factory
 from django.utils.html import escape
 
 from opencivicdata.legislative.models import Event, EventParticipant, \
@@ -17,14 +14,13 @@ from opencivicdata.core.models import Organization
 
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from .utils import save_document, get_document_context, save_witnesses, \
+from .utils import get_document_context, save_witnesses, \
                    save_documents, save_category, save_committees
-from .models import HearingCategory, HearingCategoryType, WitnessDetails
-from .forms import EventForm, CategoryForm, CommitteeForm, WitnessForm, \
+from .models import HearingCategory, HearingCategoryType, WitnessDetails, \
+                    CommitteeOrganization
+from .forms import EventForm, CategoryForm, CommitteeForm, \
                    WitnessFormset, TranscriptForm, CategoryEditForm, \
                    CommitteeEditForm
-
-import datetime
 
 
 class EventCreate(LoginRequiredMixin, TemplateView):
@@ -71,8 +67,10 @@ class EventCreate(LoginRequiredMixin, TemplateView):
 
         return redirect('/hearings')
 
+
 class EventList(LoginRequiredMixin, TemplateView):
     template_name = 'hearing_list.html'
+
 
 class EventListJson(BaseDatatableView):
     """ Uses django-datatables-view for server-side DataTable processing."""
@@ -94,9 +92,13 @@ class EventListJson(BaseDatatableView):
         if detail_type == 'category':
             qs = qs.filter(hearingcategory__category_id=id)
         if detail_type == 'committee':
-           qs = qs.filter(Q(participants__organization_id=id) | Q(participants__organization__parent_id=id))
+            qs = qs.filter(
+                Q(participants__organization_id=id) |
+                Q(participants__organization__parent_id=id)
+            )
 
-        # based on search example at https://pypi.org/project/django-datatables-view/
+        # based on search example at
+        # https://pypi.org/project/django-datatables-view/
         search = self.request.GET.get('search[value]', None)
         if search:
             qs = qs.filter(name__icontains=search)
@@ -105,30 +107,50 @@ class EventListJson(BaseDatatableView):
 
     def prepare_results(self, qs):
         json_data = []
-        detail_string = "<a href=\"/hearing/view/{0}\">{1}</a>"
-        edit_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
-        delete_string = "<a href=\"/hearing/edit/{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
+        detail_string = "<a href=\"{0}\">{1}</a>"
+        edit_string = "<a href=\"{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
+        delete_string = "<a href=\"{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
         if self.request.user.is_authenticated:
             for item in qs:
                 json_data.append([
                     item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    detail_string.format(escape(item.pk), escape(item.name.title())),
+                    detail_string.format(
+                        escape(reverse_lazy(
+                            'detail-event',
+                            kwargs={'pk':item.pk}
+                        )),
+                        escape(item.name.title())
+                    ),
                     item.start_date,
-                    edit_string.format(escape(item.pk)),
-                    delete_string.format(escape(item.pk)),
+                    edit_string.format(
+                        escape(reverse_lazy(
+                            'edit-event',
+                            kwargs={'pk':item.pk}
+                        ))
+                    ),
+                    delete_string.format(
+                        escape(reverse_lazy(
+                            'delete-event',
+                            kwargs={'pk':item.pk}
+                        ))
+                    ),
                 ])
         else:
             for item in qs:
                 json_data.append([
                     item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    detail_string.format(escape(item.pk), escape(item.name.title())),
+                    detail_string.format(
+                        escape(item.pk),
+                        escape(item.name.title()
+                    )),
                     item.start_date,
                     '',
                     '',
                 ])
 
         return json_data
+
 
 class EventDetail(DetailView):
     model = Event
@@ -140,50 +162,30 @@ class EventDetail(DetailView):
 
         #get category context
         try:
-            context['category'] = HearingCategory.objects.get(event=context['hearing']).category
+            context['category'] = HearingCategory.objects.get(
+                event=context['hearing']
+            ).category
         except ObjectDoesNotExist:
             context['category'] = None
 
-        #get committee context
-        # context['committees'] = context['hearing'].participants.filter(entity_type="organization")
-        # print("hello")
-        # print(context['committees'])
-        context['committees'] = Organization.objects.filter(eventparticipant__event=context['hearing'].id)
+        context['committees'] = CommitteeOrganization.objects.filter(
+            eventparticipant__event=context['hearing'].id
+        )
 
-        #get context for documents
         context = get_document_context(context)
-
-        #get context for witnesses
-        context['witnesses'] = context['hearing'].participants.filter(note="witness")
+        context['witnesses'] = context['hearing'].participants.filter(
+            note="witness"
+        )
 
         return context
+
 
 class EventDelete(LoginRequiredMixin, DeleteView):
     model = Event
     template_name = "hearing_delete.html"
     context_object_name = 'hearing'
-    success_url = reverse_lazy('list-event')
+    success_url = '/hearings'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        #get category context
-        try:
-            context['category'] = HearingCategory.objects.get(event=context['hearing']).category_id
-            context['category_name'] = HearingCategoryType.objects.get(pk=context['category'])
-        except ObjectDoesNotExist:
-            context['category_name'] = None
-
-        #get committee context
-        context['committees'] = context['hearing'].participants.filter(entity_type="organization")
-
-        #get context for documents
-        context = get_document_context(context)
-
-        #get context for witnesses
-        context['witnesses'] = context['hearing'].participants.filter(note="witness")
-
-        return context
 
 class EventEdit(LoginRequiredMixin, TemplateView):
     template_name = "hearing_edit.html"

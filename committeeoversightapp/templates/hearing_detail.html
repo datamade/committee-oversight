@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load committeeoversight_tags %}
 
 {% block content %}
 <div class="row justify-content-center">
@@ -20,11 +19,11 @@
          <td><b>Committees</b></td>
          <td>
            {% for committee in committees %}
-             {% if committee|is_subcommittee %}
-                <a href="{{ committee.parent|get_committee_url }}">
+             {% if committee.is_subcommittee %}
+                <a href="{{ committee.parent_url }}">
                   {{committee.parent}}</a>, {{committee}}
               {% else %}
-                <a href="{{ committee|get_committee_url }}">{{committee}}</a>
+                <a href="{{ committee.url }}">{{committee}}</a>
              {% endif %}
              <br />
             {% endfor %}
@@ -33,8 +32,8 @@
        <tr>
          <td><b>Category</b></td>
          <td>
-          {% if category|get_category_url %}
-            <a href="{{ category|get_category_url }}">{{category}}</a>
+          {% if category.url %}
+            <a href="{{ category.url }}">{{category}}</a>
           {% else %}
             {{category}}
           {% endif %}
@@ -82,7 +81,7 @@
          <td><b>Sources</b></td>
          <td>
            {% for source in hearing.sources.all %}
-            {{source.note | title}}
+            {{source.note|title}}
             {% if source.url %}
                (<a href={{source}} target="_blank">link</a>)
             {% endif %}<br />

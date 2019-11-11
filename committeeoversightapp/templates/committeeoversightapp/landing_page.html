@@ -14,7 +14,7 @@
         <h4 class="mb-3">Search by committee:</h4>
         <select id="committee-select" class="form-control select2-single">
           {% for committee in committees %}
-            <option value="{{committee.url_id}}">{{committee.name}}</option>
+            <option value="{{committee.url}}">{{committee.name}}</option>
           {% endfor %}
         </select>
       </label>
