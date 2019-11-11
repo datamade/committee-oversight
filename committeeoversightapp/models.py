@@ -6,6 +6,7 @@ from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
 from django.db.models.fields import TextField, BooleanField
+from django.conf import settings
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
@@ -20,17 +21,12 @@ from opencivicdata.legislative.models import Event, EventParticipant, \
                                              EventDocument
 
 
-
 class CommitteeManager(models.Manager):
-
-    def congressional_committees(self):
+    def permanent_committees(self):
         return self.get_queryset().filter(
             classification='committee',
-            parent_id__name__in=(
-                'United States House of Representatives',
-                'United States Senate'
-            )
-        ).order_by('name')
+            name__in=settings.CURRENT_PERMANENT_COMMITTEES
+        )
 
 
 class CommitteeOrganization(Organization):
@@ -38,11 +34,6 @@ class CommitteeOrganization(Organization):
         proxy = True
 
     objects = CommitteeManager()
-
-    CHAMBERS = [
-        'United States House of Representatives',
-        'United States Senate'
-        ]
 
     @property
     def url(self):
@@ -69,13 +60,13 @@ class CommitteeOrganization(Organization):
 
     @property
     def short_name(self):
-        if self.parent.name in self.CHAMBERS:
+        if self.parent.name in settings.CHAMBERS:
             return re.sub(r'(House|Senate) Committee on ', '', self.name)
         return self.name
 
     @property
     def is_subcommittee(self):
-        if self.parent.parent.name in self.CHAMBERS:
+        if self.parent.parent.name in settings.CHAMBERS:
             return True
         else:
             return False
@@ -227,16 +218,14 @@ class LandingPage(ResetMixin, Page):
     def get_context(self, request):
         context = super(LandingPage, self).get_context(request)
 
-        congressional_committees = CommitteeOrganization.objects.congressional_committees()
+        context['committees'] = CommitteeOrganization.objects.permanent_committees()
 
-        context['house_committees'] = congressional_committees.filter(
+        context['house_committees'] = context['committees'].filter(
             parent__name='United States House of Representatives'
         )
-        context['senate_committees'] = congressional_committees.filter(
+        context['senate_committees'] = context['committees'].filter(
             parent__name='United States Senate'
         )
-
-        context['committees'] = congressional_committees
 
         return context
 
