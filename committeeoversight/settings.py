@@ -140,3 +140,50 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/'
 
 WAGTAIL_SITE_NAME = 'Committee Oversight'
+
+CURRENT_PERMANENT_COMMITTEES = [
+    'House Committee on Agriculture',
+    'House Committee on Appropriations',
+    'House Committee on Armed Services',
+    'House Committee on Budget',
+    'House Committee on Education and the Workforce',
+    'House Committee on Energy and Commerce',
+    'House Committee on Financial Services',
+    'House Committee on Foreign Affairs',
+    'House Committee on Homeland Security',
+    'House Committee on House Administration',
+    'House Committee on Intelligence (Permanent Select)',
+    'House Committee on Judiciary',
+    'House Committee on Natural Resources',
+    'House Committee on Oversight and Government Reform',
+    'House Committee on Rules',
+    'House Committee on Science, Space, and Technology',
+    'House Committee on Small Business',
+    'House Committee on Transportation and Infrastructure',
+    'House Committee on Veterans\' Affairs',
+    'House Committee on Ways and Means',
+    'Senate Committee on Aging',
+    'Senate Committee on Agriculture, Nutrition, and Forestry',
+    'Senate Committee on Appropriations',
+    'Senate Committee on Armed Services',
+    'Senate Committee on Banking, Housing, and Urban Affairs',
+    'Senate Committee on Budget',
+    'Senate Committee on Commerce, Science, and Transportation',
+    'Senate Committee on Energy and Natural Resources',
+    'Senate Committee on Environment and Public Works',
+    'Senate Committee on Finance',
+    'Senate Committee on Foreign Relations',
+    'Senate Committee on Health, Education, Labor, and Pensions',
+    'Senate Committee on Homeland Security and Governmental Affairs',
+    'Senate Committee on Indian Affairs',
+    'Senate Committee on Intelligence',
+    'Senate Committee on Judiciary',
+    'Senate Committee on Rules and Administration',
+    'Senate Committee on Small Business and Entrepreneurship',
+    'Senate Committee on Veterans\' Affairs',
+]
+
+CHAMBERS = [
+    'United States House of Representatives',
+    'United States Senate'
+]
