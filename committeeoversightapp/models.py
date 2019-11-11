@@ -218,7 +218,9 @@ class LandingPage(ResetMixin, Page):
     def get_context(self, request):
         context = super(LandingPage, self).get_context(request)
 
-        context['committees'] = CommitteeOrganization.objects.permanent_committees()
+        context['committees'] = CommitteeOrganization.objects \
+            .permanent_committees() \
+            .order_by('name')
 
         context['house_committees'] = context['committees'].filter(
             parent__name='United States House of Representatives'
