@@ -26,8 +26,23 @@ class CommitteeManager(models.Manager):
         return self.get_queryset().filter(
             classification='committee',
             name__in=settings.CURRENT_PERMANENT_COMMITTEES
+        ).order_by('name')
+
+    def house_committees(self):
+        return self.permanent_committees().filter(
+            parent__name='United States House of Representatives'
         )
 
+    def senate_committees(self):
+        return self.permanent_committees().filter(
+            parent__name='United States Senate'
+        )
+
+    def get_committee_context(self, context):
+        context['committees'] = self.permanent_committees()
+        context['house_committees'] = self.house_committees()
+        context['senate_committees'] = self.senate_committees()
+        return context
 
 class CommitteeOrganization(Organization):
     class Meta:
@@ -217,18 +232,7 @@ class LandingPage(ResetMixin, Page):
 
     def get_context(self, request):
         context = super(LandingPage, self).get_context(request)
-
-        context['committees'] = CommitteeOrganization.objects \
-            .permanent_committees() \
-            .order_by('name')
-
-        context['house_committees'] = context['committees'].filter(
-            parent__name='United States House of Representatives'
-        )
-        context['senate_committees'] = context['committees'].filter(
-            parent__name='United States Senate'
-        )
-
+        context = CommitteeOrganization.objects.get_committee_context(context)
         return context
 
 
@@ -299,7 +303,6 @@ class CommitteeDetailPage(DetailPage):
 class HearingListPage(ResetMixin, Page):
     body = RichTextField()
 
-    # Editor configuration
     content_panels = Page.content_panels + [
         FieldPanel('body'),
     ]
@@ -307,4 +310,30 @@ class HearingListPage(ResetMixin, Page):
     def get_context(self, request):
         context = super(HearingListPage, self).get_context(request)
         context['categories'] = HearingCategoryType.objects.all()
+        return context
+
+
+class CompareCurrentCommitteesPage(ResetMixin, Page):
+    body = RichTextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+    ]
+
+    def get_context(self, request):
+        context = super(CompareCurrentCommitteesPage, self).get_context(request)
+        context = CommitteeOrganization.objects.get_committee_context(context)
+        return context
+
+
+class CompareCommitteesOverCongressesPage(ResetMixin, Page):
+    body = RichTextField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+    ]
+
+    def get_context(self, request):
+        context = super(CompareCommitteesOverCongressesPage, self).get_context(request)
+        context = CommitteeOrganization.objects.get_committee_context(context)
         return context
