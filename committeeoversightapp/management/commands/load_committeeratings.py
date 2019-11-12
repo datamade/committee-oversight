@@ -1,100 +1,66 @@
-from itertools import chain
-from random import randint
-
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 
-from opencivicdata.core.models import Organization
-
-from committeeoversightapp.models import CommitteeRating
+from committeeoversightapp.models import Congress, CommitteeOrganization, \
+                                         CommitteeRating, Event
 
 
 class Command(BaseCommand):
-    RATINGS_FIXTURE = {
-        'Senate Committee on Veterans\' Affairs': {
-            115: 'D',
-            114: 'A',
-            113: 'C',
-            112: 'C-',
-            111: 'A',
-            110: 'C',
-            109: 'B',
-            108: 'F',
-            107: 'F',
-        },
-        'Senate Committee on Energy and Natural Resources': {
-            115: 'F',
-            114: 'C',
-            113: 'B+',
-            112: 'D-',
-            111: 'A',
-            110: 'D',
-            109: 'B',
-            108: 'C',
-            107: 'F',
-        },
-    }
-
-    @property
-    def possible_ratings(self):
-        if not getattr(self, '_possible_ratings', None):
-            ratings_tuples = (('{}+'.format(letter), letter, '{}-'.format(letter)) for letter in 'ABCDF')
-
-            # (('A+', 'A', 'A-'), ..., ('F+', 'F', 'F-')) => ['A+', ..., 'F-']
-            self._possible_ratings = list(chain.from_iterable(ratings_tuples))
-
-        return self._possible_ratings
-
     def handle(self, **options):
-        '''
-        N.b., if we need to handle a large number of ratings in the future,
-        consider batching bulk_creates, as modeled in the docs:
-        https://docs.djangoproject.com/en/2.2/ref/models/querysets/#bulk-create
+        for congress in Congress.objects.all():
+            for committee in CommitteeOrganization.objects.permanent_committees():
+                self.build_committee_rating(congress, committee)
 
-        I wrote this envisioning we'd receive ratings in a flat CSV file (or
-        in a file we could convert to a flat CSV) containing columns for
-        committee name (or some other unique identifier, e.g., Lugar ID),
-        congress number, and rating.
+    def build_committee_rating(self, congress, committee):
+        committee_hearings=Event.objects.all().filter(
+            Q(participants__organization_id=committee.id) |
+            Q(participants__organization__parent_id=committee.id)
+        ).filter(start_date__range=(
+            congress.start_date,
+            congress.end_date
+        ))
 
-        We could easily revise this to accept such input by iterating over a
-        CSV reader grouped by the committee identifier, rather than the
-        fixture dictionary.
-        '''
-        committee_ratings = []
+        # Investigative Oversight = Agency Conduct Hearings + Private Sector Hearings
+        investigative_oversight_hearings=self.count_by_category(
+            committee_hearings,
+            [4, 5]
+        )
 
-        for committee, ratings in self.RATINGS_FIXTURE.items():
-            committee_ratings += list(self.build_commitee_ratings(committee, ratings))
+        # Policy/Legislative = Policy Hearings + Legislative Hearings
+        policy_legislative_hearings=self.count_by_category(
+            committee_hearings,
+            [2, 3]
+        )
 
-        outstanding_committees = Organization.objects.all()\
-                                                     .filter(classification='committee',
-                                                             parent_id__name__in=['United States House of Representatives', 'United States Senate'])\
-                                                     .exclude(name__in=list(self.RATINGS_FIXTURE.keys()))
+        # Total = Agency Conduct + Private Sector + Policy + Legislative
+        # + Nominations + Fact Finding + Field + Closed
+        total_hearings=self.count_by_category(
+            committee_hearings,
+            [1, 2, 3, 4, 5, 6, 7, 8]
+        )
 
-        for committee in outstanding_committees:
-            dummy_ratings = {c: self.random_rating() for c in self.congresses()}
-            committee_ratings += list(self.build_commitee_ratings(committee, dummy_ratings))
+        chp_points = (7 * investigative_oversight_hearings) + \
+            (2 * policy_legislative_hearings) + \
+            (total_hearings)
 
-        CommitteeRating.objects.bulk_create(committee_ratings)
+        CommitteeRating.objects.create(
+            congress=congress,
+            committee=committee,
+            investigative_oversight_hearings=investigative_oversight_hearings,
+            policy_legislative_hearings=policy_legislative_hearings,
+            total_hearings=total_hearings,
+            chp_points=chp_points,
+        )
 
-    def build_commitee_ratings(self, committee, ratings):
-        committee = Organization.objects.get(name=committee)
+        self.stdout.write(
+            'Added rating counts for {} to {}. Total CHP points = {}.'.format(
+                congress.label,
+                committee.name,
+                chp_points
+            )
+        )
 
-        for congress_id, rating in ratings.items():
-            rating = CommitteeRating(committee=committee,
-                                     congress=congress_id,
-                                     rating=rating)
-
-            self.stdout.write('Added {} rating for {} in {}'.format(rating.rating,
-                                                                    committee.name,
-                                                                    rating.congress_label))
-
-            yield rating
-
-    def congresses(self):
-        '''
-        Grab congresses from the (arbitrary) first committee in the ratings
-        fixture.
-        '''
-        return self.RATINGS_FIXTURE[list(self.RATINGS_FIXTURE)[0]].keys()
-
-    def random_rating(self):
-        return self.possible_ratings[randint(0, len(self.possible_ratings) - 1)]
+    def count_by_category(self, committee_hearings, category_list):
+        return len(committee_hearings.filter(
+            hearingcategory__category_id__in=category_list
+        ))

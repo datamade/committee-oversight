@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
+from django.db.models import Max, Avg
 from django.db.models.fields import TextField, BooleanField
 from django.conf import settings
 
@@ -66,14 +67,6 @@ class CommitteeOrganization(Organization):
         return '/committee-' + self.parent.id.split('ocd-organization/').pop()
 
     @property
-    def latest_rating(self):
-        """
-        Return the committee's rating for the most recent Congress.
-        """
-        rating_set = self.committeerating_set.order_by('-congress')
-        return rating_set[0]
-
-    @property
     def short_name(self):
         if self.parent.name in settings.CHAMBERS:
             return re.sub(r'(House|Senate) Committee on ', '', self.name)
@@ -94,8 +87,122 @@ class CommitteeOrganization(Organization):
     def hide_rating(self):
         return CommitteeDetailPage.objects.get(committee=self.id).hide_rating
 
+    @property
+    def latest_rating(self):
+        return self.committeerating_set.all().order_by('congress')[0]
+
+    @property
+    def max_chp_points(self):
+        return self.committeerating_set.all().aggregate(Max('chp_points'))['chp_points__max']
+
+    @property
+    def investigative_oversight_avg(self):
+        return self.committeerating_set.all() \
+            .aggregate(
+                Avg('investigative_oversight_hearings')
+            )['investigative_oversight_hearings__avg']
+
+    @property
+    def policy_legislative_avg(self):
+        return self.committeerating_set.all() \
+            .aggregate(
+                Avg('policy_legislative_hearings')
+            )['policy_legislative_hearings__avg']
+
+    @property
+    def total_avg(self):
+        return self.committeerating_set.all() \
+            .aggregate(
+                Avg('total_hearings')
+            )['total_hearings__avg']
+
     def __str__(self):
         return self.name
+
+
+class Congress(models.Model):
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    @property
+    def label(self):
+        '''
+        116 => '116th Congress'
+        '''
+        return '{} Congress'.format(ordinal(self.id))
+
+
+class CommitteeRating(models.Model):
+    committee = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
+    investigative_oversight_hearings = models.IntegerField(null=True, blank=True)
+    policy_legislative_hearings = models.IntegerField(null=True, blank=True)
+    total_hearings = models.IntegerField(null=True, blank=True)
+    chp_points = models.IntegerField(null=True, blank=True)
+
+    @property
+    def chp_score(self):
+        try:
+            return (self.chp_points * 100.0) / self.committee.max_chp_points
+        except ZeroDivisionError:
+            print("Divide by zero error on " + self.committee.name)
+            return 0
+
+    @property
+    def chp_grade(self):
+        score = self.chp_score
+        if 92 <= score <= 100:
+            return 'A'
+        elif 90 <= score < 92:
+            return 'A-'
+        elif 88 <= score < 90:
+            return 'B+'
+        elif 82 <= score < 88:
+            return 'B'
+        elif 80 <= score < 82:
+            return 'B-'
+        elif 78 <= score < 80:
+            return 'C+'
+        elif 72 <= score < 78:
+            return 'C'
+        elif 70 <= score < 72:
+            return 'C-'
+        elif 68 <= score < 70:
+            return 'D+'
+        elif 62 <= score < 68:
+            return 'D'
+        elif 60 <= score < 62:
+            return 'D-'
+        elif 0 <= score < 60:
+            return 'F'
+        else:
+            return 0
+
+    @property
+    def css_class(self):
+        '''
+        A+ => 'a-plus-rating'
+        '''
+
+        rating_colors = {
+            'A': 'a-rating',
+            'A-': 'a-minus-rating',
+            'B+': 'b-plus-rating',
+            'B': 'b-rating',
+            'B-': 'b-minus-rating',
+            'C+': 'c-plus-rating',
+            'C': 'c-rating',
+            'C-': 'c-minus-rating',
+            'D+': 'd-plus-rating',
+            'D': 'd-rating',
+            'D-': 'd-minus-rating',
+            'F': 'f-rating'
+        }
+
+        return rating_colors[self.chp_grade]
+
+    def __str__(self):
+        return self.chp_grade
 
 
 class HearingCategoryType(models.Model):
@@ -147,48 +254,6 @@ class Committee(models.Model):
                                      null=True,
                                      blank=True,
                                      on_delete=models.CASCADE)
-
-
-class CommitteeRating(models.Model):
-    committee = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    congress = models.IntegerField()
-    rating = models.CharField(max_length=100)
-
-    @property
-    def congress_label(self):
-        '''
-        116 => '116th Congress'
-        '''
-        return '{} Congress'.format(ordinal(self.congress))
-
-    @property
-    def css_class(self):
-        '''
-        A+ => 'a-plus-rating'
-        '''
-
-        rating_colors = {
-            'A+': 'a-plus-rating',
-            'A': 'a-rating',
-            'A-': 'a-minus-rating',
-            'B+': 'b-plus-rating',
-            'B': 'b-rating',
-            'B-': 'b-minus-rating',
-            'C+': 'c-plus-rating',
-            'C': 'c-rating',
-            'C-': 'c-minus-rating',
-            'D+': 'd-plus-rating',
-            'D': 'd-rating',
-            'D-': 'd-minus-rating',
-            'F+': 'f-rating',
-            'F': 'f-rating',
-            'F-': 'f-rating'
-        }
-
-        return rating_colors[self.rating]
-
-    def __str__(self):
-        return self.rating
 
 
 class ResetMixin(object):

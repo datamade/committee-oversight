@@ -7,8 +7,7 @@
   --light-gray-color: #ced4da;
   --dark-gray-color: #495057;
 
-  --dark-green-color: #218838;
-  --green-color: #5e9167;
+  --green-color: #218838;
   --light-green-color: #6ca878;
 
   --yellow-green-color: #a6ad64;
@@ -27,10 +26,6 @@
 }
 
 /* Committee rating colors */
-.a-plus-rating {
-  color: var(--dark-green-color);
-}
-
 .a-rating {
   color: var(--green-color);
 }

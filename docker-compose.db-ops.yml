@@ -20,6 +20,7 @@ services:
       - ${PWD}/committeeoversight/local_settings.example.py:/app/committeeoversight/local_settings.py
     command: >
       bash -c "python manage.py migrate &&
+      python manage.py loaddata congress &&
       python manage.py loaddata hearingcategorytype &&
       python manage.py load_cms_content &&
       python manage.py load_committeeratings"
