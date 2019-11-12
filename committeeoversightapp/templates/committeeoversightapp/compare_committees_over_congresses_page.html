@@ -1,45 +1,7 @@
-{% extends "base.html" %}
+{% extends "comparison_page.html" %}
 {% load wagtailcore_tags %}
 
-{% block content %}
-<div class="row justify-content-center align-items-center">
-  <div class="col-12 col-md-4 text-md-right">
-      <h2 class="mb-4 ml-md-3 red-orange-color">{{page.title}}</h2>
-      <small class="ml-md-3"><i>Last updated: {% now "jS F Y H:i" %}</i></small>
-  </div>
-
-  <div class="col-12 col-md-8 col-xl-6 pt-2">
-    {{ page.body|safe }}
-  </div>
-</div>
-
-{% include "partials/compare_committees_over_congresses_table.html" with committees=house_committees title="House of Representatives"%}
-
-{% include "partials/compare_committees_over_congresses_table.html" with committees=senate_committees title="Senate"%}
-
-  <script>
-    $(document).ready(function() {
-      $('.select2-single').select2();
-    });
-
-    function goToCommittee() {
-        var select = document.getElementById("committee-select")
-        var url = select.options[select.selectedIndex].value;
-        window.location.href=url;
-    }
-
-    $(document).ready(function () {
-        $('.committee-table').DataTable({
-          "dom": "Bfrtip",
-          "paging": false,
-          "searching": false,
-          "info": false,
-          "order": [[ 0, "asc" ]],
-          "columnDefs": [
-            { "orderable": false, "targets": [3, 4, 5] },
-          ],
-        });
-    });
-  </script>
-
+{% block table_content %}
+  {% include "partials/compare_committees_over_congresses_table.html" with committees=house_committees title="House of Representatives"%}
+  {% include "partials/compare_committees_over_congresses_table.html" with committees=senate_committees title="Senate"%}
 {% endblock %}
