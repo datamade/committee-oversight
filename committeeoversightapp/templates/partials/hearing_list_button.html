@@ -1,4 +1,6 @@
-<a href="/hearings" class="btn btn-back">
+{% load wagtailcore_tags %}
+
+<a href="{% slugurl 'hearings' %}" class="btn btn-back">
   <i class="fas fa-arrow-circle-left"></i>&nbsp;
   Back to hearings list
 </a>
