@@ -3,12 +3,12 @@
 
 {% block content %}
   <div class="row justify-content-center align-items-center">
-    <div class="col-12 col-md-4 text-lg-right">
+    <div class="col-12 col-md-4 col-lg-3 text-md-right">
         <h2 class="mb-4 ml-md-3 red-orange-color">{{page.title}}</h2>
         <small class="ml-md-3"><i>Last updated: {% now "jS F Y H:i" %}</i></small>
     </div>
 
-    <div class="col-12 col-md-8 col-xl-6 pt-2">
+    <div class="col-12 col-md-8 col-lg-9 col-xl-6 pt-2">
       {{ page.body|safe }}
     </div>
   </div>
