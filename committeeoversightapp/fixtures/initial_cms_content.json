@@ -110,7 +110,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$120000$sXnhQsPOX3xH$p9zCsIxzrHeoNDYMd5opN0wepivXUckwG5FI42jMEqo=",
-    "last_login": "2019-11-06T22:21:39.536Z",
+    "last_login": "2019-11-12T17:45:03.797Z",
     "is_superuser": true,
     "username": "testuser",
     "first_name": "",
@@ -234,7 +234,7 @@
   "fields": {
     "path": "00010001",
     "depth": 2,
-    "numchild": 4,
+    "numchild": 6,
     "title": "The Committee Oversight Data Project",
     "draft_title": "The Committee Oversight Data Project",
     "slug": "committee-oversight-data-project",
@@ -394,6 +394,72 @@
   }
 },
 {
+  "model": "wagtailcore.page",
+  "pk": 9,
+  "fields": {
+    "path": "000100010005",
+    "depth": 3,
+    "numchild": 0,
+    "title": "Compare Committees Over Congresses",
+    "draft_title": "Compare Committees Over Congresses",
+    "slug": "compare-committees-over-congresses",
+    "content_type": [
+      "committeeoversightapp",
+      "comparecommitteesovercongressespage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/committee-oversight-data-project/compare-committees-over-congresses/",
+    "owner": [
+      "testuser"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "first_published_at": "2019-11-12T17:45:29.908Z",
+    "last_published_at": "2019-11-12T17:46:06.040Z",
+    "latest_revision_created_at": "2019-11-12T17:46:05.983Z",
+    "live_revision": 13
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 10,
+  "fields": {
+    "path": "000100010006",
+    "depth": 3,
+    "numchild": 0,
+    "title": "Compare Current Committees",
+    "draft_title": "Compare Current Committees",
+    "slug": "compare-current-committees",
+    "content_type": [
+      "committeeoversightapp",
+      "comparecurrentcommitteespage"
+    ],
+    "live": true,
+    "has_unpublished_changes": false,
+    "url_path": "/committee-oversight-data-project/compare-current-committees/",
+    "owner": [
+      "testuser"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "first_published_at": "2019-11-12T17:45:44.640Z",
+    "last_published_at": "2019-11-12T17:45:52.259Z",
+    "latest_revision_created_at": "2019-11-12T17:45:52.221Z",
+    "live_revision": 12
+  }
+},
+{
   "model": "wagtailcore.pagerevision",
   "pk": 1,
   "fields": {
@@ -502,6 +568,62 @@
       "testuser"
     ],
     "content_json": "{\"pk\": 8, \"path\": \"000100010004\", \"depth\": 3, \"numchild\": 0, \"title\": \"Browse Hearings\", \"draft_title\": \"Browse Hearings\", \"slug\": \"hearings\", \"content_type\": 92, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/hearings/\", \"owner\": 2, \"seo_title\": \"Browse Hearings\", \"show_in_menus\": true, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Cras ultricies ligula sed magna dictum porta. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Nulla porttitor accumsan tincidunt.</p><p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum porta. Donec rutrum congue leo eget malesuada. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 10,
+  "fields": {
+    "page": 9,
+    "submitted_for_moderation": false,
+    "created_at": "2019-11-12T17:45:29.873Z",
+    "user": [
+      "testuser"
+    ],
+    "content_json": "{\"pk\": 9, \"path\": \"000100010005\", \"depth\": 3, \"numchild\": 0, \"title\": \"Compare Committees Over Congresses\", \"draft_title\": \"Compare Committees Over Congresses\", \"slug\": \"compare-committees-over-congresses\", \"content_type\": 93, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/compare-committees-over-congresses/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Donec sollicitudin molestie malesuada. Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Pellentesque in ipsum id orci porta dapibus. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Sed porttitor lectus nibh. Donec sollicitudin molestie malesuada. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 11,
+  "fields": {
+    "page": 10,
+    "submitted_for_moderation": false,
+    "created_at": "2019-11-12T17:45:44.608Z",
+    "user": [
+      "testuser"
+    ],
+    "content_json": "{\"pk\": 10, \"path\": \"000100010006\", \"depth\": 3, \"numchild\": 0, \"title\": \"Compare Current Committees\", \"draft_title\": \"Compare Current Committees\", \"slug\": \"compare-current-committees\", \"content_type\": 94, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/compare-current-committees/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": null, \"last_published_at\": null, \"latest_revision_created_at\": null, \"live_revision\": null, \"body\": \"<p>Donec sollicitudin molestie malesuada. Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Pellentesque in ipsum id orci porta dapibus. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Sed porttitor lectus nibh. Donec sollicitudin molestie malesuada. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 12,
+  "fields": {
+    "page": 10,
+    "submitted_for_moderation": false,
+    "created_at": "2019-11-12T17:45:52.221Z",
+    "user": [
+      "testuser"
+    ],
+    "content_json": "{\"pk\": 10, \"path\": \"000100010006\", \"depth\": 3, \"numchild\": 0, \"title\": \"Compare Current Committees\", \"draft_title\": \"Compare Current Committees\", \"slug\": \"compare-current-committees\", \"content_type\": 94, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/compare-current-committees/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": \"2019-11-12T17:45:44.640Z\", \"last_published_at\": \"2019-11-12T17:45:44.640Z\", \"latest_revision_created_at\": \"2019-11-12T17:45:44.608Z\", \"live_revision\": 11, \"body\": \"<p>Donec sollicitudin molestie malesuada. Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. <b>Pellentesque in ipsum id orci porta dapibus. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</b></p><p>Sed porttitor lectus nibh. Donec sollicitudin molestie malesuada. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat.</p>\"}",
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagerevision",
+  "pk": 13,
+  "fields": {
+    "page": 9,
+    "submitted_for_moderation": false,
+    "created_at": "2019-11-12T17:46:05.983Z",
+    "user": [
+      "testuser"
+    ],
+    "content_json": "{\"pk\": 9, \"path\": \"000100010005\", \"depth\": 3, \"numchild\": 0, \"title\": \"Compare Committees Over Congresses\", \"draft_title\": \"Compare Committees Over Congresses\", \"slug\": \"compare-committees-over-congresses\", \"content_type\": 93, \"live\": true, \"has_unpublished_changes\": false, \"url_path\": \"/committee-oversight-data-project/compare-committees-over-congresses/\", \"owner\": 2, \"seo_title\": \"\", \"show_in_menus\": false, \"search_description\": \"\", \"go_live_at\": null, \"expire_at\": null, \"expired\": false, \"locked\": false, \"first_published_at\": \"2019-11-12T17:45:29.908Z\", \"last_published_at\": \"2019-11-12T17:45:29.908Z\", \"latest_revision_created_at\": \"2019-11-12T17:45:29.873Z\", \"live_revision\": 10, \"body\": \"<p>Donec sollicitudin molestie malesuada. <b>Proin eget tortor risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</b> Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Pellentesque in ipsum id orci porta dapibus. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Sed porttitor lectus nibh. Donec sollicitudin molestie malesuada. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. <b>Proin eget tortor risus. </b>Vivamus suscipit tortor eget felis porttitor volutpat.</p>\"}",
     "approved_go_live_at": null
   }
 },

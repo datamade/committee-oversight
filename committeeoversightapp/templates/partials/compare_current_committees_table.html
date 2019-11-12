@@ -1,0 +1,56 @@
+<div class="card mt-5 col-12 col-lg-10 mx-auto card-shadow">
+  <h4 class="text-center mt-4">{{title}}</h4>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="committee-table table table-borderless table-striped table-sm text-center"
+      >
+      <thead>
+        <tr class="landing-row">
+          <td></td>
+          <td colspan="3" class="font-weight-bold">
+              Investigative Oversight Hearings
+              <hr class="mb-0" />
+          </td>
+          <td colspan="3" class="font-weight-bold">
+              Policy/Legislative Hearings
+              <hr class="mb-0" />
+          </td>
+          <td colspan="3" class="font-weight-bold">
+              Total Hearings
+              <hr class="mb-0" />
+          </td>
+        </tr>
+        <tr>
+          <th class="font-weight-normal small align-top">Committee</th>
+          <th class="font-weight-normal small align-top">Hearings</th>
+          <th class="font-weight-normal small align-top">Historical Avg.</th>
+          <th class="font-weight-normal small align-top">% of Avg.</th>
+          <th class="font-weight-normal small align-top">Hearings</th>
+          <th class="font-weight-normal small align-top">Historical Avg.</th>
+          <th class="font-weight-normal small align-top">% of Avg.</th>
+          <th class="font-weight-normal small align-top">Hearings</th>
+          <th class="font-weight-normal small align-top">Historical Avg.</th>
+          <th class="font-weight-normal small align-top">% of Avg.</th>
+        </tr>
+      </thead>
+
+      <tbody>
+          {% for committee in committees %}
+          <tr>
+            <td class="list-item text-right pr-2 border-right"><a href="{{committee.url}}">{{committee.short_name}}</a></td>
+            <td>5</td>
+            <td>10</td>
+            <td class="border-right">15</td>
+            <td>5</td>
+            <td>10</td>
+            <td class="border-right">15</td>
+            <td>5</td>
+            <td>10</td>
+            <td>15</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>

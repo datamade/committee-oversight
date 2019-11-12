@@ -55,7 +55,7 @@ docker-compose run --rm app python manage.py load_cms_content
 
 **To create a new dump** of all the content in the Wagtail backend, perform the following steps:
 
-1. Back up the CMS content (except for image files):
+1. Back up the CMS content (except for image files) with the following 2 commands:
 
     ```bash
     docker-compose run --rm app python manage.py dumpdata --natural-foreign --indent 2 \
@@ -68,13 +68,17 @@ docker-compose run --rm app python manage.py load_cms_content
         -e wagtailcore.grouppagepermission \
         -e wagtailimages.rendition \
         -e sessions > committeeoversightapp/fixtures/initial_cms_content.json
+    ```
 
+    ```bash
     docker-compose run --rm app python manage.py dumpdata --natural-foreign --indent 2 \
         committeeoversightapp.landingpage \
         committeeoversightapp.staticpage \
         committeeoversightapp.categorydetailpage \
         committeeoversightapp.committeedetailpage \
         committeeoversightapp.hearinglistpage \
+        committeeoversightapp.comparecurrentcommitteespage \
+        committeeoversightapp.comparecommitteesovercongressespage \
         > committeeoversightapp/fixtures/initial_cms_content_custom_pages.json
     ```
 

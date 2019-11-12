@@ -1,0 +1,7 @@
+{% extends "comparison_page.html" %}
+{% load wagtailcore_tags %}
+
+{% block table_content %}
+  {% include "partials/compare_current_committees_table.html" with committees=house_committees title="House of Representatives"%}
+  {% include "partials/compare_current_committees_table.html" with committees=senate_committees title="Senate"%}
+{% endblock %}
