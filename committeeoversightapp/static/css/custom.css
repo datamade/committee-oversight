@@ -63,7 +63,7 @@
   color: var(--dark-orange-color);
 }
 
-.d-plus-rating {
+.d-plus-rating, .red-orange-color {
   color: var(--red-orange-color);
 }
 

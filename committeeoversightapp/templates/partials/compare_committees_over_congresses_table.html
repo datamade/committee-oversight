@@ -1,0 +1,45 @@
+<div class="card mt-5 col-12 col-lg-10 mx-auto card-shadow">
+  <h2 class="text-center mt-4">{{title}}</h2>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="committee-table table table-borderless table-striped table-sm text-center"
+      >
+      <thead>
+        <tr class="landing-row">
+          <th class="align-top">Committee</th>
+          <th class="align-top">116th Congress (projected)</th>
+          <th class="align-top">115th Congress</th>
+          <th class="align-top">114th Congress</th>
+          <th class="align-top">113th Congress</th>
+          <th class="align-top">112th Congress</th>
+          <th class="align-top">111th Congress</th>
+        </tr>
+      </thead>
+
+      <tbody>
+          {% for committee in committees %}
+          <tr>
+            <td class="list-item text-right pr-2"><a href="{{committee.url}}">{{committee.short_name}}</a></td>
+
+            {% if committee.hide_rating %}
+              <td class="align-middle">
+                N/A
+              </td>
+            {% else %}
+              <td class="rating {{committee.latest_rating.css_class}}">
+                {{committee.latest_rating}}
+              </td>
+            {% endif %}
+
+            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
+            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
+            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
+            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
+            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
