@@ -162,6 +162,11 @@ class Congress(models.Model):
         else:
             return False
 
+    @property
+    def percent_passed(self):
+        days_in_session = 668
+        days_passed = (date.today() - self.start_date).days
+        return round(days_passed * 100.0 / days_in_session, 2)
 
     def __str__(self):
         return self.label
@@ -178,7 +183,14 @@ class CommitteeRating(models.Model):
     @property
     def chp_score(self):
         try:
-            return round((self.chp_points * 100.0) / self.committee.max_chp_points, 2)
+            current_score = self.chp_points * 100.0 \
+                / self.committee.max_chp_points
+
+            if not self.congress.is_current:
+                return round(current_score, 2)
+            else:
+                return round(current_score / self.congress.percent_passed * 100.0, 2)
+
         except ZeroDivisionError:
             print("Divide by zero error on " + self.committee.name)
             return 0
@@ -186,7 +198,7 @@ class CommitteeRating(models.Model):
     @property
     def chp_grade(self):
         score = self.chp_score
-        if 92 <= score <= 100:
+        if 92 <= score:
             return 'A'
         elif 90 <= score < 92:
             return 'A-'
@@ -211,7 +223,7 @@ class CommitteeRating(models.Model):
         elif 0 <= score < 60:
             return 'F'
         else:
-            return 0
+            return 'C'
 
     @property
     def css_class(self):
@@ -440,6 +452,7 @@ class CommitteeDetailPage(DetailPage):
 
     def get_context(self, request):
         context = super(CommitteeDetailPage, self).get_context(request)
+        context['latest_rating'] = context['page'].committee.latest_rating
 
         congresses = context['page'].committee.ratings_reverse \
             .values_list('congress_id', flat=True)

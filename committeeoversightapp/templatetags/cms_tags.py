@@ -41,3 +41,15 @@ def top_menu_children(context, parent):
         # required by the pageurl tag that we want to use within this template
         'request': context['request'],
     }
+
+@register.simple_tag(takes_context=True)
+def progress_bar_css(context, percent_max):
+    projected_percent = percent_max \
+        / context['latest_rating'].congress.percent_passed * 100.0
+
+    if 75 <= projected_percent:
+        return 'progress-bar-green'
+    elif 50 <= projected_percent < 75:
+        return 'progress-bar-orange'
+    else:
+        return 'progress-bar-red'

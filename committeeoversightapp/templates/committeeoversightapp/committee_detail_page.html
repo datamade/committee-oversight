@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static cms_tags %}
 
 {% block extra_js %}
   <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -16,26 +16,26 @@
 
   <div class="row justify-content-center align-items-center">
     <div class="col-6 col-md-4 col-lg-3 col-xl-3 my-3 pr-4 text-right border-right">
-      <h3 class="rating-large {{page.committee.latest_rating.css_class}}">
-        {{page.committee.latest_rating}}
+      <h3 class="rating-large {{latest_rating.css_class}}">
+        {{latest_rating}}
       </h3>
       <p>
-        Projected CHP Score for the {{page.committee.latest_rating.congress}}<br />
+        Projected CHP Score for the {{latest_rating.congress}}<br />
         <small><i>Last updated: {% now "jS F Y H:i" %}</i></small>
       </p>
     </div>
 
     <div class="col-6 col-md-5 col-lg-4 col-xl-3 my-3 pl-4 text-left">
       <p class="font-weight-light my-2">
-        <strong>{{page.committee.latest_rating.investigative_oversight_hearings}} </strong>
+        <strong>{{latest_rating.investigative_oversight_hearings}} </strong>
         Investigative Oversight Hearings
       </p>
       <p class="font-weight-light my-2">
-        <strong>{{page.committee.latest_rating.policy_legislative_hearings}} </strong>
+        <strong>{{latest_rating.policy_legislative_hearings}} </strong>
         Policy/Legislative Hearings
       </p>
       <p class="font-weight-light my-2">
-        <strong>{{page.committee.latest_rating.total_hearings}} </strong>
+        <strong>{{latest_rating.total_hearings}} </strong>
         Total Hearings
       </p>
     </div>
@@ -60,10 +60,16 @@
     <div class="card-body">
       <!-- % of the way through current Congress -->
         <p class="pl-2 text-center">
-          We are <span class="font-weight-bold">TK%</span> of the way through the 116th Congress
+          We are <span class="font-weight-bold">{{latest_rating.congress.percent_passed}}%</span> of the way through the {{latest_rating.congress}}
         </p>
         <div class="progress my-2">
-          <div class="progress-bar progress-bar-striped progress-bar-neutral" role="progressbar" style="width: 92%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar progress-bar-striped progress-bar-neutral"
+            role="progressbar"
+            style="width: {{latest_rating.congress.percent_passed}}%"
+            aria-valuenow="{{latest_rating.congress.percent_passed}}"
+            aria-valuemin="0"
+            aria-valuemax="100">
+          </div>
         </div>
 
       <p class="pl-2 pt-2 text-center font-weight-bold">
@@ -72,35 +78,53 @@
 
       <!-- Investigative Oversight hearings -->
       <small class="pl-2">
-        <span class="font-weight-bold">{{page.committee.latest_rating.investigative_oversight_hearings}} </span>
+        <span class="font-weight-bold">{{latest_rating.investigative_oversight_hearings}} </span>
         Investigative Oversight Hearings;
-        <span class="font-weight-bold"> {{page.committee.latest_rating.investigative_oversight_percent_max}}% </span>
+        <span class="font-weight-bold"> {{latest_rating.investigative_oversight_percent_max}}% </span>
         historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{page.committee.latest_rating.investigative_oversight_percent_max}}%" aria-valuenow="{{investigative_oversight_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped {% progress_bar_css latest_rating.investigative_oversight_percent_max %}"
+          role="progressbar"
+          style="width: {{latest_rating.investigative_oversight_percent_max}}%"
+          aria-valuenow="{{investigative_oversight_percent_max}}"
+          aria-valuemin="0"
+          aria-valuemax="100">
+        </div>
       </div>
 
       <!-- Policy/Legislative hearings -->
       <small class="pl-2">
-        <span class="font-weight-bold">{{page.committee.latest_rating.policy_legislative_hearings}} </span>
+        <span class="font-weight-bold">{{latest_rating.policy_legislative_hearings}} </span>
         Policy/Legislative Hearings;
-        <span class="font-weight-bold"> {{page.committee.latest_rating.policy_legislative_percent_max}}% </span>
+        <span class="font-weight-bold"> {{latest_rating.policy_legislative_percent_max}}% </span>
         historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{page.committee.latest_rating.policy_legislative_percent_max}}%" aria-valuenow="{{policy_legislative_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped {% progress_bar_css latest_rating.policy_legislative_percent_max %}"
+          role="progressbar"
+          style="width: {{latest_rating.policy_legislative_percent_max}}%"
+          aria-valuenow="{{policy_legislative_percent_max}}"
+          aria-valuemin="0"
+          aria-valuemax="100">
+        </div>
       </div>
 
       <!-- Total hearings -->
       <small class="pl-2">
-        <span class="font-weight-bold">{{page.committee.latest_rating.total_hearings}} </span>
+        <span class="font-weight-bold">{{latest_rating.total_hearings}} </span>
         Total Hearings;
-        <span class="font-weight-bold"> {{page.committee.latest_rating.total_percent_max}}% </span>
+        <span class="font-weight-bold"> {{latest_rating.total_percent_max}}% </span>
         historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{page.committee.latest_rating.total_percent_max}}%" aria-valuenow="{{total_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped {% progress_bar_css latest_rating.total_percent_max %}"
+          role="progressbar"
+          style="width: {{latest_rating.total_percent_max}}%"
+          aria-valuenow="{{total_percent_max}}"
+          aria-valuemin="0"
+          aria-valuemax="100">
+        </div>
       </div>
 
     </div>
