@@ -74,33 +74,33 @@
       <small class="pl-2">
         <span class="font-weight-bold">{{page.committee.latest_rating.investigative_oversight_hearings}} </span>
         Investigative Oversight Hearings;
-        <span class="font-weight-bold"> {{investigative_oversight_percent_max}}% </span>
+        <span class="font-weight-bold"> {{page.committee.latest_rating.investigative_oversight_percent_max}}% </span>
         historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{investigative_oversight_percent_max}}%" aria-valuenow="{{investigative_oversight_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{page.committee.latest_rating.investigative_oversight_percent_max}}%" aria-valuenow="{{investigative_oversight_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
 
       <!-- Policy/Legislative hearings -->
       <small class="pl-2">
         <span class="font-weight-bold">{{page.committee.latest_rating.policy_legislative_hearings}} </span>
         Policy/Legislative Hearings;
-        <span class="font-weight-bold"> {{policy_legislative_percent_max}}% </span>
+        <span class="font-weight-bold"> {{page.committee.latest_rating.policy_legislative_percent_max}}% </span>
         historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{policy_legislative_percent_max}}%" aria-valuenow="{{policy_legislative_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{page.committee.latest_rating.policy_legislative_percent_max}}%" aria-valuenow="{{policy_legislative_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
 
       <!-- Total hearings -->
       <small class="pl-2">
         <span class="font-weight-bold">{{page.committee.latest_rating.total_hearings}} </span>
         Total Hearings;
-        <span class="font-weight-bold"> {{total_percent_max}}% </span>
+        <span class="font-weight-bold"> {{page.committee.latest_rating.total_percent_max}}% </span>
         historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{total_percent_max}}%" aria-valuenow="{{total_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{page.committee.latest_rating.total_percent_max}}%" aria-valuenow="{{total_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
 
     </div>
@@ -157,7 +157,7 @@
       var categories = {{congresses}}
       var series_data = {{investigative_oversight_series}}
       var title_text = 'Investigative Oversight'
-      var historical_average = {{page.committee.investigative_oversight_avg}}
+      var historical_average = {{page.committee.investigative_oversight_hearings_avg}}
       var bar_color = '#3774bb'
       ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
     });
@@ -167,7 +167,7 @@
       var categories = {{congresses}}
       var series_data = {{policy_legislative_series}}
       var title_text = 'Policy/Legislative'
-      var historical_average = {{page.committee.policy_legislative_avg}}
+      var historical_average = {{page.committee.policy_legislative_hearings_avg}}
       var bar_color = '#002f67'
       ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
     });
@@ -177,7 +177,7 @@
       var categories = {{congresses}}
       var series_data = {{total_series}}
       var title_text = 'Total'
-      var historical_average = {{page.committee.total_avg}}
+      var historical_average = {{page.committee.total_hearings_avg}}
       var bar_color = '#001f43'
       ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
     });

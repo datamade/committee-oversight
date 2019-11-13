@@ -93,6 +93,10 @@ class CommitteeOrganization(Organization):
         return self.committeerating_set.all().order_by('-congress')
 
     @property
+    def ratings_reverse(self):
+        return self.committeerating_set.all().order_by('congress')
+
+    @property
     def latest_rating(self):
         return self.ratings[0]
 
@@ -101,27 +105,27 @@ class CommitteeOrganization(Organization):
         return self.ratings.aggregate(Max('chp_points'))['chp_points__max']
 
     @property
-    def investigative_oversight_max(self):
+    def investigative_oversight_hearings_max(self):
         return self.get_max_rating('investigative_oversight_hearings')
 
     @property
-    def policy_legislative_max(self):
+    def policy_legislative_hearings_max(self):
         return self.get_max_rating('policy_legislative_hearings')
 
     @property
-    def total_max(self):
+    def total_hearings_max(self):
         return self.get_max_rating('total_hearings')
 
     @property
-    def investigative_oversight_avg(self):
+    def investigative_oversight_hearings_avg(self):
         return self.get_avg_rating('investigative_oversight_hearings')
 
     @property
-    def policy_legislative_avg(self):
+    def policy_legislative_hearings_avg(self):
         return self.get_avg_rating('policy_legislative_hearings')
 
     @property
-    def total_avg(self):
+    def total_hearings_avg(self):
         return self.get_avg_rating('total_hearings')
 
     def get_avg_rating(self, hearing_type):
@@ -231,6 +235,44 @@ class CommitteeRating(models.Model):
         }
 
         return rating_colors[self.chp_grade]
+
+    @property
+    def investigative_oversight_percent_max(self):
+        return self.get_percent_max('investigative_oversight_hearings')
+
+    @property
+    def policy_legislative_percent_max(self):
+        return self.get_percent_max('policy_legislative_hearings')
+
+    @property
+    def total_percent_max(self):
+        return self.get_percent_max('total_hearings')
+
+    @property
+    def investigative_oversight_percent_avg(self):
+        return self.get_percent_avg('investigative_oversight_hearings')
+
+    @property
+    def policy_legislative_percent_avg(self):
+        return self.get_percent_avg('policy_legislative_hearings')
+
+    @property
+    def total_percent_avg(self):
+        return self.get_percent_avg('total_hearings')
+
+    def get_percent_max(self, hearing_type):
+        try:
+            return round(getattr(self, hearing_type) * 100.0 \
+                / getattr(self.committee, hearing_type + '_max'), 2)
+        except ZeroDivisionError:
+            return 0
+
+    def get_percent_avg(self, hearing_type):
+        try:
+            return round(getattr(self, hearing_type) * 100.0 \
+                / getattr(self.committee, hearing_type + '_avg'), 2)
+        except ZeroDivisionError:
+            return 0
 
     def __str__(self):
         return self.chp_grade
@@ -399,40 +441,28 @@ class CommitteeDetailPage(DetailPage):
     def get_context(self, request):
         context = super(CommitteeDetailPage, self).get_context(request)
 
-        context['investigative_oversight_percent_max'] = \
-            round(context['page'].committee. \
-            latest_rating.investigative_oversight_hearings \
-            * 100.0 / context['page'].committee.investigative_oversight_max, 2)
-
-        context['policy_legislative_percent_max'] = \
-            round(context['page'].committee. \
-            latest_rating.policy_legislative_hearings \
-            * 100.0 / context['page'].committee.policy_legislative_max, 2)
-
-        context['total_percent_max'] = \
-            round(context['page'].committee.latest_rating.total_hearings \
-            * 100.0 / context['page'].committee.total_max, 2)
-
-        ratings = context['page'].committee.ratings
-
-        congresses = ratings.values_list('congress_id', flat=True)
+        congresses = context['page'].committee.ratings_reverse \
+            .values_list('congress_id', flat=True)
         context['congresses'] = [x for x in congresses]
 
-        investigative_oversight_series = ratings.values_list(
+        investigative_oversight_series = context['page'] \
+            .committee.ratings_reverse.values_list(
             'investigative_oversight_hearings',
             flat=True
         )
         context['investigative_oversight_series'] = [x for x in \
             investigative_oversight_series]
 
-        policy_legislative_series = ratings.values_list(
+        policy_legislative_series = context['page'].committee \
+            .ratings_reverse.values_list(
             'policy_legislative_hearings',
             flat=True
         )
         context['policy_legislative_series'] = [x for x in \
             policy_legislative_series]
 
-        total_series = ratings.values_list(
+        total_series = context['page'].committee.ratings_reverse \
+            .values_list(
             'total_hearings',
             flat=True
         )

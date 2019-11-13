@@ -22,7 +22,7 @@
           </tr>
       </thead>
       <tbody>
-          {% for committeerating in page.committee.committeerating_set.all %}
+          {% for committeerating in page.committee.ratings_reverse %}
           <tr>
               <td>{{committeerating.congress}}</td>
               <td>{{committeerating.investigative_oversight_hearings}}</td>
@@ -34,9 +34,9 @@
           {% endfor %}
           <tr>
               <td class="font-weight-bold">Historical average</td>
-              <td class="font-weight-bold">{{page.committee.investigative_oversight_avg}}</td>
-              <td class="font-weight-bold">{{page.committee.policy_legislative_avg}}</td>
-              <td class="font-weight-bold">{{page.committee.total_avg}}</td>
+              <td class="font-weight-bold">{{page.committee.investigative_oversight_hearings_avg}}</td>
+              <td class="font-weight-bold">{{page.committee.policy_legislative_hearings_avg}}</td>
+              <td class="font-weight-bold">{{page.committee.total_hearings_avg}}</td>
               <td></td>
               <td></td>
           </tr>
