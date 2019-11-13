@@ -23,16 +23,6 @@
   }
 },
 {
-  "model": "committeeoversightapp.committeedetailpage",
-  "pk": 6,
-  "fields": {
-    "body": "<p>Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim.</p><p>Cras ultricies ligula sed magna dictum porta. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Nulla porttitor accumsan tincidunt.</p><p>Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum porta. Donec rutrum congue leo eget malesuada. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.</p>",
-    "committee": "ocd-organization/2c6395b2-dc9d-45f6-a4db-481b1b750431",
-    "chair": "Jane Smith",
-    "hide_rating": false
-  }
-},
-{
   "model": "committeeoversightapp.hearinglistpage",
   "pk": 8,
   "fields": {
