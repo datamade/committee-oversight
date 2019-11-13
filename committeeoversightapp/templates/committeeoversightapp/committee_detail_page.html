@@ -16,17 +16,28 @@
 
   <div class="row justify-content-center align-items-center">
     <div class="col-6 col-md-4 col-lg-3 col-xl-3 my-3 pr-4 text-right border-right">
-      <h3 class="rating-large b-plus-rating">B+ {{page.committee.latest_rating}}</h3>
+      <h3 class="rating-large {{page.committee.latest_rating.css_class}}">
+        {{page.committee.latest_rating}}
+      </h3>
       <p>
-        Projected CHP Score for the 116th Congress<br />
+        Projected CHP Score for the {{page.committee.latest_rating.congress}}<br />
         <small><i>Last updated: {% now "jS F Y H:i" %}</i></small>
       </p>
     </div>
 
     <div class="col-6 col-md-5 col-lg-4 col-xl-3 my-3 pl-4 text-left">
-      <p class="font-weight-light my-2"><strong>TK</strong> Investigative Oversight Hearings</p>
-      <p class="font-weight-light my-2"><strong>TK</strong> Policy/Legislative Hearings</p>
-      <p class="font-weight-light my-2"><strong>TK</strong> Total Hearings</p>
+      <p class="font-weight-light my-2">
+        <strong>{{page.committee.latest_rating.investigative_oversight_hearings}} </strong>
+        Investigative Oversight Hearings
+      </p>
+      <p class="font-weight-light my-2">
+        <strong>{{page.committee.latest_rating.policy_legislative_hearings}} </strong>
+        Policy/Legislative Hearings
+      </p>
+      <p class="font-weight-light my-2">
+        <strong>{{page.committee.latest_rating.total_hearings}} </strong>
+        Total Hearings
+      </p>
     </div>
   </div>
 
@@ -61,26 +72,35 @@
 
       <!-- Investigative Oversight hearings -->
       <small class="pl-2">
-        <span class="font-weight-bold">TK</span> Oversight Hearings; <span class="font-weight-bold">TK%</span> historical maximum
+        <span class="font-weight-bold">{{page.committee.latest_rating.investigative_oversight_hearings}} </span>
+        Investigative Oversight Hearings;
+        <span class="font-weight-bold"> {{investigative_oversight_percent_max}}% </span>
+        historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-red" role="progressbar" style="width: 23%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{investigative_oversight_percent_max}}%" aria-valuenow="{{investigative_oversight_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
 
       <!-- Policy/Legislative hearings -->
       <small class="pl-2">
-        <span class="font-weight-bold">TK</span> Policy/Legislative Hearings; <span class="font-weight-bold">TK%</span> historical maximum
+        <span class="font-weight-bold">{{page.committee.latest_rating.policy_legislative_hearings}} </span>
+        Policy/Legislative Hearings;
+        <span class="font-weight-bold"> {{policy_legislative_percent_max}}% </span>
+        historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-green" role="progressbar" style="width: 91%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{policy_legislative_percent_max}}%" aria-valuenow="{{policy_legislative_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
 
       <!-- Total hearings -->
       <small class="pl-2">
-        <span class="font-weight-bold">TK</span> Total Hearings; <span class="font-weight-bold">TK%</span> historical maximum
+        <span class="font-weight-bold">{{page.committee.latest_rating.total_hearings}} </span>
+        Total Hearings;
+        <span class="font-weight-bold"> {{total_percent_max}}% </span>
+        historical maximum
       </small>
       <div class="progress my-2">
-        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: 60%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-orange" role="progressbar" style="width: {{total_percent_max}}%" aria-valuenow="{{total_percent_max}}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
 
     </div>
@@ -111,7 +131,7 @@
       </div>
 
       <div class="col-md-4">
-        <div id="chart_policy" style='height: 20rem'></div>
+        <div id="chart_policy_legislative" style='height: 20rem'></div>
       </div>
 
       <div class="col-md-4">
@@ -134,8 +154,8 @@
   <script>
     $(function () {
       var chart_id = '#chart_investigative_oversight'
-      var categories = ['111', '112', '113', '114', '115']
-      var series_data = [5, 6, 7, 8, 9]
+      var categories = {{congresses}}
+      var series_data = {{investigative_oversight_series}}
       var title_text = 'Investigative Oversight'
       var historical_average = 7
       var bar_color = '#3774bb'
@@ -143,9 +163,9 @@
     });
 
     $(function () {
-      var chart_id = '#chart_policy'
-      var categories = ['111', '112', '113', '114', '115']
-      var series_data = [5, 6, 7, 8, 9]
+      var chart_id = '#chart_policy_legislative'
+      var categories = {{congresses}}
+      var series_data = {{policy_legislative_series}}
       var title_text = 'Policy/Legislative'
       var historical_average = 7
       var bar_color = '#002f67'
@@ -154,8 +174,8 @@
 
     $(function () {
       var chart_id = '#chart_total'
-      var categories = ['111', '112', '113', '114', '115']
-      var series_data = [35, 26, 17, 28, 25]
+      var categories = {{congresses}}
+      var series_data = {{total_series}}
       var title_text = 'Total'
       var historical_average = 26
       var bar_color = '#001f43'

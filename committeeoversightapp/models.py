@@ -89,32 +89,50 @@ class CommitteeOrganization(Organization):
 
     @property
     def latest_rating(self):
-        return self.committeerating_set.all().order_by('congress')[0]
+        return self.committeerating_set.all().order_by('-congress')[0]
 
     @property
     def max_chp_points(self):
         return self.committeerating_set.all().aggregate(Max('chp_points'))['chp_points__max']
 
     @property
-    def investigative_oversight_avg(self):
+    def investigative_oversight_max(self):
         return self.committeerating_set.all() \
             .aggregate(
-                Avg('investigative_oversight_hearings')
-            )['investigative_oversight_hearings__avg']
+                Max('investigative_oversight_hearings')
+            )['investigative_oversight_hearings__max']
+
+    @property
+    def policy_legislative_max(self):
+        return self.committeerating_set.all() \
+            .aggregate(
+                Max('policy_legislative_hearings')
+            )['policy_legislative_hearings__max']
+
+    @property
+    def total_max(self):
+        return self.committeerating_set.all() \
+            .aggregate(
+                Max('total_hearings')
+            )['total_hearings__max']
+
+    @property
+    def investigative_oversight_avg(self):
+        return self.get_avg('investigative_oversight_hearings')
 
     @property
     def policy_legislative_avg(self):
-        return self.committeerating_set.all() \
-            .aggregate(
-                Avg('policy_legislative_hearings')
-            )['policy_legislative_hearings__avg']
+        return self.get_avg('policy_legislative_hearings')
 
     @property
     def total_avg(self):
-        return self.committeerating_set.all() \
+        return self.get_avg('total_hearings')
+
+    def get_avg(self, hearing_type):
+        return round(self.committeerating_set.all() \
             .aggregate(
-                Avg('total_hearings')
-            )['total_hearings__avg']
+                Avg(hearing_type)
+            )[hearing_type + '__avg'], 2)
 
     def __str__(self):
         return self.name
@@ -132,6 +150,10 @@ class Congress(models.Model):
         return '{} Congress'.format(ordinal(self.id))
 
 
+    def __str__(self):
+        return self.label
+
+
 class CommitteeRating(models.Model):
     committee = models.ForeignKey(Organization, on_delete=models.CASCADE)
     congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
@@ -143,7 +165,7 @@ class CommitteeRating(models.Model):
     @property
     def chp_score(self):
         try:
-            return (self.chp_points * 100.0) / self.committee.max_chp_points
+            return round((self.chp_points * 100.0) / self.committee.max_chp_points, 2)
         except ZeroDivisionError:
             print("Divide by zero error on " + self.committee.name)
             return 0
@@ -364,6 +386,52 @@ class CommitteeDetailPage(DetailPage):
         FieldPanel('chair'),
         FieldPanel('hide_rating'),
     ]
+
+    def get_context(self, request):
+        context = super(CommitteeDetailPage, self).get_context(request)
+
+        context['investigative_oversight_percent_max'] = \
+            round(context['page'].committee. \
+            latest_rating.investigative_oversight_hearings \
+            * 100.0 / context['page'].committee.investigative_oversight_max, 2)
+
+        context['policy_legislative_percent_max'] = \
+            round(context['page'].committee. \
+            latest_rating.policy_legislative_hearings \
+            * 100.0 / context['page'].committee.policy_legislative_max, 2)
+
+        context['total_percent_max'] = \
+            round(context['page'].committee.latest_rating.total_hearings \
+            * 100.0 / context['page'].committee.total_max, 2)
+
+        committeeratings = context['page'].committee.committeerating_set \
+            .all().order_by('congress')
+
+        congresses = committeeratings.values_list('congress_id', flat=True)
+        context['congresses'] = [x for x in congresses]
+
+        investigative_oversight_series = committeeratings.values_list(
+            'investigative_oversight_hearings',
+            flat=True
+        )
+        context['investigative_oversight_series'] = [x for x in \
+            investigative_oversight_series]
+
+        policy_legislative_series = committeeratings.values_list(
+            'policy_legislative_hearings',
+            flat=True
+        )
+        context['policy_legislative_series'] = [x for x in \
+            policy_legislative_series]
+
+        total_series = committeeratings.values_list(
+            'total_hearings',
+            flat=True
+        )
+        context['total_series'] = [x for x in \
+            total_series]
+
+        return context
 
 class HearingListPage(ResetMixin, Page):
     body = RichTextField()
