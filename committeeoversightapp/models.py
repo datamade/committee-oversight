@@ -1,4 +1,5 @@
 import re
+from datetime import date
 
 from django.utils.text import slugify
 from django.contrib import admin
@@ -88,51 +89,52 @@ class CommitteeOrganization(Organization):
         return CommitteeDetailPage.objects.get(committee=self.id).hide_rating
 
     @property
+    def ratings(self):
+        return self.committeerating_set.all().order_by('-congress')
+
+    @property
     def latest_rating(self):
-        return self.committeerating_set.all().order_by('-congress')[0]
+        return self.ratings[0]
 
     @property
     def max_chp_points(self):
-        return self.committeerating_set.all().aggregate(Max('chp_points'))['chp_points__max']
+        return self.ratings.aggregate(Max('chp_points'))['chp_points__max']
 
     @property
     def investigative_oversight_max(self):
-        return self.committeerating_set.all() \
-            .aggregate(
-                Max('investigative_oversight_hearings')
-            )['investigative_oversight_hearings__max']
+        return self.get_max_rating('investigative_oversight_hearings')
 
     @property
     def policy_legislative_max(self):
-        return self.committeerating_set.all() \
-            .aggregate(
-                Max('policy_legislative_hearings')
-            )['policy_legislative_hearings__max']
+        return self.get_max_rating('policy_legislative_hearings')
 
     @property
     def total_max(self):
-        return self.committeerating_set.all() \
-            .aggregate(
-                Max('total_hearings')
-            )['total_hearings__max']
+        return self.get_max_rating('total_hearings')
 
     @property
     def investigative_oversight_avg(self):
-        return self.get_avg('investigative_oversight_hearings')
+        return self.get_avg_rating('investigative_oversight_hearings')
 
     @property
     def policy_legislative_avg(self):
-        return self.get_avg('policy_legislative_hearings')
+        return self.get_avg_rating('policy_legislative_hearings')
 
     @property
     def total_avg(self):
-        return self.get_avg('total_hearings')
+        return self.get_avg_rating('total_hearings')
 
-    def get_avg(self, hearing_type):
-        return round(self.committeerating_set.all() \
+    def get_avg_rating(self, hearing_type):
+        return round(self.ratings \
             .aggregate(
                 Avg(hearing_type)
             )[hearing_type + '__avg'], 2)
+
+    def get_max_rating(self, hearing_type):
+        return round(self.ratings \
+            .aggregate(
+                Max(hearing_type)
+            )[hearing_type + '__max'], 2)
 
     def __str__(self):
         return self.name
@@ -149,13 +151,20 @@ class Congress(models.Model):
         '''
         return '{} Congress'.format(ordinal(self.id))
 
+    @property
+    def is_current(self):
+        if self.start_date < date.today() < self.end_date:
+            return True
+        else:
+            return False
+
 
     def __str__(self):
         return self.label
 
 
 class CommitteeRating(models.Model):
-    committee = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    committee = models.ForeignKey(CommitteeOrganization, on_delete=models.CASCADE)
     congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
     investigative_oversight_hearings = models.IntegerField(null=True, blank=True)
     policy_legislative_hearings = models.IntegerField(null=True, blank=True)
@@ -404,32 +413,30 @@ class CommitteeDetailPage(DetailPage):
             round(context['page'].committee.latest_rating.total_hearings \
             * 100.0 / context['page'].committee.total_max, 2)
 
-        committeeratings = context['page'].committee.committeerating_set \
-            .all().order_by('congress')
+        ratings = context['page'].committee.ratings
 
-        congresses = committeeratings.values_list('congress_id', flat=True)
+        congresses = ratings.values_list('congress_id', flat=True)
         context['congresses'] = [x for x in congresses]
 
-        investigative_oversight_series = committeeratings.values_list(
+        investigative_oversight_series = ratings.values_list(
             'investigative_oversight_hearings',
             flat=True
         )
         context['investigative_oversight_series'] = [x for x in \
             investigative_oversight_series]
 
-        policy_legislative_series = committeeratings.values_list(
+        policy_legislative_series = ratings.values_list(
             'policy_legislative_hearings',
             flat=True
         )
         context['policy_legislative_series'] = [x for x in \
             policy_legislative_series]
 
-        total_series = committeeratings.values_list(
+        total_series = ratings.values_list(
             'total_hearings',
             flat=True
         )
-        context['total_series'] = [x for x in \
-            total_series]
+        context['total_series'] = [x for x in total_series]
 
         return context
 

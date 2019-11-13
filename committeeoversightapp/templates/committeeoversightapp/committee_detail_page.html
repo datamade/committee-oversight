@@ -157,7 +157,7 @@
       var categories = {{congresses}}
       var series_data = {{investigative_oversight_series}}
       var title_text = 'Investigative Oversight'
-      var historical_average = 7
+      var historical_average = {{page.committee.investigative_oversight_avg}}
       var bar_color = '#3774bb'
       ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
     });
@@ -167,7 +167,7 @@
       var categories = {{congresses}}
       var series_data = {{policy_legislative_series}}
       var title_text = 'Policy/Legislative'
-      var historical_average = 7
+      var historical_average = {{page.committee.policy_legislative_avg}}
       var bar_color = '#002f67'
       ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
     });
@@ -177,7 +177,7 @@
       var categories = {{congresses}}
       var series_data = {{total_series}}
       var title_text = 'Total'
-      var historical_average = 26
+      var historical_average = {{page.committee.total_avg}}
       var bar_color = '#001f43'
       ChartHelper.make_column_chart(chart_id, categories, series_data, title_text, historical_average, bar_color)
     });

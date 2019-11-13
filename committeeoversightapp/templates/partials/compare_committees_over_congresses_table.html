@@ -7,36 +7,29 @@
       <thead>
         <tr class="landing-row">
           <th class="align-top">Committee</th>
-          <th class="align-top">116th Congress (projected)</th>
-          <th class="align-top">115th Congress</th>
-          <th class="align-top">114th Congress</th>
-          <th class="align-top">113th Congress</th>
-          <th class="align-top">112th Congress</th>
-          <th class="align-top">111th Congress</th>
+          {% for rating in committees.first.ratings %}
+            <th class="align-top">
+              {{rating.congress}}
+              {% if rating.congress.is_current %}
+               (projected)
+              {% endif %}
+            </th>
+          {% endfor %}
         </tr>
       </thead>
 
       <tbody>
           {% for committee in committees %}
-          <tr>
-            <td class="list-item text-right pr-2"><a href="{{committee.url}}">{{committee.short_name}}</a></td>
-
-            {% if committee.hide_rating %}
-              <td class="align-middle">
-                N/A
-              </td>
-            {% else %}
-              <td class="rating {{committee.latest_rating.css_class}}">
-                {{committee.latest_rating}}
-              </td>
+            {% if not committee.hide_rating %}
+              <tr>
+                <td class="list-item text-right pr-2"><a href="{{committee.url}}">{{committee.short_name}}</a></td>
+                  {% for rating in committee.ratings %}
+                    <td class="rating {{rating.css_class}}">
+                      {{rating}}
+                    </td>
+                  {% endfor %}
+              </tr>
             {% endif %}
-
-            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
-            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
-            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
-            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
-            <td class="rating {{committee.latest_rating.css_class}}">{{committee.latest_rating}}</td>
-          </tr>
           {% endfor %}
       </tbody>
       </table>
