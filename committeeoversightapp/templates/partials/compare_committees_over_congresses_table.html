@@ -7,7 +7,7 @@
       <thead>
         <tr class="landing-row">
           <th class="align-top">Committee</th>
-          {% for rating in committees.first.ratings %}
+          {% for rating in committees.first.ratings_by_congress_desc %}
             <th class="align-top">
               {{rating.congress}}
               {% if rating.congress.is_current %}
@@ -23,7 +23,7 @@
             {% if not committee.hide_rating %}
               <tr>
                 <td class="list-item text-right pr-2"><a href="{{committee.url}}">{{committee.short_name}}</a></td>
-                  {% for rating in committee.ratings %}
+                  {% for rating in committee.ratings_by_congress_desc %}
                     <td class="rating {{rating.css_class}}">
                       {{rating}}
                     </td>

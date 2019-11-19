@@ -23,22 +23,24 @@ class Command(BaseCommand):
         # Investigative Oversight = Agency Conduct Hearings + Private Sector Hearings
         investigative_oversight_hearings=self.count_by_category(
             committee_hearings,
-            [4, 5]
+            ['Agency Conduct', 'Private Sector Oversight']
         )
 
         # Policy/Legislative = Policy Hearings + Legislative Hearings
         policy_legislative_hearings=self.count_by_category(
             committee_hearings,
-            [2, 3]
+            ['Legislative', 'Policy']
         )
 
         # Total = Agency Conduct + Private Sector + Policy + Legislative
         # + Nominations + Fact Finding + Field + Closed
         total_hearings=self.count_by_category(
             committee_hearings,
-            [1, 2, 3, 4, 5, 6, 7, 8]
+            ['Nominations', 'Legislative', 'Policy' 'Agency Conduct',
+             'Private Sector Oversight' 'Fact Finding', 'Field', 'Closed']
         )
 
+        # This ratings methodology was designed by the Lugar Center
         chp_points = (7 * investigative_oversight_hearings) + \
             (2 * policy_legislative_hearings) + \
             (total_hearings)
@@ -61,6 +63,6 @@ class Command(BaseCommand):
         )
 
     def count_by_category(self, committee_hearings, category_list):
-        return len(committee_hearings.filter(
-            hearingcategory__category_id__in=category_list
-        ))
+        return committee_hearings.filter(
+            hearingcategory__category__name__in=category_list
+        ).count()

@@ -22,7 +22,7 @@
           </tr>
       </thead>
       <tbody>
-          {% for committeerating in page.committee.ratings_reverse %}
+          {% for committeerating in page.committee.ratings_by_congress_asc %}
           <tr>
               <td>{{committeerating.congress}}</td>
               <td>{{committeerating.investigative_oversight_hearings}}</td>

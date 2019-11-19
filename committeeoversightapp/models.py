@@ -89,20 +89,22 @@ class CommitteeOrganization(Organization):
         return CommitteeDetailPage.objects.get(committee=self.id).hide_rating
 
     @property
-    def ratings(self):
-        return self.committeerating_set.all().order_by('-congress')
+    def ratings_by_congress_desc(self):
+        return self.committeerating_set.all().order_by('-congress__id')
 
     @property
-    def ratings_reverse(self):
-        return self.committeerating_set.all().order_by('congress')
+    def ratings_by_congress_asc(self):
+        return self.committeerating_set.all().order_by('congress__id')
 
     @property
     def latest_rating(self):
-        return self.ratings[0]
+        return self.ratings_by_congress_desc[0]
 
     @property
     def max_chp_points(self):
-        return self.ratings.aggregate(Max('chp_points'))['chp_points__max']
+        return self.ratings_by_congress_desc.aggregate(
+            Max('chp_points')
+        )['chp_points__max']
 
     @property
     def investigative_oversight_hearings_max(self):
@@ -129,13 +131,13 @@ class CommitteeOrganization(Organization):
         return self.get_avg_rating('total_hearings')
 
     def get_avg_rating(self, hearing_type):
-        return round(self.ratings \
+        return round(self.ratings_by_congress_desc \
             .aggregate(
                 Avg(hearing_type)
             )[hearing_type + '__avg'], 2)
 
     def get_max_rating(self, hearing_type):
-        return round(self.ratings \
+        return round(self.ratings_by_congress_desc \
             .aggregate(
                 Max(hearing_type)
             )[hearing_type + '__max'], 2)
@@ -166,7 +168,12 @@ class Congress(models.Model):
     def percent_passed(self):
         days_in_session = 668
         days_passed = (date.today() - self.start_date).days
-        return round(days_passed * 100.0 / days_in_session, 2)
+        percent_passed = round(days_passed * 100.0 / days_in_session, 2)
+
+        if percent_passed <= 100:
+            return percent_passed
+        else:
+            return 100
 
     def __str__(self):
         return self.label
@@ -454,12 +461,12 @@ class CommitteeDetailPage(DetailPage):
         context = super(CommitteeDetailPage, self).get_context(request)
         context['latest_rating'] = context['page'].committee.latest_rating
 
-        congresses = context['page'].committee.ratings_reverse \
+        congresses = context['page'].committee.ratings_by_congress_asc \
             .values_list('congress_id', flat=True)
         context['congresses'] = [x for x in congresses]
 
         investigative_oversight_series = context['page'] \
-            .committee.ratings_reverse.values_list(
+            .committee.ratings_by_congress_asc.values_list(
             'investigative_oversight_hearings',
             flat=True
         )
@@ -467,14 +474,14 @@ class CommitteeDetailPage(DetailPage):
             investigative_oversight_series]
 
         policy_legislative_series = context['page'].committee \
-            .ratings_reverse.values_list(
+            .ratings_by_congress_asc.values_list(
             'policy_legislative_hearings',
             flat=True
         )
         context['policy_legislative_series'] = [x for x in \
             policy_legislative_series]
 
-        total_series = context['page'].committee.ratings_reverse \
+        total_series = context['page'].committee.ratings_by_congress_asc \
             .values_list(
             'total_hearings',
             flat=True
