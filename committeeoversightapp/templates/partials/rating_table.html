@@ -22,21 +22,21 @@
           </tr>
       </thead>
       <tbody>
-          {% for rating in page.committee.committeerating_set.all %}
+          {% for committeerating in page.committee.ratings_by_congress_asc %}
           <tr>
-              <td>Congress {{ rating.congress }}</td>
-              <td>TK</td>
-              <td>TK</td>
-              <td>TK</td>
-              <td>TK</td>
-              <td class="{{ rating.css_class }} font-weight-bold lead">{{ rating.rating }}</td>
+              <td>{{committeerating.congress}}</td>
+              <td>{{committeerating.investigative_oversight_hearings}}</td>
+              <td>{{committeerating.policy_legislative_hearings}}</td>
+              <td>{{committeerating.total_hearings}}</td>
+              <td>{{committeerating.chp_score}}%</td>
+              <td class="{{committeerating.css_class}} font-weight-bold lead">{{committeerating}}</td>
           </tr>
           {% endfor %}
           <tr>
               <td class="font-weight-bold">Historical average</td>
-              <td class="font-weight-bold">TK</td>
-              <td class="font-weight-bold">TK</td>
-              <td class="font-weight-bold">TK</td>
+              <td class="font-weight-bold">{{page.committee.investigative_oversight_hearings_avg}}</td>
+              <td class="font-weight-bold">{{page.committee.policy_legislative_hearings_avg}}</td>
+              <td class="font-weight-bold">{{page.committee.total_hearings_avg}}</td>
               <td></td>
               <td></td>
           </tr>

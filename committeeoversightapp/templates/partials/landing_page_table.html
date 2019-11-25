@@ -29,9 +29,9 @@
                 </td>
               {% endif %}
             <td>{{committee.chair}}</td>
-            <td>5</td>
-            <td>10</td>
-            <td>15</td>
+            <td>{{committee.latest_rating.investigative_oversight_hearings}}</td>
+            <td>{{committee.latest_rating.policy_legislative_hearings}}</td>
+            <td>{{committee.latest_rating.total_hearings}}</td>
           </tr>
           {% endfor %}
       </tbody>

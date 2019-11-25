@@ -7,6 +7,7 @@ from django.conf import settings
 from django.apps import apps
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from django.core.exceptions import ObjectDoesNotExist
 
 from wagtail.core.models import Site, Page, PageRevision
 from wagtail.images.models import Image

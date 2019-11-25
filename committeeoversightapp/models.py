@@ -1,10 +1,12 @@
 import re
+from datetime import date
 
 from django.utils.text import slugify
 from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
+from django.db.models import Max, Avg
 from django.db.models.fields import TextField, BooleanField
 from django.conf import settings
 
@@ -66,14 +68,6 @@ class CommitteeOrganization(Organization):
         return '/committee-' + self.parent.id.split('ocd-organization/').pop()
 
     @property
-    def latest_rating(self):
-        """
-        Return the committee's rating for the most recent Congress.
-        """
-        rating_set = self.committeerating_set.order_by('-congress')
-        return rating_set[0]
-
-    @property
     def short_name(self):
         if self.parent.name in settings.CHAMBERS:
             return re.sub(r'(House|Senate) Committee on ', '', self.name)
@@ -94,8 +88,214 @@ class CommitteeOrganization(Organization):
     def hide_rating(self):
         return CommitteeDetailPage.objects.get(committee=self.id).hide_rating
 
+    @property
+    def ratings_by_congress_desc(self):
+        return self.committeerating_set.all().order_by('-congress__id')
+
+    @property
+    def ratings_by_congress_asc(self):
+        return self.committeerating_set.all().order_by('congress__id')
+
+    @property
+    def latest_rating(self):
+        return self.ratings_by_congress_desc[0]
+
+    @property
+    def max_chp_points(self):
+        return self.ratings_by_congress_desc.aggregate(
+            Max('chp_points')
+        )['chp_points__max']
+
+    @property
+    def investigative_oversight_hearings_max(self):
+        return self.get_max_rating('investigative_oversight_hearings')
+
+    @property
+    def policy_legislative_hearings_max(self):
+        return self.get_max_rating('policy_legislative_hearings')
+
+    @property
+    def total_hearings_max(self):
+        return self.get_max_rating('total_hearings')
+
+    @property
+    def investigative_oversight_hearings_avg(self):
+        return self.get_avg_rating('investigative_oversight_hearings')
+
+    @property
+    def policy_legislative_hearings_avg(self):
+        return self.get_avg_rating('policy_legislative_hearings')
+
+    @property
+    def total_hearings_avg(self):
+        return self.get_avg_rating('total_hearings')
+
+    def get_avg_rating(self, hearing_type):
+        return round(self.ratings_by_congress_desc \
+            .aggregate(
+                Avg(hearing_type)
+            )[hearing_type + '__avg'], 2)
+
+    def get_max_rating(self, hearing_type):
+        return round(self.ratings_by_congress_desc \
+            .aggregate(
+                Max(hearing_type)
+            )[hearing_type + '__max'], 2)
+
     def __str__(self):
         return self.name
+
+
+class Congress(models.Model):
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    @property
+    def label(self):
+        '''
+        116 => '116th Congress'
+        '''
+        return '{} Congress'.format(ordinal(self.id))
+
+    @property
+    def is_current(self):
+        if self.start_date < date.today() < self.end_date:
+            return True
+        else:
+            return False
+
+    @property
+    def percent_passed(self):
+        days_in_session = 668
+        days_passed = (date.today() - self.start_date).days
+        percent_passed = round(days_passed / days_in_session * 100, 2)
+
+        if percent_passed <= 100:
+            return percent_passed
+        else:
+            return 100
+
+    def __str__(self):
+        return self.label
+
+
+class CommitteeRating(models.Model):
+    committee = models.ForeignKey(CommitteeOrganization, on_delete=models.CASCADE)
+    congress = models.ForeignKey(Congress, on_delete=models.CASCADE)
+    investigative_oversight_hearings = models.IntegerField(null=True, blank=True)
+    policy_legislative_hearings = models.IntegerField(null=True, blank=True)
+    total_hearings = models.IntegerField(null=True, blank=True)
+    chp_points = models.IntegerField(null=True, blank=True)
+
+    @property
+    def chp_score(self):
+        try:
+            current_score = self.chp_points \
+                / self.committee.max_chp_points * 100
+
+            if not self.congress.is_current:
+                return round(current_score, 2)
+            else:
+                return round(current_score / self.congress.percent_passed \
+                    * 100, 2)
+
+        except ZeroDivisionError:
+            print("Divide by zero error on " + self.committee.name)
+            return 0
+
+    @property
+    def chp_grade(self):
+        score = self.chp_score
+        if 92 <= score:
+            return 'A'
+        elif 90 <= score < 92:
+            return 'A-'
+        elif 88 <= score < 90:
+            return 'B+'
+        elif 82 <= score < 88:
+            return 'B'
+        elif 80 <= score < 82:
+            return 'B-'
+        elif 78 <= score < 80:
+            return 'C+'
+        elif 72 <= score < 78:
+            return 'C'
+        elif 70 <= score < 72:
+            return 'C-'
+        elif 68 <= score < 70:
+            return 'D+'
+        elif 62 <= score < 68:
+            return 'D'
+        elif 60 <= score < 62:
+            return 'D-'
+        elif 0 <= score < 60:
+            return 'F'
+        else:
+            return 'C'
+
+    @property
+    def css_class(self):
+        '''
+        A+ => 'a-plus-rating'
+        '''
+
+        rating_colors = {
+            'A': 'a-rating',
+            'A-': 'a-minus-rating',
+            'B+': 'b-plus-rating',
+            'B': 'b-rating',
+            'B-': 'b-minus-rating',
+            'C+': 'c-plus-rating',
+            'C': 'c-rating',
+            'C-': 'c-minus-rating',
+            'D+': 'd-plus-rating',
+            'D': 'd-rating',
+            'D-': 'd-minus-rating',
+            'F': 'f-rating'
+        }
+
+        return rating_colors[self.chp_grade]
+
+    @property
+    def investigative_oversight_percent_max(self):
+        return self.get_percent_max('investigative_oversight_hearings')
+
+    @property
+    def policy_legislative_percent_max(self):
+        return self.get_percent_max('policy_legislative_hearings')
+
+    @property
+    def total_percent_max(self):
+        return self.get_percent_max('total_hearings')
+
+    @property
+    def investigative_oversight_percent_avg(self):
+        return self.get_percent_avg('investigative_oversight_hearings')
+
+    @property
+    def policy_legislative_percent_avg(self):
+        return self.get_percent_avg('policy_legislative_hearings')
+
+    @property
+    def total_percent_avg(self):
+        return self.get_percent_avg('total_hearings')
+
+    def get_percent_max(self, hearing_type):
+        try:
+            return round(getattr(self, hearing_type) \
+                / getattr(self.committee, hearing_type + '_max') * 100, 2)
+        except ZeroDivisionError:
+            return 0
+
+    def get_percent_avg(self, hearing_type):
+        try:
+            return round(getattr(self, hearing_type) \
+                / getattr(self.committee, hearing_type + '_avg') * 100, 2)
+        except ZeroDivisionError:
+            return 0
+
+    def __str__(self):
+        return self.chp_grade
 
 
 class HearingCategoryType(models.Model):
@@ -147,48 +347,6 @@ class Committee(models.Model):
                                      null=True,
                                      blank=True,
                                      on_delete=models.CASCADE)
-
-
-class CommitteeRating(models.Model):
-    committee = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    congress = models.IntegerField()
-    rating = models.CharField(max_length=100)
-
-    @property
-    def congress_label(self):
-        '''
-        116 => '116th Congress'
-        '''
-        return '{} Congress'.format(ordinal(self.congress))
-
-    @property
-    def css_class(self):
-        '''
-        A+ => 'a-plus-rating'
-        '''
-
-        rating_colors = {
-            'A+': 'a-plus-rating',
-            'A': 'a-rating',
-            'A-': 'a-minus-rating',
-            'B+': 'b-plus-rating',
-            'B': 'b-rating',
-            'B-': 'b-minus-rating',
-            'C+': 'c-plus-rating',
-            'C': 'c-rating',
-            'C-': 'c-minus-rating',
-            'D+': 'd-plus-rating',
-            'D': 'd-rating',
-            'D-': 'd-minus-rating',
-            'F+': 'f-rating',
-            'F': 'f-rating',
-            'F-': 'f-rating'
-        }
-
-        return rating_colors[self.rating]
-
-    def __str__(self):
-        return self.rating
 
 
 class ResetMixin(object):
@@ -299,6 +457,39 @@ class CommitteeDetailPage(DetailPage):
         FieldPanel('chair'),
         FieldPanel('hide_rating'),
     ]
+
+    def get_context(self, request):
+        context = super(CommitteeDetailPage, self).get_context(request)
+        context['latest_rating'] = context['page'].committee.latest_rating
+
+        congresses = context['page'].committee.ratings_by_congress_asc \
+            .values_list('congress_id', flat=True)
+        context['congresses'] = [x for x in congresses]
+
+        investigative_oversight_series = context['page'] \
+            .committee.ratings_by_congress_asc.values_list(
+            'investigative_oversight_hearings',
+            flat=True
+        )
+        context['investigative_oversight_series'] = [x for x in \
+            investigative_oversight_series]
+
+        policy_legislative_series = context['page'].committee \
+            .ratings_by_congress_asc.values_list(
+            'policy_legislative_hearings',
+            flat=True
+        )
+        context['policy_legislative_series'] = [x for x in \
+            policy_legislative_series]
+
+        total_series = context['page'].committee.ratings_by_congress_asc \
+            .values_list(
+            'total_hearings',
+            flat=True
+        )
+        context['total_series'] = [x for x in total_series]
+
+        return context
 
 class HearingListPage(ResetMixin, Page):
     body = RichTextField()
