@@ -36,8 +36,8 @@ class Command(BaseCommand):
         # + Nominations + Fact Finding + Field + Closed
         total_hearings=self.count_by_category(
             committee_hearings,
-            ['Nominations', 'Legislative', 'Policy' 'Agency Conduct',
-             'Private Sector Oversight' 'Fact Finding', 'Field', 'Closed']
+            ['Nominations', 'Legislative', 'Policy', 'Agency Conduct',
+             'Private Sector Oversight', 'Fact Finding', 'Field', 'Closed']
         )
 
         # This ratings methodology was designed by the Lugar Center
@@ -45,14 +45,17 @@ class Command(BaseCommand):
             (2 * policy_legislative_hearings) + \
             (total_hearings)
 
-        CommitteeRating.objects.create(
+        rating, _ = CommitteeRating.objects.get_or_create(
             congress=congress,
-            committee=committee,
-            investigative_oversight_hearings=investigative_oversight_hearings,
-            policy_legislative_hearings=policy_legislative_hearings,
-            total_hearings=total_hearings,
-            chp_points=chp_points,
+            committee=committee
         )
+
+        rating.investigative_oversight_hearings = \
+            investigative_oversight_hearings
+        rating.policy_legislative_hearings = policy_legislative_hearings
+        rating.total_hearings = total_hearings
+        rating.chp_points = chp_points
+        rating.save()
 
         self.stdout.write(
             'Added rating counts for {} to {}. Total CHP points = {}.'.format(
