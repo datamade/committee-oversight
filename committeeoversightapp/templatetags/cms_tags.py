@@ -45,7 +45,7 @@ def top_menu_children(context, parent):
 @register.simple_tag(takes_context=True)
 def progress_bar_css(context, percent_max):
     projected_percent = percent_max \
-        / context['latest_rating'].congress.percent_passed * 100.0
+        / context['latest_rating'].congress.percent_passed * 100
 
     if 75 <= projected_percent:
         return 'progress-bar-green'
