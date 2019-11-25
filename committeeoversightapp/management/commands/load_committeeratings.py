@@ -36,7 +36,7 @@ class Command(BaseCommand):
         # + Nominations + Fact Finding + Field + Closed
         total_hearings=self.count_by_category(
             committee_hearings,
-            ['Nominations', 'Legislative', 'Policy', 'Agency Conduct', \
+            ['Nominations', 'Legislative', 'Policy', 'Agency Conduct',
              'Private Sector Oversight', 'Fact Finding', 'Field', 'Closed']
         )
 
@@ -45,16 +45,16 @@ class Command(BaseCommand):
             (2 * policy_legislative_hearings) + \
             (total_hearings)
 
-        rating, created = CommitteeRating.objects.get_or_create(
+        rating, _ = CommitteeRating.objects.get_or_create(
             congress=congress,
             committee=committee
         )
 
-        rating.investigative_oversight_hearings= \
+        rating.investigative_oversight_hearings = \
             investigative_oversight_hearings
-        rating.policy_legislative_hearings=policy_legislative_hearings
-        rating.total_hearings=total_hearings
-        rating.chp_points=chp_points
+        rating.policy_legislative_hearings = policy_legislative_hearings
+        rating.total_hearings = total_hearings
+        rating.chp_points = chp_points
         rating.save()
 
         self.stdout.write(
