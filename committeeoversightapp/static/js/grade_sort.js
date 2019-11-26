@@ -1,4 +1,4 @@
-// This custom sort function for letter grades relies on the insight from
+// This DataTables sort function for letter grades relies on the insight from
 // https://stackoverflow.com/a/58065608 that ',' is between '+' and '-' in
 // the ASCII table. This sort appends ',' to any grade without a sign and then
 // sorts normally
