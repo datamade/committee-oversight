@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load static wagtailcore_tags %}
 
 {% block content %}
   <div class="row justify-content-center align-items-center">
@@ -44,6 +44,10 @@
 
   {% include "partials/landing_page_table.html" with committees=senate_committees title="Senate"%}
 
+  {% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/grade_sort.js' %}"></script>
+  {% endblock %}
+
   <script>
     $(document).ready(function() {
       $('.select2-single').select2();
@@ -64,6 +68,7 @@
           "order": [[ 0, "asc" ]],
           "columnDefs": [
             { "orderable": false, "targets": [3, 4, 5] },
+            { type: 'grade-sort', targets: 1 }
           ],
         });
     });
