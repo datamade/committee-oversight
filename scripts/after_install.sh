@@ -34,7 +34,7 @@ if [ "$DEPLOYMENT_GROUP_NAME" == "staging" ]; then
 fi
 
 if [ "$DEPLOYMENT_GROUP_NAME" == "production" ]; then
-    export DOMAIN="committeeoversight.datamade.us"
+    export DOMAIN="committeeoversight-production.datamade.us"
 fi
 
 # Generate SSL cert if one does not exist
