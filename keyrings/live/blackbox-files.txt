@@ -1,3 +1,4 @@
+configs/committee-oversight-production.conf.nginx
 configs/committee-oversight-staging.conf.nginx
 configs/committee-oversight-staging.conf.supervisor
 configs/local_settings.py.production
