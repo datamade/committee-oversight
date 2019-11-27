@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load static wagtailcore_tags %}
 
 {% block content %}
 <div class="row justify-content-center align-items-center">
@@ -16,6 +16,10 @@
 {% block table_content %}
 {% endblock %}
 
+{% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/grade_sort.js' %}"></script>
+{% endblock %}
+
 <script>
   $(document).ready(function () {
       $('.committee-table').DataTable({
@@ -24,6 +28,9 @@
         "searching": false,
         "info": false,
         "order": [[ 0, "asc" ]],
+        "columnDefs": [
+          { "type": 'grade-sort', "targets": [1, 2, 3, 4, 5, 6] }
+        ],
       });
   });
 </script>
