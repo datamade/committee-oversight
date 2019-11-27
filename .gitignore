@@ -13,3 +13,5 @@ hearings.dump
 # Wagtail media uploads
 media
 /configs/local_settings.py.production
+/configs/committee-oversight-production.conf.nginx
+/configs/committee-oversight-production.conf.supervisor
