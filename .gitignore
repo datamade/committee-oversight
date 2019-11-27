@@ -12,3 +12,4 @@ hearings.dump
 
 # Wagtail media uploads
 media
+/configs/local_settings.py.production
