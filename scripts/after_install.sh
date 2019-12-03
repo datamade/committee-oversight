@@ -38,21 +38,20 @@ if [ "$DEPLOYMENT_GROUP_NAME" == "production" ]; then
     export DOMAIN="committeeoversight-production.datamade.us"
 fi
 
-# Generate SSL cert if one does not exist
-# if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]; then
-#     echo "server {
-#         listen 80;
-#         server_name $DOMAIN;
-#
-#         location ~ .well-known/acme-challenge {
-#             root /usr/share/nginx/html;
-#             default_type text/plain;
-#         }
-#
-#     }" > /etc/nginx/conf.d/committee-oversight.conf
-#     service nginx reload
-#     certbot --nginx -d $DOMAIN
-# fi
+# Echo a simple nginx configuration into the correct place, and tell
+# certbot to request a cert if one does not already exist. 
+if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]; then
+    echo "server {
+        listen 80;
+        server_name $DOMAIN;
+        location ~ .well-known/acme-challenge {
+            root /usr/share/nginx/html;
+            default_type text/plain;
+        }
+    }" > /etc/nginx/conf.d/$APP_NAME.conf
+    service nginx reload
+    certbot -n --nginx -d $DOMAIN -m devops@datamade.us --agree-tos
+fi
 
 $venv_dir/bin/python $project_dir/scripts/render_configs.py $DEPLOYMENT_ID $DEPLOYMENT_GROUP_NAME
 
