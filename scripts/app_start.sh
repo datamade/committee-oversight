@@ -1,6 +1,5 @@
 #!/bin/bash
 set -euo pipefail
-set -x
 
 project_dir="/home/datamade/committee-oversight-$DEPLOYMENT_ID"
 

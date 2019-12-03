@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+set -x
 
 project_dir="/home/datamade/committee-oversight-$DEPLOYMENT_ID"
 venv_dir="/home/datamade/.virtualenvs/committee-oversight-$DEPLOYMENT_ID"
@@ -38,20 +39,20 @@ if [ "$DEPLOYMENT_GROUP_NAME" == "production" ]; then
 fi
 
 # Generate SSL cert if one does not exist
-if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]; then
-    echo "server {
-        listen 80;
-        server_name $DOMAIN;
-
-        location ~ .well-known/acme-challenge {
-            root /usr/share/nginx/html;
-            default_type text/plain;
-        }
-
-    }" > /etc/nginx/conf.d/committee-oversight.conf
-    service nginx reload
-    certbot --nginx -d $DOMAIN
-fi
+# if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]; then
+#     echo "server {
+#         listen 80;
+#         server_name $DOMAIN;
+#
+#         location ~ .well-known/acme-challenge {
+#             root /usr/share/nginx/html;
+#             default_type text/plain;
+#         }
+#
+#     }" > /etc/nginx/conf.d/committee-oversight.conf
+#     service nginx reload
+#     certbot --nginx -d $DOMAIN
+# fi
 
 $venv_dir/bin/python $project_dir/scripts/render_configs.py $DEPLOYMENT_ID $DEPLOYMENT_GROUP_NAME
 
