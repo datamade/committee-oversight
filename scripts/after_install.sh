@@ -40,8 +40,6 @@ fi
 
 # Echo a simple nginx configuration into the correct place, and tell
 # certbot to request a cert if one does not already exist.
-# Wondering about the DOMAIN variable? It becomes available by source-ing
-# the config file (see above).
 if [ ! -f /etc/letsencrypt/live/$DOMAIN/fullchain.pem ]; then
     echo "server {
         listen 80;

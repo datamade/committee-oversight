@@ -36,7 +36,6 @@ deploy:
     deployment_group: staging
     on:
       branch: master
-deploy:
   - provider: codedeploy
     access_key_id: AKIAJNYGDLOJKHOUWCAA
     secret_access_key:
