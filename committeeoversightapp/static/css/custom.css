@@ -318,6 +318,11 @@ input[type='checkbox'] {
   padding-left: 10px;
 }
 
+.logo-text {
+  color: var(--red-color);;
+  line-height: 20px;
+}
+
 .rating {
   font-size: 1.4rem;
   font-weight: 600;
