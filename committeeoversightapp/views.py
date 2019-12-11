@@ -17,7 +17,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from .utils import get_document_context, save_witnesses, \
                    save_documents, save_category, save_committees
 from .models import HearingCategory, HearingCategoryType, WitnessDetails, \
-                    CommitteeOrganization
+                    CommitteeOrganization, HearingEvent
 from .forms import EventForm, CategoryForm, CommitteeForm, \
                    WitnessFormset, TranscriptForm, CategoryEditForm, \
                    CommitteeEditForm
@@ -74,10 +74,19 @@ class EventList(LoginRequiredMixin, TemplateView):
 
 class EventListJson(BaseDatatableView):
     """ Uses django-datatables-view for server-side DataTable processing."""
-    model = Event
+    model = HearingEvent
 
-    # define the columns that will be returned
-    columns = ['updated_at', 'name', 'start_date', 'id', 'id']
+    # Define the columns that will be returned. These need to match attributes
+    # of the model but most will be calculated later, so 'id' here is a
+    # placeholder.
+    columns = [
+        'start_date',
+        'name',
+        'id', # committees
+        'id', # category
+        'id', # edit
+        'id', # delete
+    ]
 
     # max number of records returned at a time; protects site from large
     # requests
@@ -111,18 +120,43 @@ class EventListJson(BaseDatatableView):
         edit_string = "<a href=\"{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
         delete_string = "<a href=\"{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
-        if self.request.user.is_authenticated:
-            for item in qs:
-                json_data.append([
-                    item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    detail_string.format(
-                        escape(reverse_lazy(
-                            'detail-event',
-                            kwargs={'pk':item.pk}
-                        )),
-                        escape(item.name.title())
-                    ),
-                    item.start_date,
+        for item in qs:
+            committees = set()
+            for committee in item.committees:
+                if committee.is_subcommittee:
+                    committee_string = detail_string.format(
+                        escape(committee.parent_url),
+                        escape(committee.parent)
+                    )
+                else:
+                    committee_string = detail_string.format(
+                        escape(committee.url),
+                        escape(committee.name)
+                    )
+                committees.add(committee_string)
+
+            category_string = ''
+            if item.category:
+                category_string = detail_string.format(
+                                    escape(item.category.url),
+                                    escape(item.category.name)
+                                )
+
+            row_data = [
+                item.start_date,
+                detail_string.format(
+                    escape(reverse_lazy(
+                        'detail-event',
+                        kwargs={'pk':item.pk}
+                    )),
+                    escape(item.name.title())
+                ),
+                ', '.join(committees),
+                category_string
+            ]
+
+            if self.request.user.is_authenticated:
+                row_data += [
                     edit_string.format(
                         escape(reverse_lazy(
                             'edit-event',
@@ -135,46 +169,25 @@ class EventListJson(BaseDatatableView):
                             kwargs={'pk':item.pk}
                         ))
                     ),
-                ])
-        else:
-            for item in qs:
-                json_data.append([
-                    item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    detail_string.format(
-                        escape(reverse_lazy(
-                            'detail-event',
-                            kwargs={'pk':item.pk}
-                        )),
-                        escape(item.name.title())
-                    ),
-                    item.start_date,
-                    '',
-                    '',
-                ])
+                ]
+            else:
+                row_data += ['', '']
+
+            json_data.append(row_data)
 
         return json_data
 
 
 class EventDetail(DetailView):
-    model = Event
+    model = HearingEvent
     template_name = "hearing_detail.html"
     context_object_name = 'hearing'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        #get category context
-        try:
-            context['category'] = HearingCategory.objects.get(
-                event=context['hearing']
-            ).category
-        except ObjectDoesNotExist:
-            context['category'] = None
-
-        context['committees'] = CommitteeOrganization.objects.filter(
-            eventparticipant__event=context['hearing'].id
-        )
-
+        context['category'] = context['hearing'].category
+        context['committees'] = context['hearing'].committees
         context = get_document_context(context)
         context['witnesses'] = context['hearing'].participants.filter(
             note="witness"
