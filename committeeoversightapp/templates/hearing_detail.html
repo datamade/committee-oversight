@@ -32,10 +32,10 @@
        <tr>
          <td><b>Category</b></td>
          <td>
-          {% if category.url %}
-            <a href="{{ category.url }}">{{category}}</a>
+          {% if hearing.category.url %}
+            <a href="{{ hearing.category.url }}">{{hearing.category}}</a>
           {% else %}
-            {{category}}
+            {{hearing.category}}
           {% endif %}
           </td>
        </tr>

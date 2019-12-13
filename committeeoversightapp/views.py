@@ -78,15 +78,15 @@ class EventListJson(BaseDatatableView):
     model = HearingEvent
 
     # Define the columns that will be returned. These need to match attributes
-    # of the model but most will be calculated later, so 'id' here is a
+    # of the model but most will be calculated later, so '' here is a
     # placeholder.
     columns = [
         'start_date',
         'name',
-        'id', # committees
-        'id', # category
-        'id', # edit
-        'id', # delete
+        '', # committees
+        '', # category
+        '', # edit
+        '', # delete
     ]
 
     # max number of records returned at a time; protects site from large
@@ -122,59 +122,69 @@ class EventListJson(BaseDatatableView):
         delete_string = "<a href=\"{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
         for item in qs:
-            committees = set()
-            for committee in item.committees:
-                if committee.is_subcommittee:
-                    committee_string = str(committee.parent)
-                else:
-                    committee_string = str(committee.name)
-                committees.add(committee_string)
-
-            category_string = ''
-            if item.category:
-                category_string = detail_string.format(
-                                    escape(item.category.url),
-                                    escape(item.category.name)
-                                )
-
-            row_data = [
-                item.start_date,
-                detail_string.format(
-                    escape(reverse_lazy(
-                        'detail-event',
-                        kwargs={'pk':item.pk}
-                    )),
-                    escape(item.name.title())
-                ),
-                ', '.join(committees),
-                category_string
-            ]
-
-            # if user is authenticated show edit and delete buttons
-            if self.request.user.is_authenticated:
-                row_data += [
-                    edit_string.format(
-                        escape(reverse_lazy(
-                            'edit-event',
-                            kwargs={'pk':item.pk}
-                        ))
-                    ),
-                    delete_string.format(
-                        escape(reverse_lazy(
-                            'delete-event',
-                            kwargs={'pk':item.pk}
-                        ))
-                    ),
+            if self.show_hearing(item):
+                row_data = [
+                    item.start_date,
+                    self.get_hearing_title(detail_string, item),
+                    self.get_committees(item),
+                    self.get_category(detail_string, item),
+                    self.get_admin_button(edit_string, 'edit-event', item),
+                    self.get_admin_button(delete_string, 'delete-event', item),
                 ]
+
                 json_data.append(row_data)
-            # if not authenticated, only include display hearing categories
-            elif not item.category or item.category.name in settings.DISPLAY_CATEGORIES:
-                row_data += ['', '']
-                json_data.append(row_data)
-            else:
-                pass
 
         return json_data
+
+    def show_hearing(self, item):
+        # show all hearings to authenticated users
+        if self.request.user.is_authenticated:
+            return True
+        # for non-admin users, show only hearings from a set list of categories
+        elif str(item.category) in settings.DISPLAY_CATEGORIES:
+            return True
+        else:
+            return False
+
+    def get_hearing_title(self, detail_string, item):
+        return detail_string.format(
+            escape(reverse_lazy(
+                'detail-event',
+                kwargs={'pk':item.pk}
+            )),
+            escape(item.name.title())
+        )
+
+    def get_committees(self, item):
+        committees = set()
+        for committee in item.committees:
+            if committee.is_subcommittee:
+                committee_string = str(committee.parent)
+            else:
+                committee_string = str(committee.name)
+            committees.add(committee_string)
+
+        return ', '.join(committees)
+
+    def get_category(self, detail_string, item):
+        try:
+            return detail_string.format(
+                escape(item.category.url),
+                escape(item.category.name)
+            )
+        except AttributeError:
+            return ''
+
+    def get_admin_button(self, button_string, url, item):
+        if self.request.user.is_authenticated:
+            return button_string.format(
+                escape(reverse_lazy(
+                    url,
+                    kwargs={'pk':item.pk}
+                ))
+            )
+        else:
+            return ''
 
 
 class EventDetail(DetailView):
@@ -185,7 +195,6 @@ class EventDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['category'] = context['hearing'].category
         context['committees'] = context['hearing'].committees
         context = get_document_context(context)
         context['witnesses'] = context['hearing'].participants.filter(
