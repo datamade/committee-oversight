@@ -40,10 +40,6 @@
       <li class="nav-item">
         <small class="mr-4 font-italic">Logged in as <b>{{ request.user.get_username }}</b></small>
       </li>
-     {% else %}
-      <li class="nav-item">
-        <a href="{% url 'login'%}">Login</a>
-      </li>
       {% endif %}
     </ul>
   </div>
