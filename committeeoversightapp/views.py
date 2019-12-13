@@ -125,15 +125,9 @@ class EventListJson(BaseDatatableView):
             committees = set()
             for committee in item.committees:
                 if committee.is_subcommittee:
-                    committee_string = detail_string.format(
-                        escape(committee.parent_url),
-                        escape(committee.parent)
-                    )
+                    committee_string = str(committee.parent)
                 else:
-                    committee_string = detail_string.format(
-                        escape(committee.url),
-                        escape(committee.name)
-                    )
+                    committee_string = str(committee.name)
                 committees.add(committee_string)
 
             category_string = ''
@@ -173,7 +167,7 @@ class EventListJson(BaseDatatableView):
                     ),
                 ]
                 json_data.append(row_data)
-            # if not authenticated, only include display hearing categories 
+            # if not authenticated, only include display hearing categories
             elif not item.category or item.category.name in settings.DISPLAY_CATEGORIES:
                 row_data += ['', '']
                 json_data.append(row_data)
