@@ -1,16 +1,13 @@
 {% load static wagtailcore_tags cms_tags %}
 
-<nav class="navbar navbar-light fixed-top footer navbar-expand-md">
+<nav class="navbar navbar-dark fixed-top footer navbar-expand-md">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></i></span>
   </button>
   <a class="navbar-brand" href="/">
-    <img src="{% static 'images/lugarcenter.svg' %}" height="30" alt="The Lugar Center"/>
-    <!-- <img class="pl-1" src="{% static 'images/oversight_logo.png' %}" height="40" alt="Congressional Oversight Hearing Map"/> -->
-    <img class="pl-1" src="{% static 'images/oversight_logo2.png' %}" height="40" alt="Congressional Oversight Hearing Map"/>
-    <span class="align-middle logo-text pl-1 mt-1 d-none d-md-inline-block font-weight-bold small">
-      Congressional Oversight <br />Hearing Map
-    </span>
+    <img class="d-none d-sm-inline-block" src="{% static 'images/lugarcenter_dark.png' %}" height="40" alt="The Lugar Center"/>
+    <img class="pl-1 d-none d-sm-inline-block" src="{% static 'images/oversight_logo.png' %}" height="80" alt="Congressional Oversight Hearing Map"/>
+    <img class="p-0 d-inline-block d-sm-none" src="{% static 'images/oversight_logo.png' %}" height="45" alt="Congressional Oversight Hearing Map"/>
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
@@ -39,15 +36,6 @@
             <a href="{% url 'logout'%}">Log out</a>
           </li>
         </ul>
-      </li>
-      {% endif %}
-      {% if request.user.is_authenticated %}
-      <li class="nav-item">
-        <small class="mr-4 font-italic">Logged in as <b>{{ request.user.get_username }}</b></small>
-      </li>
-     {% else %}
-      <li class="nav-item">
-        <a href="{% url 'login'%}">Login</a>
       </li>
       {% endif %}
     </ul>
