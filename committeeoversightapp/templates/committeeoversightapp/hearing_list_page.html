@@ -39,10 +39,10 @@
       $('#hearing-table').DataTable({
         "dom": "Bfrtip",
         "order": [[ 0, "desc" ]],
-        "columnDefs": [{ "orderable": false, "targets": [4, 5] }],
+        "columnDefs": [{ "orderable": false, "targets": [2, 3, 4, 5] }],
         "processing": true,
         "serverSide": true,
-        "ajax": "{% url 'order_list_json' %}"
+        "ajax": "{% url 'order_list_json' %}",
       });
   } );
   </script>
