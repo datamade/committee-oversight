@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.html import escape
+from django.conf import settings
 
 from opencivicdata.legislative.models import Event, EventParticipant, \
                         EventDocument, EventDocumentLink, EventSource
@@ -155,6 +156,7 @@ class EventListJson(BaseDatatableView):
                 category_string
             ]
 
+            # if user is authenticated show edit and delete buttons
             if self.request.user.is_authenticated:
                 row_data += [
                     edit_string.format(
@@ -170,10 +172,13 @@ class EventListJson(BaseDatatableView):
                         ))
                     ),
                 ]
-            else:
+                json_data.append(row_data)
+            # if not authenticated, only include display hearing categories 
+            elif not item.category or item.category.name in settings.DISPLAY_CATEGORIES:
                 row_data += ['', '']
-
-            json_data.append(row_data)
+                json_data.append(row_data)
+            else:
+                pass
 
         return json_data
 
