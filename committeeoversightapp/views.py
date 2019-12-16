@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.html import escape
+from django.conf import settings
 
 from opencivicdata.legislative.models import Event, EventParticipant, \
                         EventDocument, EventDocumentLink, EventSource
@@ -17,7 +18,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from .utils import get_document_context, save_witnesses, \
                    save_documents, save_category, save_committees
 from .models import HearingCategory, HearingCategoryType, WitnessDetails, \
-                    CommitteeOrganization
+                    CommitteeOrganization, HearingEvent
 from .forms import EventForm, CategoryForm, CommitteeForm, \
                    WitnessFormset, TranscriptForm, CategoryEditForm, \
                    CommitteeEditForm
@@ -74,16 +75,31 @@ class EventList(LoginRequiredMixin, TemplateView):
 
 class EventListJson(BaseDatatableView):
     """ Uses django-datatables-view for server-side DataTable processing."""
-    model = Event
+    model = HearingEvent
 
-    # define the columns that will be returned
-    columns = ['updated_at', 'name', 'start_date', 'id', 'id']
+    # Define the columns that will be returned. These need to match attributes
+    # of the model but most will be calculated later, so '' here is a
+    # placeholder.
+    columns = [
+        'start_date',
+        'name',
+        '', # committees
+        '', # category
+        '', # edit
+        '', # delete
+    ]
 
     # max number of records returned at a time; protects site from large
     # requests
     max_display_length = 500
 
     def filter_queryset(self, qs):
+        # for non-admin users, show only hearings from a set list of categories
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(
+                hearingcategory__category__name__in=settings.DISPLAY_CATEGORIES
+            )
+
         # in order to filter by categories and committees, grab the detail
         # object type and its pk from the ajax url paramenters
         detail_type = self.request.GET.get('detail_type', None)
@@ -111,70 +127,70 @@ class EventListJson(BaseDatatableView):
         edit_string = "<a href=\"{}\"><i class=\"fas fa fa-pencil-alt\" id=\"edit-icon\"></i></a>"
         delete_string = "<a href=\"{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
-        if self.request.user.is_authenticated:
-            for item in qs:
-                json_data.append([
-                    item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    detail_string.format(
-                        escape(reverse_lazy(
-                            'detail-event',
-                            kwargs={'pk':item.pk}
-                        )),
-                        escape(item.name.title())
-                    ),
-                    item.start_date,
-                    edit_string.format(
-                        escape(reverse_lazy(
-                            'edit-event',
-                            kwargs={'pk':item.pk}
-                        ))
-                    ),
-                    delete_string.format(
-                        escape(reverse_lazy(
-                            'delete-event',
-                            kwargs={'pk':item.pk}
-                        ))
-                    ),
-                ])
-        else:
-            for item in qs:
-                json_data.append([
-                    item.updated_at.strftime("%Y-%m-%d %I:%M%p %Z"),
-                    detail_string.format(
-                        escape(reverse_lazy(
-                            'detail-event',
-                            kwargs={'pk':item.pk}
-                        )),
-                        escape(item.name.title())
-                    ),
-                    item.start_date,
-                    '',
-                    '',
-                ])
+        for item in qs:
+            row_data = [
+                item.start_date,
+                self.get_hearing_title(detail_string, item),
+                self.get_committees(item),
+                self.get_category(detail_string, item),
+                self.get_admin_button(edit_string, 'edit-event', item),
+                self.get_admin_button(delete_string, 'delete-event', item),
+            ]
+
+            json_data.append(row_data)
 
         return json_data
 
+    def get_hearing_title(self, detail_string, item):
+        return detail_string.format(
+            escape(reverse_lazy(
+                'detail-event',
+                kwargs={'pk':item.pk}
+            )),
+            escape(item.name.title())
+        )
+
+    def get_committees(self, item):
+        committees = set()
+        for committee in item.committees:
+            if committee.is_subcommittee:
+                committee_string = str(committee.parent)
+            else:
+                committee_string = str(committee.name)
+            committees.add(committee_string)
+
+        return ', '.join(committees)
+
+    def get_category(self, detail_string, item):
+        try:
+            return detail_string.format(
+                escape(item.category.url),
+                escape(item.category.name)
+            )
+        except AttributeError:
+            return ''
+
+    def get_admin_button(self, button_string, url, item):
+        if self.request.user.is_authenticated:
+            return button_string.format(
+                escape(reverse_lazy(
+                    url,
+                    kwargs={'pk':item.pk}
+                ))
+            )
+        else:
+            return ''
+
 
 class EventDetail(DetailView):
-    model = Event
+    model = HearingEvent
     template_name = "hearing_detail.html"
     context_object_name = 'hearing'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        #get category context
-        try:
-            context['category'] = HearingCategory.objects.get(
-                event=context['hearing']
-            ).category
-        except ObjectDoesNotExist:
-            context['category'] = None
-
-        context['committees'] = CommitteeOrganization.objects.filter(
-            eventparticipant__event=context['hearing'].id
-        )
-
+        context['committees'] = context['hearing'].committees
         context = get_document_context(context)
         context['witnesses'] = context['hearing'].participants.filter(
             note="witness"
