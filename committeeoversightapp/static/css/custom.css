@@ -2,7 +2,7 @@
   --lightest-blue-color: #fafcff;
   --light-blue-color: #e8eef9;
   --blue-color: #3774bb;
-  --dark-blue-color: #002f67;
+  --dark-blue-color: #1d3363;
   --darkest-blue-color: #001f43;
   --light-gray-color: #ced4da;
   --dark-gray-color: #495057;
@@ -170,7 +170,7 @@ td {
 }
 
 .container {
-  padding-top: 40px;
+  padding-top: 50px;
 }
 
 .landing-row {
@@ -294,8 +294,8 @@ input[type='checkbox'] {
 }
 
 .navbar {
-  background-color: var(--lightest-blue-color);
-  padding: .5rem 3rem 0rem 3rem;
+  background-color: var(--dark-blue-color);
+  padding: .5rem 3rem 0rem 1.5rem;
 }
 
 .navbar div li {
@@ -307,11 +307,24 @@ input[type='checkbox'] {
 }
 
 .navbar div a {
-  color: var(--dark-gray-color);
+  color: white;
+  font-weight: 500;
+}
+
+.dropdown-menu a {
+  color: var(--darkest-blue-color) !important;
 }
 
 .navbar-brand {
   padding-left: 10px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  margin-right: auto;
+}
+
+.logo-text {
+  color: var(--red-color);;
+  line-height: 20px;
 }
 
 .rating {

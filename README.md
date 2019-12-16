@@ -44,6 +44,14 @@ create a new superuser:
 
 5. Navigate to http://localhost:8000/ to view the site!
 
+## Testing
+
+To run the tests:
+
+```bash
+docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
+```
+
 
 ## Initial CMS content
 
