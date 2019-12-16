@@ -33,16 +33,16 @@
       </div>
       <div class="mx-3">
         <a href="{% slugurl 'compare-committees-over-congresses' %}">
-          Compare committees over Congresses
+          Compare ratings over Congresses
           <i class="fas fa-sm fa-angle-double-right"></i>
         </a>
       </div>
     </div>
   </div>
 
-  {% include "partials/landing_page_table.html" with committees=house_committees title="House of Representatives"%}
+  {% include "partials/landing_page_table.html" with committees=house_committees title="House of Representatives" id="house"%}
 
-  {% include "partials/landing_page_table.html" with committees=senate_committees title="Senate"%}
+  {% include "partials/landing_page_table.html" with committees=senate_committees title="Senate" id="senate"%}
 
   {% block extra_js %}
     <script type="text/javascript" src="{% static 'js/grade_sort.js' %}"></script>

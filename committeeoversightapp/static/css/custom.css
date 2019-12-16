@@ -293,6 +293,12 @@ input[type='checkbox'] {
   color: var(--dark-blue-color);
 }
 
+:target {
+  padding-top: 40px;
+  margin-top: -40px;
+  display: inline-block;
+}
+
 .navbar {
   background-color: var(--dark-blue-color);
   padding: .5rem 3rem 0rem 1.5rem;
