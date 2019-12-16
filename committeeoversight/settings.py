@@ -187,3 +187,14 @@ CHAMBERS = [
     'United States House of Representatives',
     'United States Senate'
 ]
+
+DISPLAY_CATEGORIES = [
+    'Nominations',
+    'Legislative',
+    'Policy',
+    'Agency Conduct',
+    'Private Sector Oversight',
+    'Fact Finding',
+    'Field',
+    'Closed',
+]

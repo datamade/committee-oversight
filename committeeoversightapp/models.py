@@ -9,6 +9,7 @@ from django.db import models
 from django.db.models import Max, Avg
 from django.db.models.fields import TextField, BooleanField
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
@@ -22,6 +23,25 @@ from opencivicdata.core.models import Organization
 from opencivicdata.legislative.models import Event, EventParticipant, \
                                              EventDocument
 
+
+class HearingEvent(Event):
+    class Meta:
+        proxy = True
+
+    @property
+    def category(self):
+        try:
+            return HearingCategory.objects.get(
+                event_id=self.id
+            ).category
+        except ObjectDoesNotExist:
+            return None
+
+    @property
+    def committees(self):
+        return CommitteeOrganization.objects.filter(
+            eventparticipant__event=self.id
+        )
 
 class CommitteeManager(models.Manager):
     def permanent_committees(self):
@@ -45,6 +65,7 @@ class CommitteeManager(models.Manager):
         context['house_committees'] = self.house_committees()
         context['senate_committees'] = self.senate_committees()
         return context
+
 
 class CommitteeOrganization(Organization):
     class Meta:
@@ -500,7 +521,9 @@ class HearingListPage(ResetMixin, Page):
 
     def get_context(self, request):
         context = super(HearingListPage, self).get_context(request)
-        context['categories'] = HearingCategoryType.objects.all()
+        context['categories'] = HearingCategoryType.objects.filter(
+            name__in=settings.DISPLAY_CATEGORIES
+        )
         return context
 
 

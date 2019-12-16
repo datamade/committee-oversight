@@ -216,8 +216,11 @@
         }
         $('#hearing-table').DataTable({
           "dom": "Bfrtip",
-          "order": [[ 2, "desc" ]],
-          "columnDefs": [{ "orderable": false, "targets": [3, 4] }],
+          "order": [[ 0, "desc" ]],
+          "columnDefs": [
+              { "searchable": false, "targets": [2], "visible": false },
+              { "orderable": false, "targets": [3, 4, 5] },
+            ],
           "processing": true,
           "serverSide": true,
           "ajax": makeAjaxUrl(committeeID)
