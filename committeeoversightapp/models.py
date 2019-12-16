@@ -85,8 +85,8 @@ class CommitteeOrganization(Organization):
         return '/committee-' + self.id.split('ocd-organization/').pop()
 
     @property
-    def parent_url(self):
-        return '/committee-' + self.parent.id.split('ocd-organization/').pop()
+    def parent_proxy(self):
+        return CommitteeOrganization.objects.get(id=self.parent.id)
 
     @property
     def short_name(self):
@@ -100,6 +100,47 @@ class CommitteeOrganization(Organization):
             return True
         else:
             return False
+
+    @property
+    def is_permanent(self):
+        if self in CommitteeOrganization.objects.permanent_committees():
+            print("True")
+            return True
+        else:
+            return False
+
+    @property
+    def get_linked_html(self):
+        if self.is_subcommittee:
+            if self.parent_proxy.is_permanent:
+                return '<a href=\"{0}\">{1}</a>, {2}'.format(
+                    self.parent_proxy.url,
+                    self.parent,
+                    self
+                )
+            else:
+                return '{0}, {1}'.format(self.parent, self)
+        else:
+            if self.is_permanent:
+                return '<a href="{0}">{1}</a>'.format(self.url, self)
+            else:
+                return self
+
+    @property
+    def get_linked_html_short(self):
+        if self.is_subcommittee:
+            if self.parent_proxy.is_permanent:
+                return '<a href=\"{0}\">{1}</a>'.format(
+                    self.parent_proxy.url,
+                    self.parent
+                )
+            else:
+                return str(self.parent)
+        else:
+            if self.is_permanent:
+                return '<a href="{0}">{1}</a>'.format(self.url, self)
+            else:
+                return str(self)
 
     @property
     def chair(self):

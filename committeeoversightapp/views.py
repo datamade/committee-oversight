@@ -153,11 +153,7 @@ class EventListJson(BaseDatatableView):
     def get_committees(self, item):
         committees = set()
         for committee in item.committees:
-            if committee.is_subcommittee:
-                committee_string = str(committee.parent)
-            else:
-                committee_string = str(committee.name)
-            committees.add(committee_string)
+            committees.add(committee.get_linked_html_short)
 
         return ', '.join(committees)
 
