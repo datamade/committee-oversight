@@ -37,19 +37,27 @@
       <tbody>
           {% for committee in committees %}
           <tr>
-            <td class="list-item text-right pr-3 border-right"><a href="{{committee.url}}">{{committee.short_name}}</a></td>
+            <td class="list-item text-right pr-3 border-right">
+              <a href="{{committee.url}}">{{committee.short_name}}</a>
+            </td>
 
             <td>{{committee.latest_rating.investigative_oversight_hearings}}</td>
             <td>{{committee.investigative_oversight_hearings_avg}}</td>
-            <td class="border-right pr-3">{{committee.latest_rating.investigative_oversight_percent_avg}}%</td>
+            <td class="border-right pr-3 font-weight-bold">
+              {{committee.latest_rating.investigative_oversight_percent_avg}}%
+            </td>
 
             <td>{{committee.latest_rating.policy_legislative_hearings}}</td>
             <td>{{committee.policy_legislative_hearings_avg}}</td>
-            <td class="border-right pr-3">{{committee.latest_rating.policy_legislative_percent_avg}}%</td>
+            <td class="border-right pr-3 font-weight-bold">
+              {{committee.latest_rating.policy_legislative_percent_avg}}%
+            </td>
 
             <td>{{committee.latest_rating.total_hearings}}</td>
             <td>{{committee.total_hearings_avg}}</td>
-            <td class="pr-3">{{committee.latest_rating.total_percent_avg}}%</td>
+            <td class="pr-3 font-weight-bold">
+              {{committee.latest_rating.total_percent_avg}}%
+            </td>
           </tr>
           {% endfor %}
       </tbody>
