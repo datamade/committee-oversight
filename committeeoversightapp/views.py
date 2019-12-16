@@ -147,7 +147,7 @@ class EventListJson(BaseDatatableView):
                 'detail-event',
                 kwargs={'pk':item.pk}
             )),
-            escape(item.name.title())
+            escape(item.name)
         )
 
     def get_committees(self, item):
