@@ -94,6 +94,12 @@ class EventListJson(BaseDatatableView):
     max_display_length = 500
 
     def filter_queryset(self, qs):
+        # for non-admin users, show only hearings from a set list of categories
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(
+                hearingcategory__category__name__in=settings.DISPLAY_CATEGORIES
+            )
+
         # in order to filter by categories and committees, grab the detail
         # object type and its pk from the ajax url paramenters
         detail_type = self.request.GET.get('detail_type', None)
@@ -122,29 +128,18 @@ class EventListJson(BaseDatatableView):
         delete_string = "<a href=\"{}\"><i class=\"fas fa fa-times-circle\" id=\"delete-icon\"></i></a>"
 
         for item in qs:
-            if self.show_hearing(item):
-                row_data = [
-                    item.start_date,
-                    self.get_hearing_title(detail_string, item),
-                    self.get_committees(item),
-                    self.get_category(detail_string, item),
-                    self.get_admin_button(edit_string, 'edit-event', item),
-                    self.get_admin_button(delete_string, 'delete-event', item),
-                ]
+            row_data = [
+                item.start_date,
+                self.get_hearing_title(detail_string, item),
+                self.get_committees(item),
+                self.get_category(detail_string, item),
+                self.get_admin_button(edit_string, 'edit-event', item),
+                self.get_admin_button(delete_string, 'delete-event', item),
+            ]
 
-                json_data.append(row_data)
+            json_data.append(row_data)
 
         return json_data
-
-    def show_hearing(self, item):
-        # show all hearings to authenticated users
-        if self.request.user.is_authenticated:
-            return True
-        # for non-admin users, show only hearings from a set list of categories
-        elif str(item.category) in settings.DISPLAY_CATEGORIES:
-            return True
-        else:
-            return False
 
     def get_hearing_title(self, detail_string, item):
         return detail_string.format(
