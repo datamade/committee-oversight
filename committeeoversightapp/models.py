@@ -189,7 +189,7 @@ class Congress(models.Model):
     def percent_passed(self):
         days_in_session = 668
         days_passed = (date.today() - self.start_date).days
-        percent_passed = int(round(days_passed / days_in_session * 100))
+        percent_passed = round(days_passed / days_in_session * 100)
 
         if percent_passed <= 100:
             return percent_passed
@@ -215,10 +215,10 @@ class CommitteeRating(models.Model):
                 / self.committee.max_chp_points * 100
 
             if not self.congress.is_current:
-                return int(round(current_score))
+                return round(current_score)
             else:
-                return int(round(current_score / self.congress.percent_passed \
-                    * 100))
+                return round(current_score / self.congress.percent_passed \
+                    * 100)
 
         except ZeroDivisionError:
             print("Divide by zero error on " + self.committee.name)
@@ -303,15 +303,15 @@ class CommitteeRating(models.Model):
 
     def get_percent_max(self, hearing_type):
         try:
-            return int(round(getattr(self, hearing_type) \
-                / getattr(self.committee, hearing_type + '_max') * 100))
+            return round(getattr(self, hearing_type) \
+                / getattr(self.committee, hearing_type + '_max') * 100)
         except ZeroDivisionError:
             return 0
 
     def get_percent_avg(self, hearing_type):
         try:
-            return int(round(getattr(self, hearing_type) \
-                / getattr(self.committee, hearing_type + '_avg') * 100))
+            return round(getattr(self, hearing_type) \
+                / getattr(self.committee, hearing_type + '_avg') * 100)
         except ZeroDivisionError:
             return 0
 

@@ -10,9 +10,6 @@
   </a>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a href="/">Home</a>
-      </li>
       {% for menuitem in menuitems %}
       <li class="nav-item {% if menuitem.show_dropdown %}dropdown{% endif %}{% if calling_page.url == menuitem.url %} active{% endif %}">
           {% if menuitem.show_dropdown %}
