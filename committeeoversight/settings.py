@@ -13,13 +13,27 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 from .local_settings import *
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+if DEBUG is False:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
 
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    integrations=[DjangoIntegration()]
-)
+    def before_send(event, hint):
+        """
+        Log 400 Bad Request errors with the same custom fingerprint so that we can
+        group them and ignore them all together. See:
+        https://github.com/getsentry/sentry-python/issues/149#issuecomment-434448781
+        """
+        log_record = hint.get('log_record')
+        if log_record and hasattr(log_record, 'name'):
+            if log_record.name == 'django.security.DisallowedHost':
+                event['fingerprint'] = ['disallowed-host']
+        return event
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        before_send=before_send,
+        integrations=[DjangoIntegration()]
+    )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
