@@ -19,14 +19,11 @@
          <td><b>Committees</b></td>
          <td>
            {% for committee in committees %}
-             {% if committee.is_subcommittee %}
-                <a href="{{ committee.parent_url }}">
-                  {{committee.parent}}</a>, {{committee}}
-              {% else %}
-                <a href="{{ committee.url }}">{{committee}}</a>
-             {% endif %}
+             {% autoescape off %}
+              {{ committee.get_linked_html }}
+             {% endautoescape %}
              <br />
-            {% endfor %}
+           {% endfor %}
          </td>
        </tr>
        <tr>
