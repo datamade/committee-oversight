@@ -103,8 +103,7 @@ class CommitteeOrganization(Organization):
 
     @property
     def is_permanent(self):
-        if self in CommitteeOrganization.objects.permanent_committees():
-            print("True")
+        if CommitteeOrganization.objects.permanent_committees().filter(id=self.id).exists():
             return True
         else:
             return False
@@ -116,7 +115,7 @@ class CommitteeOrganization(Organization):
                 return '<a href=\"{0}\">{1}</a>, {2}'.format(
                     self.parent_proxy.url,
                     self.parent,
-                    self
+                    self.name
                 )
             else:
                 return '{0}, {1}'.format(self.parent, self)
@@ -124,7 +123,7 @@ class CommitteeOrganization(Organization):
             if self.is_permanent:
                 return '<a href="{0}">{1}</a>'.format(self.url, self)
             else:
-                return self
+                return self.name
 
     @property
     def get_linked_html_short(self):
@@ -135,12 +134,12 @@ class CommitteeOrganization(Organization):
                     self.parent
                 )
             else:
-                return str(self.parent)
+                return self.parent.name
         else:
             if self.is_permanent:
                 return '<a href="{0}">{1}</a>'.format(self.url, self)
             else:
-                return str(self)
+                return self.name
 
     @property
     def chair(self):
