@@ -111,7 +111,7 @@ class EventListJson(BaseDatatableView):
             qs = qs.filter(
                 Q(participants__organization_id=id) |
                 Q(participants__organization__parent_id=id)
-            )
+            ).distinct()
 
         # based on search example at
         # https://pypi.org/project/django-datatables-view/
