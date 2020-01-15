@@ -15,6 +15,7 @@
   </div>
 
   <div class="row justify-content-center align-items-center">
+    {% if not page.hide_rating %}
     <div class="col-6 col-md-4 col-lg-3 col-xl-3 my-3 pr-4 text-right border-right">
       <h3 class="rating-large {{latest_rating.css_class}}">
         {{latest_rating}}
@@ -24,6 +25,7 @@
         <small><i>Last updated: {% now "jS F Y H:i" %}</i></small>
       </p>
     </div>
+    {% endif %}
 
     <div class="col-6 col-md-5 col-lg-4 col-xl-3 my-3 pl-4 text-left">
       <p class="font-weight-light my-2">

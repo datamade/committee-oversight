@@ -7,18 +7,26 @@
                   Number of Hearings
                   <hr class="mb-0" />
               </td>
-              <td colspan="2" class="font-weight-bold">
-                  Committee Hearing Performance
-                  <hr class="mb-0" />
-              </td>
+
+              {% if not page.hide_rating %}
+                <td colspan="2" class="font-weight-bold">
+                    Committee Hearing Performance
+                    <hr class="mb-0" />
+                </td>
+              {% endif %}
+
           </tr>
           <tr>
               <td></td>
               <td>Investigative/Oversight</td>
               <td>Policy/Legislative</td>
               <td>Total Hearings</td>
-              <td>Score</td>
-              <td>Grade</td>
+
+              {% if not page.hide_rating %}
+                <td>Score</td>
+                <td>Grade</td>
+              {% endif %}
+
           </tr>
       </thead>
       <tbody>
@@ -28,8 +36,12 @@
               <td>{{committeerating.investigative_oversight_hearings}}</td>
               <td>{{committeerating.policy_legislative_hearings}}</td>
               <td>{{committeerating.total_hearings}}</td>
-              <td>{{committeerating.chp_score}}%</td>
-              <td class="{{committeerating.css_class}} font-weight-bold lead">{{committeerating}}</td>
+
+              {% if not page.hide_rating %}
+                <td>{{committeerating.chp_score}}%</td>
+                <td class="{{committeerating.css_class}} font-weight-bold lead">{{committeerating}}</td>
+              {% endif %}
+
           </tr>
           {% endfor %}
           <tr>
@@ -37,8 +49,11 @@
               <td class="font-weight-bold">{{page.committee.investigative_oversight_hearings_avg}}</td>
               <td class="font-weight-bold">{{page.committee.policy_legislative_hearings_avg}}</td>
               <td class="font-weight-bold">{{page.committee.total_hearings_avg}}</td>
-              <td></td>
-              <td></td>
+
+              {% if not page.hide_rating %}
+                <td></td>
+                <td></td>
+              {% endif %}
           </tr>
       </tbody>
   </table>
