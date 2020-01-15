@@ -22,7 +22,6 @@
       </h3>
       <p>
         Projected CHP Score for the {{latest_rating.congress}}<br />
-        <small><i>Last updated: {% now "jS F Y H:i" %}</i></small>
       </p>
     </div>
     {% endif %}
@@ -40,6 +39,7 @@
         <strong>{{latest_rating.total_hearings}} </strong>
         Total Hearings
       </p>
+      <small><i>Last updated: {{page.committee.last_updated}}</i></small>
     </div>
   </div>
 

@@ -12,13 +12,12 @@ class Command(BaseCommand):
                 self.build_committee_rating(congress, committee)
 
     def build_committee_rating(self, congress, committee):
-        committee_hearings=Event.objects.all().filter(
-            Q(participants__organization_id=committee.id) |
-            Q(participants__organization__parent_id=committee.id)
-        ).filter(start_date__range=(
-            congress.start_date,
-            congress.end_date
-        ))
+        committee_hearings = committee.hearings.filter(
+            start_date__range=(
+                congress.start_date,
+                congress.end_date
+            )
+        )
 
         # Investigative Oversight = Agency Conduct Hearings + Private Sector Hearings
         investigative_oversight_hearings=self.count_by_category(

@@ -1,4 +1,3 @@
-from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic.edit import DeleteView
@@ -108,10 +107,8 @@ class EventListJson(BaseDatatableView):
         if detail_type == 'category':
             qs = qs.filter(hearingcategory__category_id=id)
         if detail_type == 'committee':
-            qs = qs.filter(
-                Q(participants__organization_id=id) |
-                Q(participants__organization__parent_id=id)
-            ).distinct()
+            committee = CommitteeOrganization.objects.get(id=id)
+            qs = qs.filter(id__in=committee.hearings)
 
         # based on search example at
         # https://pypi.org/project/django-datatables-view/
