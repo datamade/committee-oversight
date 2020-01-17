@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.humanize.templatetags.humanize import ordinal
 from django.db import models
-from django.db.models import Max, Avg
+from django.db.models import Max, Avg, Q
 from django.db.models.fields import TextField, BooleanField
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -60,10 +60,19 @@ class CommitteeManager(models.Manager):
             parent__name='United States Senate'
         )
 
+    def last_updated_all_committees(self):
+        return max(
+            [
+                committee.last_updated
+                for committee in self.permanent_committees()
+            ]
+        )
+
     def get_committee_context(self, context):
         context['committees'] = self.permanent_committees()
         context['house_committees'] = self.house_committees()
         context['senate_committees'] = self.senate_committees()
+        context['last_updated'] = self.last_updated_all_committees()
         return context
 
 
@@ -72,6 +81,21 @@ class CommitteeOrganization(Organization):
         proxy = True
 
     objects = CommitteeManager()
+
+    @property
+    def hearings(self):
+        return HearingEvent.objects.all().filter(
+            Q(participants__organization=self) |
+            Q(participants__organization__parent=self)
+        ).distinct()
+
+    @property
+    def last_updated(self):
+        return self.hearings.exclude(
+            hearingcategory__isnull=True
+        ).aggregate(
+            Max('updated_at')
+        )['updated_at__max']
 
     @property
     def url(self):
