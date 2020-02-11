@@ -1,4 +1,4 @@
-django==2.1.15
+django==2.2.10
 pytest==5.1.2
 pytest-django==3.5.1
 
