@@ -28,7 +28,7 @@ class Command(BaseCommand):
         # Policy/Legislative = Policy Hearings + Legislative Hearings
         policy_legislative_hearings=self.count_by_category(
             committee_hearings,
-            ['Legislative', 'Policy']
+            ['Legislative', 'Policy', 'Closed']
         )
 
         # Total = Agency Conduct + Private Sector + Policy + Legislative
