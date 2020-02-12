@@ -38,9 +38,7 @@
        </tr>
        <tr>
            <td><b>Transcript URL</b></td>
-           {% if transcript_archived and transcript%}
-              <td><a href={{transcript_archived}} target="_blank">{{transcript}}</a></td>
-           {% elif transcript %}
+           {% if transcript %}
               <td><a href={{transcript}} target="_blank">{{transcript}}</a></td>
            {% else %}
               <td></td>
