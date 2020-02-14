@@ -96,7 +96,8 @@ class EventListJson(BaseDatatableView):
         # for non-admin users, show only hearings from a set list of categories
         if not self.request.user.is_authenticated:
             qs = qs.filter(
-                hearingcategory__category__name__in=settings.DISPLAY_CATEGORIES
+                hearingcategory__category__name__in=settings.DISPLAY_CATEGORIES,
+                start_date__gte='2009-01-01'
             )
 
         # in order to filter by categories and committees, grab the detail
