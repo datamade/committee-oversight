@@ -57,7 +57,6 @@ $venv_dir/bin/python $project_dir/scripts/render_configs.py $DEPLOYMENT_ID $DEPL
 
 # Move crontask to correct place, and assign correct ownership and permissions.
 if [ "$DEPLOYMENT_GROUP_NAME" == "staging" ]; then
-  mv $project_dir/scripts/committee-oversight-crontasks /etc/cron.d/committee-oversight-crontasks
   chown root.root /etc/cron.d/committee-oversight-crontasks
   chmod 644 /etc/cron.d/committee-oversight-crontasks
 fi
