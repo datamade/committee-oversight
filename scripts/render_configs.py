@@ -1,5 +1,5 @@
 if __name__ == "__main__":
-    
+
     import sys
 
     from os.path import abspath, dirname, join
@@ -28,28 +28,28 @@ if __name__ == "__main__":
     crontask_outpath = '/etc/cron.d/committee-oversight-crontasks'
 
     with open(nginx_template_path) as f:
-    nginx_conf = Template(f.read())
-    context = {
-      'deployment_id': deployment_id,
-      'domain': domains[deployment_group]
-    }
-    nginx_rendered = nginx_conf.render(context)
+        nginx_conf = Template(f.read())
+        context = {
+          'deployment_id': deployment_id,
+          'domain': domains[deployment_group]
+        }
+        nginx_rendered = nginx_conf.render(context)
 
     with open(supervisor_template_path) as f:
-    supervisor_conf = Template(f.read())
-    supervisor_rendered = supervisor_conf.render(
-      {'deployment_id': deployment_id})
+        supervisor_conf = Template(f.read())
+        supervisor_rendered = supervisor_conf.render(
+          {'deployment_id': deployment_id})
 
     with open(crontask_template_path) as f:
-    crontask_conf = Template(f.read())
-    contask_rendered = crontask_conf.render(
-      {'deployment_id': deployment_id})
+        crontask_conf = Template(f.read())
+        contask_rendered = crontask_conf.render(
+          {'deployment_id': deployment_id})
 
     with open(nginx_outpath, 'w') as out:
-    out.write(nginx_rendered)
+        out.write(nginx_rendered)
 
     with open(supervisor_outpath, 'w') as out:
-    out.write(supervisor_rendered)
+        out.write(supervisor_rendered)
 
     with open(crontask_outpath, 'w') as out:
-    out.write(contask_rendered)
+        out.write(contask_rendered)
