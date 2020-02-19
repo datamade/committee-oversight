@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Q
+from datetime import datetime
 
 from committeeoversightapp.models import Congress, CommitteeOrganization, \
                                          CommitteeRating, Event
@@ -7,9 +8,13 @@ from committeeoversightapp.models import Congress, CommitteeOrganization, \
 
 class Command(BaseCommand):
     def handle(self, **options):
+        self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': Starting committee rating update'))
+
         for congress in Congress.objects.all():
             for committee in CommitteeOrganization.objects.permanent_committees():
                 self.build_committee_rating(congress, committee)
+
+        self.stdout.write(self.style.SUCCESS(str(datetime.now()) + ': Committee rating update completed!'))
 
     def build_committee_rating(self, congress, committee):
         committee_hearings = committee.hearings.filter(
@@ -57,7 +62,7 @@ class Command(BaseCommand):
         rating.save()
 
         self.stdout.write(
-            'Added rating counts for {} to {}. Total CHP points = {}.'.format(
+            'Added rating counts for {} to {}. Total points = {}.'.format(
                 congress.label,
                 committee.name,
                 chp_points
