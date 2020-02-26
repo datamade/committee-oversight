@@ -55,9 +55,11 @@ fi
 
 $venv_dir/bin/python $project_dir/scripts/render_configs.py $DEPLOYMENT_ID $DEPLOYMENT_GROUP_NAME
 
-# Assign correct ownership and permissions to the crontask.
+# Assign correct ownership and permissions to the crontask and log file
 if [ "$DEPLOYMENT_GROUP_NAME" == "production" ]; then
   chown root.root /etc/cron.d/committee-oversight-crontasks
+  sudo touch /tmp/committee-oversight-crontasks.log
+  sudo chown datamade.www-data /tmp/committee-oversight-crontasks.log
   chmod 644 /etc/cron.d/committee-oversight-crontasks
 fi
 
