@@ -234,6 +234,7 @@ class CommitteeOrganization(Organization):
 class Congress(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
+    length = models.IntegerField(default=settings.DEFAULT_CONGRESS_LENGTH)
 
     @property
     def label(self):
@@ -251,7 +252,7 @@ class Congress(models.Model):
 
     @property
     def percent_passed(self):
-        days_in_session = 668
+        days_in_session = self.length
         days_passed = (date.today() - self.start_date).days
         percent_passed = round(days_passed / days_in_session * 100)
 
@@ -273,10 +274,15 @@ class CommitteeRating(models.Model):
     chp_points = models.IntegerField(null=True, blank=True)
 
     @property
+    def length_handicap(self):
+        return settings.DEFAULT_CONGRESS_LENGTH / self.congress.length
+
+    @property
     def chp_score(self):
         try:
             current_score = self.chp_points \
-                / self.committee.max_chp_points * 100
+                / self.committee.max_chp_points * 100 \
+                * self.length_handicap
 
             if not self.congress.is_current:
                 return round(current_score)
@@ -368,14 +374,16 @@ class CommitteeRating(models.Model):
     def get_percent_max(self, hearing_type):
         try:
             return round(getattr(self, hearing_type) \
-                / getattr(self.committee, hearing_type + '_max') * 100)
+                / getattr(self.committee, hearing_type + '_max') * 100 \
+                * self.length_handicap)
         except ZeroDivisionError:
             return 0
 
     def get_percent_avg(self, hearing_type):
         try:
             return round(getattr(self, hearing_type) \
-                / getattr(self.committee, hearing_type + '_avg') * 100)
+                / getattr(self.committee, hearing_type + '_avg') * 100 \
+                * self.length_handicap)
         except ZeroDivisionError:
             return 0
 
