@@ -113,10 +113,24 @@ class CommitteeOrganization(Organization):
         return CommitteeOrganization.objects.get(id=self.parent.id)
 
     @property
+    def display_name(self):
+        try:
+            display_name = CommitteeDetailPage.objects.get(
+                committee=self.id
+            ).display_name
+
+            if display_name:
+                return display_name
+        except ObjectDoesNotExist:
+            pass
+
+        return self.name
+
+    @property
     def short_name(self):
         if self.parent.name in settings.CHAMBERS:
-            return re.sub(r'(House|Senate) Committee on ', '', self.name)
-        return self.name
+            return re.sub(r'(House|Senate) Committee on ', '', self.display_name)
+        return self.display_name
 
     @property
     def is_subcommittee(self):
@@ -147,7 +161,7 @@ class CommitteeOrganization(Organization):
             if self.is_permanent:
                 return '<a href="{0}">{1}</a>'.format(self.url, self)
             else:
-                return self.name
+                return self.display_name
 
     @property
     def get_linked_html_short(self):
@@ -158,12 +172,12 @@ class CommitteeOrganization(Organization):
                     self.parent
                 )
             else:
-                return self.parent.name
+                return self.parent
         else:
             if self.is_permanent:
                 return '<a href="{0}">{1}</a>'.format(self.url, self)
             else:
-                return self.name
+                return self.display_name
 
     @property
     def chair(self):
@@ -228,7 +242,7 @@ class CommitteeOrganization(Organization):
             )[hearing_type + '__max'], 1)
 
     def __str__(self):
-        return self.name
+        return self.display_name
 
 
 class Congress(models.Model):
@@ -285,7 +299,7 @@ class CommitteeRating(models.Model):
                     * 100)
 
         except ZeroDivisionError:
-            print("Divide by zero error on " + self.committee.name)
+            print("Divide by zero error on " + self.committee.display_name)
             return 0
 
     @property
@@ -532,6 +546,12 @@ class CommitteeDetailPage(DetailPage):
         help_text="Select a committee for this page."
     )
 
+    display_name = TextField(
+        blank=True,
+        null=True,
+        help_text="Use this field to change the way a committee's name is "
+        "displayed. If left empty, the name will not be modified.")
+
     chair = TextField(blank=True, null=True)
 
     hide_rating = BooleanField(default=False)
@@ -541,6 +561,7 @@ class CommitteeDetailPage(DetailPage):
         FieldPanel('body'),
         FieldPanel('chair'),
         FieldPanel('hide_rating'),
+        FieldPanel('display_name')
     ]
 
     def get_context(self, request):
