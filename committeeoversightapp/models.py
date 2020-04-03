@@ -9,7 +9,7 @@ from django.db import models
 from django.db.models import Max, Avg, Q
 from django.db.models.fields import TextField, BooleanField
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
@@ -512,13 +512,16 @@ class DetailPage(ResetMixin, Page):
 
     def save(self, *args, **kwargs):
         title = str(getattr(self, self.title_field))
+
+        if not title:
+            title = str(getattr(self, self.fallback_title_field))
+
         for attr in ('title', 'draft_title'):
             setattr(self, attr, title)
         super().save(*args, **kwargs)
 
 
 class CategoryDetailPage(DetailPage):
-
     title_field = 'category'
 
     category = models.ForeignKey(
@@ -536,7 +539,8 @@ class CategoryDetailPage(DetailPage):
 
 
 class CommitteeDetailPage(DetailPage):
-    title_field = 'committee'
+    title_field = 'display_name'
+    fallback_title_field = 'committee'
 
     committee = models.ForeignKey(
         CommitteeOrganization,
