@@ -9,7 +9,7 @@
 {% block content %}
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 text-center">
-      <h2 class="my-2">{{ page.title }}</h2>
+      <h2 class="my-2">{{ page.committee }}</h2>
       <p class="lead font-weight-light mb-2 mt-3"><strong>Chair: </strong> {{ page.chair }}</p>
     </div>
   </div>
@@ -75,7 +75,7 @@
         </div>
 
       <p class="pl-2 pt-2 text-center font-weight-bold">
-        {{ page.title }}
+        {{ page.committee }}
       </p>
 
       <!-- Investigative Oversight hearings -->
@@ -170,7 +170,7 @@
   <div class="card mt-5 col-12 col-xl-10 mx-auto card-shadow">
     <h4 class="text-center mt-4">
       Hearings held by the <br />
-      {{ page.title }}
+      {{ page.committee }}
     </h4>
     <div class="card-body">
       {% include 'partials/hearing_table.html' with table_size="table-sm" %}

@@ -4,7 +4,7 @@ from django.forms import ModelForm, Form, TextInput, HiddenInput, DateField, Dat
 from opencivicdata.legislative.models import Event, EventParticipant
 from opencivicdata.core.models import Jurisdiction, Organization
 
-from .models import HearingCategoryType, WitnessDetails
+from .models import HearingCategoryType, WitnessDetails, CommitteeOrganization
 from .customfields import GroupedModelMultiChoiceField
 
 
@@ -50,7 +50,7 @@ class CommitteeForm(ModelForm):
 
     name = GroupedModelMultiChoiceField(
         label='Committees/subcommittees',
-        queryset=Organization.objects.filter(classification='committee').order_by('parent__name'),
+        queryset=CommitteeOrganization.objects.filter(classification='committee').order_by('parent__name'),
         group_by_field='parent',
         )
 
