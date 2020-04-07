@@ -511,10 +511,11 @@ class DetailPage(ResetMixin, Page):
     body = RichTextField()
 
     def save(self, *args, **kwargs):
-        title = str(getattr(self, self.title_field))
-
-        if not title:
-            title = str(getattr(self, self.fallback_title_field))
+        title = str(getattr(
+            self, self.title_field
+        ) or getattr(
+            self, self.fallback_title_field)
+        )
 
         for attr in ('title', 'draft_title'):
             setattr(self, attr, title)
