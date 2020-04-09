@@ -248,7 +248,23 @@ class CommitteeOrganization(Organization):
 class Congress(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
-    length = models.IntegerField(default=settings.DEFAULT_CONGRESS_LENGTH)
+    inactive_days = models.IntegerField(default=settings.DEFAULT_CONGRESS_INACTIVE_DAYS)
+
+    @property
+    def length_in_days(self):
+        return (self.end_date - self.start_date).days
+
+    @property
+    def handicap(self):
+        '''
+        On average, we expect a Congress to be inactive for 62 days of its two year
+        session. This accounts for Congresses that are inactive for longer; they
+        should have a handicap > 1.
+        '''
+        extra_inactive_days = self.inactive_days - settings.DEFAULT_CONGRESS_INACTIVE_DAYS
+        handicap =  self.length_in_days / (self.length_in_days - extra_inactive_days)
+
+        return handicap
 
     @property
     def label(self):
@@ -266,9 +282,13 @@ class Congress(models.Model):
 
     @property
     def percent_passed(self):
-        days_in_session = self.length
         days_passed = (date.today() - self.start_date).days
-        percent_passed = round(days_passed / days_in_session * 100)
+
+        percent_passed = round(
+            days_passed / \
+            (self.length_in_days - settings.DEFAULT_CONGRESS_INACTIVE_DAYS) \
+            * self.handicap * 100
+            )
 
         if percent_passed <= 100:
             return percent_passed
@@ -288,15 +308,11 @@ class CommitteeRating(models.Model):
     chp_points = models.IntegerField(null=True, blank=True)
 
     @property
-    def length_handicap(self):
-        return settings.DEFAULT_CONGRESS_LENGTH / self.congress.length
-
-    @property
     def chp_score(self):
         try:
             current_score = self.chp_points \
                 / self.committee.max_chp_points * 100 \
-                * self.length_handicap
+                * self.congress.handicap
 
             if not self.congress.is_current:
                 return round(current_score)
@@ -386,18 +402,20 @@ class CommitteeRating(models.Model):
         return self.get_percent_avg('total_hearings')
 
     def get_percent_max(self, hearing_type):
+        ht = getattr(self, hearing_type)
+        ht_max = getattr(self.committee, hearing_type + '_max')
+
         try:
-            return round(getattr(self, hearing_type) \
-                / getattr(self.committee, hearing_type + '_max') * 100 \
-                * self.length_handicap)
+            return round(ht / ht_max * 100 * self.congress.handicap)
         except ZeroDivisionError:
             return 0
 
     def get_percent_avg(self, hearing_type):
+        ht = getattr(self, hearing_type)
+        ht_max = getattr(self.committee, hearing_type + '_max')
+
         try:
-            return round(getattr(self, hearing_type) \
-                / getattr(self.committee, hearing_type + '_avg') * 100 \
-                * self.length_handicap)
+            return round(ht / ht_max * 100 * self.congress.handicap)
         except ZeroDivisionError:
             return 0
 

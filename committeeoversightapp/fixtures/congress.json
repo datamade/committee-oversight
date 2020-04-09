@@ -4,8 +4,7 @@
     "pk": 111,
     "fields": {
       "start_date": "2009-01-03",
-      "end_date": "2011-01-02",
-      "length": "668"
+      "end_date": "2011-01-02"
     }
   },
   {
@@ -13,8 +12,7 @@
     "pk": 112,
     "fields": {
       "start_date": "2011-01-03",
-      "end_date": "2013-01-02",
-      "length": "668"
+      "end_date": "2013-01-02"
     }
   },
   {
@@ -22,8 +20,7 @@
     "pk": 113,
     "fields": {
       "start_date": "2013-01-03",
-      "end_date": "2015-01-02",
-      "length": "668"
+      "end_date": "2015-01-02"
     }
   },
   {
@@ -31,8 +28,7 @@
     "pk": 114,
     "fields": {
       "start_date": "2015-01-03",
-      "end_date": "2017-01-03",
-      "length": "668"
+      "end_date": "2017-01-03"
     }
   },
   {
@@ -40,8 +36,7 @@
     "pk": 115,
     "fields": {
       "start_date": "2017-01-03",
-      "end_date": "2019-01-02",
-      "length": "668"
+      "end_date": "2019-01-02"
     }
   },
   {
@@ -50,7 +45,7 @@
     "fields": {
       "start_date": "2019-01-03",
       "end_date": "2021-01-02",
-      "length": "608"
+      "inactive_days": "122"
     }
   }
 ]
