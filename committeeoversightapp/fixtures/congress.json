@@ -44,7 +44,8 @@
     "pk": 116,
     "fields": {
       "start_date": "2019-01-03",
-      "end_date": "2021-01-02"
+      "end_date": "2021-01-02",
+      "inactive_days": "122"
     }
   }
 ]

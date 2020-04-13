@@ -157,6 +157,8 @@ WAGTAIL_SITE_NAME = 'Committee Oversight'
 
 WAGTAIL_MODERATION_ENABLED = False
 
+DEFAULT_CONGRESS_INACTIVE_DAYS = 62
+
 CURRENT_PERMANENT_COMMITTEES = [
     'House Committee on Agriculture',
     'House Committee on Appropriations',
