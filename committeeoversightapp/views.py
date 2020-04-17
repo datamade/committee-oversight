@@ -14,7 +14,7 @@ from opencivicdata.core.models import Organization
 
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from .utils import get_document_context, save_witnesses, \
+from .view_utils import get_document_context, save_witnesses, \
                    save_documents, save_category, save_committees
 from .models import HearingCategory, HearingCategoryType, WitnessDetails, \
                     CommitteeOrganization, HearingEvent

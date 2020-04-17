@@ -23,6 +23,7 @@ from opencivicdata.core.models import Organization
 from opencivicdata.legislative.models import Event, EventParticipant, \
                                              EventDocument
 
+from .model_utils import cap_100
 
 class HearingEvent(Event):
     class Meta:
@@ -294,10 +295,7 @@ class Congress(models.Model):
             days_passed / (self.length_in_days - self.inactive_days)  * 100
             )
 
-        if percent_passed <= 100:
-            return percent_passed
-        else:
-            return 100
+        return cap_100(percent_passed)
 
     def __str__(self):
         return self.label
@@ -410,7 +408,8 @@ class CommitteeRating(models.Model):
         ht_max = getattr(self.committee, hearing_type + '_max')
 
         try:
-            return round(ht / ht_max * 100 * self.congress.normalizer)
+            percent_max = round(ht / ht_max * 100 * self.congress.normalizer)
+            return cap_100(percent_max)
         except ZeroDivisionError:
             return 0
 
@@ -419,7 +418,8 @@ class CommitteeRating(models.Model):
         ht_max = getattr(self.committee, hearing_type + '_max')
 
         try:
-            return round(ht / ht_max * 100 * self.congress.normalizer)
+            percent_avg = round(ht / ht_max * 100 * self.congress.normalizer)
+            return cap_100(percent_avg)
         except ZeroDivisionError:
             return 0
 
