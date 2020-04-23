@@ -247,6 +247,7 @@ class CommitteeOrganization(Organization):
 
 
 class Congress(models.Model):
+    id = models.IntegerField(primary_key=True)
     start_date = models.DateField()
     end_date = models.DateField()
     inactive_days = models.IntegerField(
@@ -256,6 +257,18 @@ class Congress(models.Model):
         "of its duration. Setting this value higher means that a Congress's "
         "scores will be calculated relative to a shorter length."
         )
+    footnote = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    panels = [
+        FieldPanel('id'),
+        FieldPanel('start_date'),
+        FieldPanel('end_date'),
+        FieldPanel('footnote'),
+        FieldPanel('inactive_days')
+    ]
 
     @property
     def length_in_days(self):
