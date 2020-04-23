@@ -40,20 +40,21 @@ if __name__ == "__main__":
         supervisor_rendered = supervisor_conf.render(
           {'deployment_id': deployment_id})
 
-    with open(crontask_template_path) as f:
-        crontask_conf = Template(f.read())
-        # Jinja strips trailing whitespace. Configuring it not to takes more
-        # work than we want to invest in this approach. Manually add back the
-        # trailing whitespace here.
-        # https://jinja.palletsprojects.com/en/2.11.x/api/#basics
-        contask_rendered = crontask_conf.render(
-          {'deployment_id': deployment_id}) + '\n'
-
     with open(nginx_outpath, 'w') as out:
         out.write(nginx_rendered)
 
     with open(supervisor_outpath, 'w') as out:
         out.write(supervisor_rendered)
 
-    with open(crontask_outpath, 'w') as out:
-        out.write(contask_rendered)
+    if deployment_group == 'production':
+        with open(crontask_template_path) as f:
+            crontask_conf = Template(f.read())
+            # Jinja strips trailing whitespace. Configuring it not to takes more
+            # work than we want to invest in this approach. Manually add back the
+            # trailing whitespace here.
+            # https://jinja.palletsprojects.com/en/2.11.x/api/#basics
+            contask_rendered = crontask_conf.render(
+              {'deployment_id': deployment_id}) + '\n'
+
+        with open(crontask_outpath, 'w') as out:
+            out.write(contask_rendered)
