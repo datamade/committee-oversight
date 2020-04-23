@@ -1,7 +1,7 @@
 # /etc/cron.d/committee-oversight-crontasks
 
 # Back up the hearings database at 4 AM GMT (11pm EST) every day.
-0 4 * * * datamade (pg_dump -Fc -U postgres -d hearings | /usr/bin/aws s3 cp - s3://datamade-postgresql-backups/hearings/$(date -d "today" +"\%Y\%m\%d\%H\%M").dump) && echo "backup $(date -d "today" +"\%Y\%m\%d\%H\%M").dump complete" >> /tmp/committee-oversight-crontasks.log 2>&1
+0 4 * * * datamade (pg_dump -Fc -U postgres -d hearings | /usr/bin/aws s3 cp - s3://datamade-postgresql-backups/hearings/$(date -d "today" +"\%Y\%m\%d\%H\%M").dump) && echo "backup $(date -d "today" +"\%Y\%m\%d\%H\%M").dump complete" >> /tmp/committee-oversight-crontasks-backups.log 2>&1
 
 # Update the Committee Ratings table every hour.
-0 * * * * datamade cd /home/datamade/committee-oversight-{{ deployment_id }} && /home/datamade/.virtualenvs/committee-oversight-{{ deployment_id }}/bin/python manage.py load_committeeratings >> /tmp/committee-oversight-crontasks.log 2>&1
+0 * * * * datamade cd /home/datamade/committee-oversight-{{ deployment_id }} && /home/datamade/.virtualenvs/committee-oversight-{{ deployment_id }}/bin/python manage.py load_committeeratings >> /tmp/committee-oversight-crontasks-ratings.log 2>&1
