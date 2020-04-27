@@ -60,7 +60,7 @@
 
   <div>
     {% for committeerating in page.committee.ratings_by_congress_asc %}
-      {% if committeerating.congress.has_footnote %}
+      {% if committeerating.congress.footnote %}
         <p class="footnote mb-0">
           {{committeerating.footnote_symbol}}
           {{committeerating.congress.footnote}}

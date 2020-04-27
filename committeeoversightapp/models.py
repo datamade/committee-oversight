@@ -199,7 +199,7 @@ class CommitteeOrganization(Organization):
 
         count = 1
         for rating in committeeratings:
-            if rating.congress.has_footnote:
+            if rating.congress.footnote:
                 rating.footnote_symbol = '*' * count
                 count += 1
             else:
@@ -320,13 +320,6 @@ class Congress(models.Model):
             )
 
         return cap_100(percent_passed)
-
-    @property
-    def has_footnote(self):
-        if self.footnote:
-            return True
-        else:
-            return False
 
     def __str__(self):
         return self.label

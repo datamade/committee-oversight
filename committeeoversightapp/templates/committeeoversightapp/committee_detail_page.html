@@ -21,11 +21,11 @@
         {{latest_rating}}
       </h3>
       <p>
-        Projected Grade for the {{latest_rating.congress}}{% if latest_rating.congress.has_footnote %}*{% endif %}
+        Projected Grade for the {{latest_rating.congress}}{% if latest_rating.congress.footnote %}*{% endif %}
         <br />
       </p>
-      {% if latest_rating.congress.has_footnote %}
-      <p class="footnote">* {{latest_rating.congress.footnote}}</p>
+      {% if latest_rating.congress.footnote %}
+        <p class="footnote">* {{latest_rating.congress.footnote}}</p>
       {% endif %}
     </div>
     {% endif %}
