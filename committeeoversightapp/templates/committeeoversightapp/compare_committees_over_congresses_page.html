@@ -4,4 +4,11 @@
 {% block table_content %}
   {% include "partials/compare_committees_over_congresses_table.html" with committees=house_committees title="House of Representatives"%}
   {% include "partials/compare_committees_over_congresses_table.html" with committees=senate_committees title="Senate"%}
+
+  <div class="row justify-content-center align-items-center mt-4">
+    <div class="col-8">
+      {% include "partials/footnotes.html" with ratings=house_committees.first.ratings_by_congress_desc %}
+    </div>
+  </div>
+
 {% endblock %}

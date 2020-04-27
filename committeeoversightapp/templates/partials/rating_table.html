@@ -59,14 +59,7 @@
   </table>
 
   <div>
-    {% for committeerating in page.committee.ratings_by_congress_asc %}
-      {% if committeerating.congress.footnote %}
-        <p class="footnote mb-0">
-          {{committeerating.footnote_symbol}}
-          {{committeerating.congress.footnote}}
-        </p>
-      {% endif %}
-    {% endfor %}
+    {% include "partials/footnotes.html" with ratings=page.committee.ratings_by_congress_asc %}
   </div>
 
 </div>

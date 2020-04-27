@@ -191,21 +191,11 @@ class CommitteeOrganization(Organization):
 
     @property
     def ratings_by_congress_desc(self):
-        return self.committeerating_set.all().order_by('-congress__id')
+        return self.sort_congresses('-congress__id')
 
     @property
     def ratings_by_congress_asc(self):
-        committeeratings = self.committeerating_set.all().order_by('congress__id')
-
-        count = 1
-        for rating in committeeratings:
-            if rating.congress.footnote:
-                rating.footnote_symbol = '*' * count
-                count += 1
-            else:
-                rating.footnote_symbol = ''
-
-        return committeeratings
+        return self.sort_congresses('congress__id')
 
     @property
     def latest_rating(self):
@@ -252,6 +242,19 @@ class CommitteeOrganization(Organization):
             .aggregate(
                 Max(hearing_type)
             )[hearing_type + '__max'], 1)
+
+    def sort_congresses(self, sort_string):
+        committeeratings = self.committeerating_set.all().order_by(sort_string)
+
+        count = 1
+        for rating in committeeratings:
+            if rating.congress.footnote:
+                rating.footnote_symbol = '*' * count
+                count += 1
+            else:
+                rating.footnote_symbol = ''
+
+        return committeeratings
 
     def __str__(self):
         return self.display_name

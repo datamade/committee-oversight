@@ -1,0 +1,8 @@
+{% for rating in ratings %}
+  {% if rating.congress.footnote %}
+    <p class="footnote mb-0">
+      {{rating.footnote_symbol}}
+      {{rating.congress.footnote}}
+    </p>
+  {% endif %}
+{% endfor %}
