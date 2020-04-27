@@ -9,10 +9,7 @@
           <th class="align-top">Committee</th>
           {% for rating in committees.first.ratings_by_congress_desc %}
             <th class="align-top">
-              {{rating.congress}}
-              {% if rating.congress.is_current %}
-               (projected)
-              {% endif %}
+              {{rating.congress}}{% if rating.congress.is_current %} (projected){% endif %}{% if rating.congress.footnote %}{{rating.footnote_symbol}}{% endif %}
             </th>
           {% endfor %}
         </tr>

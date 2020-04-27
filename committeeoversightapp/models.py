@@ -74,6 +74,7 @@ class CommitteeManager(models.Manager):
         context['house_committees'] = self.house_committees()
         context['senate_committees'] = self.senate_committees()
         context['last_updated'] = self.last_updated_all_committees()
+        context['current_congress'] = Congress.objects.all().order_by("-id")[0]
         return context
 
 
@@ -190,11 +191,11 @@ class CommitteeOrganization(Organization):
 
     @property
     def ratings_by_congress_desc(self):
-        return self.committeerating_set.all().order_by('-congress__id')
+        return self.sort_congresses('-congress__id')
 
     @property
     def ratings_by_congress_asc(self):
-        return self.committeerating_set.all().order_by('congress__id')
+        return self.sort_congresses('congress__id')
 
     @property
     def latest_rating(self):
@@ -242,11 +243,25 @@ class CommitteeOrganization(Organization):
                 Max(hearing_type)
             )[hearing_type + '__max'], 1)
 
+    def sort_congresses(self, sort_string):
+        committeeratings = self.committeerating_set.all().order_by(sort_string)
+
+        count = 1
+        for rating in committeeratings:
+            if rating.congress.footnote:
+                rating.footnote_symbol = '*' * count
+                count += 1
+            else:
+                rating.footnote_symbol = ''
+
+        return committeeratings
+
     def __str__(self):
         return self.display_name
 
 
 class Congress(models.Model):
+    id = models.IntegerField(primary_key=True)
     start_date = models.DateField()
     end_date = models.DateField()
     inactive_days = models.IntegerField(
@@ -256,6 +271,18 @@ class Congress(models.Model):
         "of its duration. Setting this value higher means that a Congress's "
         "scores will be calculated relative to a shorter length."
         )
+    footnote = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    panels = [
+        FieldPanel('id'),
+        FieldPanel('start_date'),
+        FieldPanel('end_date'),
+        FieldPanel('footnote'),
+        FieldPanel('inactive_days')
+    ]
 
     @property
     def length_in_days(self):

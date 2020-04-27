@@ -32,7 +32,7 @@
       <tbody>
           {% for committeerating in page.committee.ratings_by_congress_asc %}
           <tr>
-              <td>{{committeerating.congress}}</td>
+              <td>{{committeerating.congress}}{{committeerating.footnote_symbol}}</td>
               <td>{{committeerating.investigative_oversight_hearings}}</td>
               <td>{{committeerating.policy_legislative_hearings}}</td>
               <td>{{committeerating.total_hearings}}</td>
@@ -57,4 +57,9 @@
           </tr>
       </tbody>
   </table>
+
+  <div>
+    {% include "partials/footnotes.html" with ratings=page.committee.ratings_by_congress_asc %}
+  </div>
+
 </div>

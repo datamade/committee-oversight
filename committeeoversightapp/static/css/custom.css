@@ -428,6 +428,12 @@ footer a:hover {
   height: 20px;
 }
 
+.footnote {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--dark-gray-color);
+}
+
 /* Small devices (landscape phones, 576px and up) */
 @media (max-width: 767px) {
   .pagination {

@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'wagtail.core',
     'modelcluster',
     'taggit',
+    'wagtail.contrib.modeladmin',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
