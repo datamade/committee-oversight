@@ -44,6 +44,7 @@
 
   {% include "partials/landing_page_table.html" with committees=senate_committees title="Senate" id="senate"%}
 
+  {% if current_congress.footnote %}
   <div class="row justify-content-center align-items-center mt-4">
     <div class="col-8">
       <p class="footnote">
@@ -51,6 +52,7 @@
       </p>
     </div>
   </div>
+  {% endif %}
 
   {% block extra_js %}
     <script type="text/javascript" src="{% static 'js/grade_sort.js' %}"></script>
