@@ -35,7 +35,7 @@ if [ "$DEPLOYMENT_GROUP_NAME" == "staging" ]; then
 fi
 
 if [ "$DEPLOYMENT_GROUP_NAME" == "production" ]; then
-    export DOMAIN="committeeoversight-production.datamade.us"
+    export DOMAIN="oversight-index.thelugarcenter.org"
 fi
 
 # Echo a simple nginx configuration into the correct place, and tell

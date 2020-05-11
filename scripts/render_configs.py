@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     domains = {
     'staging': 'committeeoversight.datamade.us',
-    'production': 'committeeoversight-production.datamade.us',
+    'production': 'oversight-index.thelugarcenter.org',
     }
 
     nginx_template_path = '/home/datamade/committee-oversight-{0}/configs/committee-oversight-{1}.conf.nginx'.format(
