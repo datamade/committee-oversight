@@ -442,10 +442,10 @@ class CommitteeRating(models.Model):
 
     def get_percent_avg(self, hearing_type):
         ht = getattr(self, hearing_type)
-        ht_max = getattr(self.committee, hearing_type + '_max')
+        ht_avg = getattr(self.committee, hearing_type + '_avg')
 
         try:
-            percent_avg = round(ht / ht_max * 100 * self.congress.normalizer)
+            percent_avg = round(ht / ht_avg * 100 * self.congress.normalizer)
             return cap_100(percent_avg)
         except ZeroDivisionError:
             return 0
