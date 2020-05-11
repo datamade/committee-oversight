@@ -20,19 +20,4 @@
   <script type="text/javascript" src="{% static 'js/grade_sort.js' %}"></script>
 {% endblock %}
 
-<script>
-  $(document).ready(function () {
-      $('.committee-table').DataTable({
-        "dom": "Bfrtip",
-        "paging": false,
-        "searching": false,
-        "info": false,
-        "order": [[ 0, "asc" ]],
-        "columnDefs": [
-          { "type": 'grade-sort', "targets": [1, 2, 3, 4, 5, 6] }
-        ],
-      });
-  });
-</script>
-
 {% endblock %}

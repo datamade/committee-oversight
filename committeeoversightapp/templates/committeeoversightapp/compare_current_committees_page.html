@@ -4,4 +4,16 @@
 {% block table_content %}
   {% include "partials/compare_current_committees_table.html" with committees=house_committees title="House of Representatives"%}
   {% include "partials/compare_current_committees_table.html" with committees=senate_committees title="Senate"%}
+
+  <script>
+    $(document).ready(function () {
+        $('.committee-table').DataTable({
+          "dom": "Bfrtip",
+          "paging": false,
+          "searching": false,
+          "info": false,
+          "order": [[ 0, "asc" ]]
+        });
+    });
+  </script>
 {% endblock %}
