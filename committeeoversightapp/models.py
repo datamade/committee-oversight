@@ -319,8 +319,10 @@ class Congress(models.Model):
         days_passed = (date.today() - self.start_date).days
 
         percent_passed = round(
-            days_passed / (self.length_in_days - self.inactive_days)  * 100
-            )
+            days_passed / (
+                self.length_in_days - settings.DEFAULT_CONGRESS_INACTIVE_DAYS
+            ) * 100
+        )
 
         return cap_100(percent_passed)
 
