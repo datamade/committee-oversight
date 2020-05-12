@@ -17,20 +17,38 @@ from django.conf import settings
 from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps import GenericSitemap
 
+from wagtail.contrib.sitemaps import views, Sitemap
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.core import urls as wagtail_urls
 
 from committeeoversightapp.views import pong
+from committeeoversightapp.models import HearingEvent
+
+
+sitemaps = {
+    'hearings': GenericSitemap(
+        {
+            'queryset': HearingEvent.objects.all(),
+            'date_field': 'updated_at'
+        },
+        priority=0.9
+    ),
+    'wagtail': Sitemap
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pong/', pong,),
     path('', include('committeeoversightapp.urls')),
+    path('sitemap.xml', views.index, {'sitemaps': sitemaps}),
+    path('sitemap-<section>.xml', views.sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
     re_path(r'^cms/', include(wagtailadmin_urls)),
     re_path(r'^documents/', include(wagtaildocs_urls)),
-    re_path(r'', include(wagtail_urls)),
+    re_path(r'', include(wagtail_urls))
 ]
 
 if settings.DEBUG:
