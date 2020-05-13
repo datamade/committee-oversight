@@ -316,11 +316,19 @@ class Congress(models.Model):
 
     @property
     def percent_passed(self):
+        '''
+        Returns the % of days passed of the current Congress compared
+        to an average Congress length. This does not take atypical values
+        for self.inactive_days into account, as inactive_days do not
+        typically indicate a change in Congress's start and end dates
+        '''
         days_passed = (date.today() - self.start_date).days
 
         percent_passed = round(
-            days_passed / (self.length_in_days - self.inactive_days)  * 100
-            )
+            days_passed / (
+                self.length_in_days - settings.DEFAULT_CONGRESS_INACTIVE_DAYS
+            ) * 100
+        )
 
         return cap_100(percent_passed)
 
