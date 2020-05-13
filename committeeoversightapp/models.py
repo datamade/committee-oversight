@@ -29,6 +29,9 @@ class HearingEvent(Event):
     class Meta:
         proxy = True
 
+    def get_absolute_url(self):
+        return '/hearing/view/{}/'.format(self.id)
+
     @property
     def category(self):
         try:
