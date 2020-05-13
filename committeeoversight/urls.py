@@ -31,7 +31,7 @@ from committeeoversightapp.models import HearingEvent
 sitemaps = {
     'hearings': GenericSitemap(
         {
-            'queryset': HearingEvent.objects.all(),
+            'queryset': HearingEvent.objects.all().order_by('id'),
             'date_field': 'updated_at'
         },
         priority=0.9
