@@ -22,6 +22,7 @@ mv $project_dir/configs/local_settings.py.$DEPLOYMENT_GROUP_NAME $project_dir/co
 psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'hearings'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE hearings"
 psql -U postgres -d hearings -c "CREATE EXTENSION IF NOT EXISTS postgis"
 $venv_dir/bin/python $project_dir/manage.py migrate
+$venv_dir/bin/python $project_dir/manage.py createcachetable
 $venv_dir/bin/python $project_dir/manage.py collectstatic --no-input
 
 # Configure the media folder for user uploads

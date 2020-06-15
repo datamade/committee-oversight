@@ -85,6 +85,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'committeeoversight.urls'
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cache_table',
+    }
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
