@@ -22,4 +22,5 @@ services:
       bash -c "python manage.py migrate &&
       python manage.py loaddata congress &&
       python manage.py loaddata hearingcategorytype &&
-      python manage.py load_committeeratings"
+      python manage.py load_committeeratings &&
+      python manage.py createcachetable"
