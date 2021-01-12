@@ -21,7 +21,7 @@
         {{latest_rating}}
       </h3>
       <p>
-        Projected Grade for the {{latest_rating.congress}}{% if latest_rating.congress.footnote %}*{% endif %}
+        {% if latest_rating.congress.is_current %}Projected {% endif %}Grade for the {{latest_rating.congress}}{% if latest_rating.congress.footnote %}*{% endif %}
         <br />
       </p>
       {% if latest_rating.congress.footnote %}
