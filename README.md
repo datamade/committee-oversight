@@ -19,7 +19,7 @@ We use Docker for local development. To get started, run the following from your
 
 2. DataMade employees can download the most recent copy of the scraped committee hearings `hearings.dump` from `datamade-postgresql-backups/hearings` bucket in S3. Otherwise you'll need to run [the hearings scraper]( https://github.com/datamade/hearings/) to populate your application database with the latest committee hearings. **Subsequent steps will not work until you add initial hearings data to your database.**
 
-3. To load `hearings.dump` into your database, run:
+3. If you ran the hearings scraper in Step 2, you can skip this step. To load `hearings.dump` into your database, run:
 
     ```bash
     docker-compose -f docker-compose.yml -f docker-compose.db-ops.yml run -e PGPASSWORD=postgres --rm dbload-dump
