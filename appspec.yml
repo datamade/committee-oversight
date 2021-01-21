@@ -13,3 +13,9 @@ hooks:
   AfterInstall:
     - location: scripts/after_install.sh
       runas: root
+# ... deployment lifecycle config ...
+branch_config:
+  master:
+    deploymentGroupName: staging
+  deploy:
+    deploymentGroupName: production
