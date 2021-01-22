@@ -54,15 +54,6 @@ for deployment in $old_deployments; do
     fi
 done;
 
-# Send TERM signal to old gunicorn processes
-old_deployments=`ls /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID | grep -Po 'd-[A-Z0-9]{9}'`
-for deployment in $old_deployments; do
-  if [[ ! $deployment == $DEPLOYMENT_ID ]]; then
-    echo "Signalling application processes from $deployment"
-    supervisorctl signal TERM committee-oversight-$deployment:*
-  fi
-done;
-
 # Cleanup all versions except the most recent 10
 old_versions=`find /home/datamade -maxdepth 1 -type d -printf '%TY-%Tm-%Td %TT %p\n' | sort | grep -Po '/home/datamade/committee-oversight-d-[A-Z0-9]{9}' | head -n -10`
 for version in $old_versions; do
