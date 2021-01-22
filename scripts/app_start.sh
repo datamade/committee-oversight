@@ -38,13 +38,20 @@ echo "Reloading nginx"
 service nginx configtest
 service nginx reload || service nginx start
 
-# Send TERM signal to old gunicorn processes
-old_deployments=`ls /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID | grep -Po 'd-[A-Z0-9]{9}'`
+# It's safe to terminate the older version of the site
+# by sending the TERM signal to old gunicorn processes.
+# This code block iterates over deployments for a particular deployment group,
+# checks each status (is it "RUNNING"?), and terminates the old, running deployment.
+old_deployments=`(ls /opt/codedeploy-agent/deployment-root/$DEPLOYMENT_GROUP_ID | grep -Po "d-[A-Z0-9]{9}") || echo ''`
 for deployment in $old_deployments; do
-  if [[ ! $deployment == $DEPLOYMENT_ID ]]; then
-    echo "Signalling application processes from $deployment"
-    supervisorctl signal TERM committee-oversight-$deployment:*
-  fi
+    if [[ ! $deployment == $DEPLOYMENT_ID ]]; then
+        echo "Signalling application processes from $deployment"
+
+        STATUS=`supervisorctl status committee-oversight-$deployment:*`
+        if [[ $STATUS == *"RUNNING"* ]]; then
+            supervisorctl signal TERM committee-oversight-$deployment:*
+        fi
+    fi
 done;
 
 # Cleanup all versions except the most recent 10

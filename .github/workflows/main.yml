@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - deploy
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+    services:
+      # 🚨 Update the Postgres version and database name to match your app environment and test config
+      postgres:
+        image: mdillon/postgis:10
+        env:
+          POSTGRES_DB: hearings
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+    - uses: actions/checkout@v2
+    # 🚨 Update the Python version to match your app environment
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.7'
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y gdal-bin
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Test with pytest
+      # 🚨 Swap in the correct filenames for your test and application configs
+      run: |
+        mv configs/local_settings.py.gh-actions committeeoversight/local_settings.py
+        pytest -sv
+  deploy:
+    needs: test
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - uses: actions/checkout@v2
+      - id: deploy
+        uses: webfactory/create-aws-codedeploy-deployment@0.2.2
+        with:
+          # 🚨 Swap in your CodeDeploy application name, which is usually the same as the repository name
+          application: committee-oversight
