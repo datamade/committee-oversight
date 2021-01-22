@@ -44,7 +44,7 @@ jobs:
     - name: Test with pytest
       # 🚨 Swap in the correct filenames for your test and application configs
       run: |
-        mv configs/local_settings.py.travis committeeoversight/local_settings.py
+        mv configs/local_settings.py.gh-actions committeeoversight/local_settings.py
         pytest -sv
   deploy:
     needs: test
