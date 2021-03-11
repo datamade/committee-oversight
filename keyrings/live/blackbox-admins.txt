@@ -1,6 +1,4 @@
-beamalsky@datamade.us
 committeeoversight-production@datamade.us
-datamade@ssce.datamade.us
 derek.eder@datamade.us
 fgregg@datamade.us
 hannah.cushman@gmail.com
